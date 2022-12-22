@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharetraveyard/states/authen_mobile.dart';
+import 'package:sharetraveyard/states/main_home.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 
 Future<void> main() async {
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       home: AuthenMobile(),
+      //home: MainHome(),
       theme: ThemeData(
         primarySwatch: Colors.red,
         appBarTheme: AppBarTheme(

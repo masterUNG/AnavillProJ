@@ -9,17 +9,20 @@ class WidgetForm extends StatelessWidget {
     Key? key,
     this.obsecu,
     required this.changFunc,
+    this.textInputType,
   }) : super(key: key);
 
   final bool? obsecu;
   final Function(String) changFunc;
+  final TextInputType? textInputType;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 40,
       margin: const EdgeInsets.only(top: 8, bottom: 24),
-      child: TextFormField(onChanged: changFunc,
+      child: TextFormField(keyboardType: textInputType,
+        onChanged: changFunc,
         obscureText: obsecu ?? false,
         style: AppConstant().appStyle(),
         decoration: InputDecoration(
