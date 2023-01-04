@@ -8,7 +8,7 @@ import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
 class MainHome extends StatefulWidget {
-  const MainHome({super.key});
+  const MainHome(Container Function() period, {super.key});
 
   @override
   State<MainHome> createState() => _MainHomeState();
