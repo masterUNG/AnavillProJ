@@ -2,9 +2,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sharetraveyard/bodys/shop_body.dart';
+import 'package:sharetraveyard/states/authen_mobile.dart';
 import 'package:sharetraveyard/states/main_home.dart';
 import 'package:sharetraveyard/states/select_round.dart';
-import 'package:sharetraveyard/states/select_site.dart';
+import 'package:sharetraveyard/states/select_site.dart'; 
 import 'package:sharetraveyard/utility/app_constant.dart';
 
 Future<void> main() async {
@@ -22,10 +24,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      //home: SelectSite(),
       home: SelectRound(),
-      //home: SelectSite(0),
       //home: AuthenMobile(),
-      //home: MainHome(0),
+      //home: MainHome(),
+      //home: ShopBody(),
       theme: ThemeData(
         primarySwatch: Colors.red,
         appBarTheme: AppBarTheme(

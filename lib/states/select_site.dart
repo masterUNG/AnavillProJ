@@ -40,7 +40,7 @@ class _SelectSiteState extends State<SelectSite> {
                   children: [
                     sitecode(),
                     dropdown(appController),
-                    period(),
+                    period1(),
                     dropdownperiod(appController),
                   ],
                 ),
@@ -76,7 +76,7 @@ class _SelectSiteState extends State<SelectSite> {
                     .toList(),
                 onChanged: (value) {
                   appController.choosePeriod.add(value!);
-                  Get.to(MainHome(period));
+                  //Get.to(MainHome(period));
 
                 
                 },
@@ -85,7 +85,7 @@ class _SelectSiteState extends State<SelectSite> {
     );
   }
 
-  Container period() {
+  Container period1() {
     return Container(
       margin: const EdgeInsets.only(left: 24, right: 24, top: 60, bottom: 20),
       child: WidgetText(

@@ -25,6 +25,8 @@ class AppController extends GetxController {
   RxList<PictureModel> pictureModels = <PictureModel>[].obs;
   RxList<String> choosePicture = <String>[].obs;
 
+  get data => null;
+
   Future<void> readPicture() async {
     if (pictureModels.isEmpty) {
       periodModels.clear();

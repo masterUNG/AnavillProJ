@@ -7,7 +7,7 @@ class WidgetTextButtom extends StatelessWidget {
   const WidgetTextButtom({
     Key? key,
     required this.label,
-    required this.pressFunc, required MainAxisAlignment ainAxisAlignment,
+    required this.pressFunc, 
   }) : super(key: key);
 
   final String label;
