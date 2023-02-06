@@ -1,5 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sharetraveyard/states/create_account.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
@@ -53,11 +57,7 @@ class AuthenMobile extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            WidgetButtom(
-                              size: boxConstraints.maxWidth * 0.6,
-                              label: 'Login',
-                              pressFunc: () {},
-                            ),
+                            LoginButton(boxConstraints),
                           ],
                         ),
                         Divider(
@@ -69,20 +69,10 @@ class AuthenMobile extends StatelessWidget {
                           children: [
                             Column(
                               children: [
-                                WidgetText(
-                                  text: 'OR',
-                                  textStyle: AppConstant().h2Style(),
-                                ),
-                                WidgetTextButtom(
-                                  label: 'Create New Register',
-                                  pressFunc: () {
-                                    Get.to(const CreateAccount());
-                                  },
-                                ),
-                                WidgetTextButtom(
-                                  label: 'Forgot Password',
-                                  pressFunc: () {},
-                                )
+                                TextOR(),
+                                ButtonGoogle(),
+                                ButtomCreateRegister(),
+                                ButtonCreateForgetpassword()
                               ],
                             ),
                           ],
@@ -96,6 +86,65 @@ class AuthenMobile extends StatelessWidget {
           );
         }),
       ),
+    );
+  }
+
+  WidgetButtom LoginButton(BoxConstraints boxConstraints) {
+    return WidgetButtom(
+      size: boxConstraints.maxWidth * 0.6,
+      label: 'Login',
+      pressFunc: () {},
+      onPressed: () {},
+    );
+  }
+
+  WidgetText TextOR() {
+    return WidgetText(
+      text: 'OR',
+      textStyle: AppConstant().h2Style(),
+    );
+  }
+
+  WidgetTextButtom ButtonCreateForgetpassword() {
+    return WidgetTextButtom(
+      label: 'Forgot Password',
+      pressFunc: () {},
+    );
+  }
+
+  WidgetTextButtom ButtomCreateRegister() {
+    return WidgetTextButtom(
+      label: 'Create New Register',
+      pressFunc: () {
+        Get.to(const CreateAccount());
+      },
+    );
+  }
+
+  Container ButtonGoogle() {
+    return Container(
+      margin: EdgeInsets.only(top: 8),
+      child: SignInButton(
+        Buttons.Google,
+        onPressed: () => processSingInWithGoogle(),
+      ),
+    );
+  }
+
+  Future<Null> processSingInWithGoogle() async {
+    GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    );
+
+    await Firebase.initializeApp().then(
+      (value) async {
+        await _googleSignIn.signIn().then((value) {
+          print('Login With gmail Success');
+        });
+      },
     );
   }
 }

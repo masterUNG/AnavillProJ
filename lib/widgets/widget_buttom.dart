@@ -9,7 +9,7 @@ class WidgetButtom extends StatelessWidget {
     Key? key,
     required this.label,
     required this.pressFunc,
-    this.size,
+    this.size, required Null Function() onPressed,
   }) : super(key: key);
 
   final String label;

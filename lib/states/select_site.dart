@@ -76,7 +76,7 @@ class _SelectSiteState extends State<SelectSite> {
                     .toList(),
                 onChanged: (value) {
                   appController.choosePeriod.add(value!);
-                  //Get.to(MainHome(period));
+                  Get.to(MainHome());
 
                 
                 },

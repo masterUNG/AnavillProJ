@@ -43,6 +43,11 @@ dependencies:
   firebase_storage: ^11.0.8
   file_picker: ^4.0.3
   upi_payment_qrcode_generator: ^1.1.2
+  cache_manager: ^1.0.0+4
+  flutter_cache_manager: ^3.3.0
+  flutter_colorpicker: ^1.0.3
+  flutter_signin_button: ^2.0.0
+  google_sign_in: ^5.4.3
 
 dev_dependencies:
   flutter_test:

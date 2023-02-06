@@ -28,7 +28,7 @@ class AppDialog {
         actions: [
           WidgetButtom(
             label: 'OK',
-            pressFunc: () => Get.back(),
+            pressFunc: () => Get.back(), onPressed: () {  },
           )
         ],
       ),

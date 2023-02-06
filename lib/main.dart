@@ -26,11 +26,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: QrCode(),
+      //home: QrCode(),
       //home: PaymentUpload(),
-      //home: SelectSite(),
+      //home: SelectSite(0),
       //home: SelectRound(),
-      //home: AuthenMobile(),
+      home: AuthenMobile(),
       //home: MainHome(),
       //home: ShopBody(),
       theme: ThemeData(

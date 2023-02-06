@@ -25,6 +25,7 @@ class _CreateAccountState extends State<CreateAccount> {
     super.initState();
     controller.readSiteCode();
     controller.readQuestion1();
+    controller.readQuestion2();
   }
 
   @override
@@ -59,7 +60,8 @@ class _CreateAccountState extends State<CreateAccount> {
                   WidgetForm(
                     textInputType: TextInputType.number,
                     changFunc: (p0) {
-                      associateId = p0.trim();
+                      associateId =  p0.trim();
+                      print("##associateId = ${associateId}");
                     },
                   ),
                   WidgetText(
@@ -69,6 +71,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   WidgetForm(
                     changFunc: (p0) {
                       name = p0.trim();
+                      //print("##name = ${name}");
                     },
                   ),
                   WidgetText(
@@ -78,6 +81,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   WidgetForm(
                     changFunc: (p0) {
                       lastName = p0.trim();
+                      //print("##lastname = ${lastName}");
                     },
                   ),
                   Container(
@@ -98,6 +102,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   WidgetForm(
                     changFunc: (p0) {
                       password = p0.trim();
+                      //print("##password = ${password}");
                     },
                   ),
                   WidgetText(
@@ -108,6 +113,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     obsecu: true,
                     changFunc: (p0) {
                       repassword = p0.trim();
+                      //print("##repassword = ${repassword}");
                     },
                   ),
                   Container(
@@ -155,6 +161,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   WidgetForm(
                     changFunc: (p0) {
                       answer1 = p0.trim();
+                      //print("##answer1 = ${answer1}");
                     },
                   ),
                   WidgetText(
@@ -162,10 +169,31 @@ class _CreateAccountState extends State<CreateAccount> {
                     textStyle: AppConstant().h2Style(),
                   ),
                   Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     margin: const EdgeInsets.only(top: 16, bottom: 16),
                     width: double.infinity,
                     height: 50,
                     color: AppConstant.fieldColor,
+                    child: appController.question2Models.isEmpty
+                        ? const WidgetProgress()
+                        : DropdownButton(
+                            isExpanded: true,
+                            hint: WidgetText(text: 'Please Choose Qusetion'),
+                            value: appController.chooseQuestions2.isEmpty
+                                ? null
+                                : appController.chooseQuestions2.last,
+                            items: appController.question2Models
+                                .map(
+                                  (element) => DropdownMenuItem(
+                                    child: WidgetText(text: element.ques),
+                                    value: element.ques,
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (value) {
+                              appController.chooseQuestions2.add(value!);
+                            },
+                          ),
                   ),
                   WidgetText(
                     text: 'Personal Answer  2',
@@ -174,6 +202,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   WidgetForm(
                     changFunc: (p0) {
                       answer2 = p0.trim();
+                      //print("##answer2 = ${answer2}");
                     },
                   ),
                   Divider(
@@ -182,7 +211,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
                   WidgetButtom(
                     label: 'Verify',
-                    pressFunc: () {
+                    onPressed: () {
                       if (appController.chooseSiteCode.isEmpty) {
                         AppDialog(context: context).normalDialog(
                             title: 'Site Code ?',
@@ -202,8 +231,11 @@ class _CreateAccountState extends State<CreateAccount> {
                             title: 'Question 1',
                             subTitle: 'please Choose Question 1');
                       }
-                    },
-                  )
+                      
+                    }, pressFunc: () {  },
+
+                  ),
+                 
                 ],
               ),
             );
