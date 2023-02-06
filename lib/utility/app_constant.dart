@@ -35,4 +35,14 @@ class AppConstant {
       color: color,
     );
   }
+
+  h3Style() {}
+}
+
+
+TextStyle h3Style() {
+  return AppConstant().appStyle(
+    size: 24,
+    fontWeight: FontWeight.bold,
+  );
 }

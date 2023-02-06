@@ -41,6 +41,8 @@ dependencies:
   firebase_auth: ^4.2.1
   cloud_firestore: ^4.2.0
   firebase_storage: ^11.0.8
+  file_picker: ^4.0.3
+  upi_payment_qrcode_generator: ^1.1.2
 
 dev_dependencies:
   flutter_test:
