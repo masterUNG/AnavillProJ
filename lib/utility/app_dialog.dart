@@ -17,7 +17,8 @@ class AppDialog {
         title: ListTile(
           leading: Icon(
             Icons.dangerous,
-            color: AppConstant.active,size: 72,
+            color: AppConstant.active,
+            size: 72,
           ),
           title: WidgetText(
             text: title,
@@ -28,7 +29,7 @@ class AppDialog {
         actions: [
           WidgetButtom(
             label: 'OK',
-            pressFunc: () => Get.back(), onPressed: () {  },
+            pressFunc: () => Get.back(),
           )
         ],
       ),

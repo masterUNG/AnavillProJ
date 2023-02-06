@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sharetraveyard/models/profile_model.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
+import 'package:sharetraveyard/utility/app_svervice.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_form.dart';
+import 'package:sharetraveyard/widgets/widget_icon_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_progress.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
@@ -18,7 +22,7 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   AppController controller = Get.put(AppController());
 
-  String? associateId, name, lastName, password, repassword, answer1, answer2;
+  String? associateId, password, repassword, answer1, answer2;
 
   @override
   void initState() {
@@ -32,7 +36,17 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppConstant.bgColor,
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          WidgetIconButtom(
+            iconData: Icons.verified,
+            color: AppConstant.active,
+            pressFunc: () {
+              methodVerify(controller, context);
+            },
+          )
+        ],
+      ),
       body: GetX(
           init: AppController(),
           builder: (AppController appController) {
@@ -57,33 +71,8 @@ class _CreateAccountState extends State<CreateAccount> {
                     text: 'Associate ID',
                     textStyle: AppConstant().h2Style(),
                   ),
-                  WidgetForm(
-                    textInputType: TextInputType.number,
-                    changFunc: (p0) {
-                      associateId =  p0.trim();
-                      print("##associateId = ${associateId}");
-                    },
-                  ),
-                  WidgetText(
-                    text: 'Associate Name',
-                    textStyle: AppConstant().h2Style(),
-                  ),
-                  WidgetForm(
-                    changFunc: (p0) {
-                      name = p0.trim();
-                      //print("##name = ${name}");
-                    },
-                  ),
-                  WidgetText(
-                    text: 'Associate LastName',
-                    textStyle: AppConstant().h2Style(),
-                  ),
-                  WidgetForm(
-                    changFunc: (p0) {
-                      lastName = p0.trim();
-                      //print("##lastname = ${lastName}");
-                    },
-                  ),
+                  formAssociateID(context),
+                  displayNameLastName(appController),
                   Container(
                     margin: const EdgeInsets.only(bottom: 16),
                     child: WidgetText(
@@ -100,6 +89,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     textStyle: AppConstant().h2Style(),
                   ),
                   WidgetForm(
+                    obsecu: true,
                     changFunc: (p0) {
                       password = p0.trim();
                       //print("##password = ${password}");
@@ -132,10 +122,11 @@ class _CreateAccountState extends State<CreateAccount> {
                     margin: const EdgeInsets.only(top: 16, bottom: 16),
                     width: double.infinity,
                     height: 50,
-                    color: AppConstant.fieldColor,
+                    decoration: AppConstant().curveBox(),
                     child: appController.question1Models.isEmpty
                         ? const WidgetProgress()
                         : DropdownButton(
+                            underline: const SizedBox(),
                             isExpanded: true,
                             hint: WidgetText(text: 'Please Choose Qusetion'),
                             value: appController.chooseQusetion1s.isEmpty
@@ -173,10 +164,11 @@ class _CreateAccountState extends State<CreateAccount> {
                     margin: const EdgeInsets.only(top: 16, bottom: 16),
                     width: double.infinity,
                     height: 50,
-                    color: AppConstant.fieldColor,
+                    decoration: AppConstant().curveBox(),
                     child: appController.question2Models.isEmpty
                         ? const WidgetProgress()
                         : DropdownButton(
+                            underline: const SizedBox(),
                             isExpanded: true,
                             hint: WidgetText(text: 'Please Choose Qusetion'),
                             value: appController.chooseQuestions2.isEmpty
@@ -211,36 +203,120 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
                   WidgetButtom(
                     label: 'Verify',
-                    onPressed: () {
-                      if (appController.chooseSiteCode.isEmpty) {
-                        AppDialog(context: context).normalDialog(
-                            title: 'Site Code ?',
-                            subTitle: 'Please csoose Site code');
-                      } else if ((associateId?.isEmpty ?? true) ||
-                          (name?.isEmpty ?? true) ||
-                          (lastName?.isEmpty ?? true) ||
-                          (password?.isEmpty ?? true) ||
-                          (repassword?.isEmpty ?? true) ||
-                          (answer1?.isEmpty ?? true) ||
-                          (answer2?.isEmpty ?? true)) {
-                        AppDialog(context: context).normalDialog(
-                            title: 'have space ?',
-                            subTitle: 'please fill every blank');
-                      } else if (appController.chooseQusetion1s.isEmpty) {
-                        AppDialog(context: context).normalDialog(
-                            title: 'Question 1',
-                            subTitle: 'please Choose Question 1');
-                      }
-                      
-                    }, pressFunc: () {  },
-
+                    pressFunc: () {
+                      methodVerify(appController, context);
+                    },
                   ),
-                 
                 ],
               ),
             );
           }),
     );
+  }
+
+  Widget displayNameLastName(AppController appController) {
+    return appController.assosicateModels.isEmpty
+        ? const SizedBox()
+        : Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.all(16),
+            decoration: AppConstant().curveBox(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                WidgetText(
+                  text: 'Associate Name',
+                  textStyle: AppConstant().h2Style(),
+                ),
+                WidgetText(
+                  text: appController.assosicateModels.last.name,
+                  textStyle: AppConstant()
+                      .h3Style(color: Colors.red, fontWeight: FontWeight.w700),
+                ),
+                WidgetText(
+                  text: 'Associate LastName',
+                  textStyle: AppConstant().h2Style(),
+                ),
+                WidgetText(
+                  text: appController.assosicateModels.last.lastname,
+                  textStyle: AppConstant()
+                      .h3Style(color: Colors.red, fontWeight: FontWeight.w700),
+                ),
+              ],
+            ),
+          );
+  }
+
+  WidgetForm formAssociateID(BuildContext context) {
+    return WidgetForm(
+      textInputType: TextInputType.number,
+      sufixWidget: WidgetIconButtom(
+        iconData: Icons.cloud_upload,
+        color: AppConstant.active,
+        pressFunc: () {
+          if (associateId?.isEmpty ?? true) {
+            AppDialog(context: context).normalDialog(
+                title: 'No AssociateId', subTitle: 'Plase Fill AssociateID');
+          } else {
+            AppSvervice()
+                .readAssociate(associateID: associateId!, context: context);
+          }
+        },
+      ),
+      changFunc: (p0) {
+        associateId = p0.trim();
+        print("##associateId = ${associateId}");
+      },
+    );
+  }
+
+  Future<void> methodVerify(
+      AppController appController, BuildContext context) async {
+    if (appController.chooseSiteCode.isEmpty) {
+      AppDialog(context: context).normalDialog(
+          title: 'Site Code ?', subTitle: 'Please choose Site code');
+    } else if (associateId?.isEmpty ?? true) {
+      AppDialog(context: context).normalDialog(
+          title: 'No Associate', subTitle: 'Plase Fill Associate ID');
+    } else if (appController.assosicateModels.isEmpty) {
+      AppDialog(context: context).normalDialog(
+          title: 'No Name, Surname', subTitle: 'PleaseTap Cluod Icon');
+    } else if ((password?.isEmpty ?? true) || (repassword?.isEmpty ?? true)) {
+      AppDialog(context: context).normalDialog(
+          title: 'Password, RePassword', subTitle: 'please fill password');
+    } else if (password != repassword) {
+      AppDialog(context: context).normalDialog(
+          title: 'Password Not Math',
+          subTitle: 'Password not Equire Repassword');
+    } else if (appController.chooseQusetion1s.isEmpty) {
+      AppDialog(context: context).normalDialog(
+          title: 'Question 1', subTitle: 'please Choose Question 1');
+    } else if (answer1?.isEmpty ?? true) {
+      AppDialog(context: context)
+          .normalDialog(title: 'Answer1 ?', subTitle: 'Plase Fill amnswer1');
+    } else if (appController.chooseQuestions2.isEmpty) {
+      AppDialog(context: context).normalDialog(
+          title: 'Question2 ?', subTitle: 'please Choose Question 2');
+    } else if (answer2?.isEmpty ?? true) {
+      AppDialog(context: context)
+          .normalDialog(title: 'Answer2 ?', subTitle: 'Plase Fill amnswer2');
+    } else {
+      ProfileModel profileModel = ProfileModel(
+          password: password!,
+          question1: appController.chooseQusetion1s.last,
+          answer1: answer1!,
+          question2: appController.chooseQuestions2.last,
+          answer2: answer2!);
+
+      await FirebaseFirestore.instance
+          .collection('associate')
+          .doc(associateId)
+          .collection('profile')
+          .doc()
+          .set(profileModel.toMap())
+          .then((value) => Get.back());
+    }
   }
 
   Container dropdownSitecode(AppController appController) {
@@ -249,11 +325,12 @@ class _CreateAccountState extends State<CreateAccount> {
       margin: const EdgeInsets.only(top: 16, bottom: 16),
       width: double.infinity,
       height: 50,
-      color: AppConstant.fieldColor,
+      decoration: AppConstant().curveBox(),
       child: appController.siteCodeModel.isEmpty
           ? const WidgetProgress()
           : Center(
               child: DropdownButton(
+                underline: const SizedBox(),
                 isExpanded: true,
                 hint: const WidgetText(text: 'Palease Choose Site Code'),
                 value: appController.chooseSiteCode.isEmpty
@@ -267,8 +344,19 @@ class _CreateAccountState extends State<CreateAccount> {
                       ),
                     )
                     .toList(),
-                onChanged: (value) {
+                onChanged: (value) async {
                   appController.chooseSiteCode.add(value!);
+                  await AppSvervice()
+                      .findDocIdSiteCode(content: value)
+                      .then((value) {
+                    String? docIdSiteCode = value;
+
+                    print('docIdSiteCode --- > $docIdSiteCode');
+
+                    if (docIdSiteCode != null) {
+                      appController.chooseDocIdSiteCodes.add(docIdSiteCode);
+                    }
+                  });
                 },
               ),
             ),

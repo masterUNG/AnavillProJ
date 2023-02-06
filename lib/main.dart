@@ -1,4 +1,3 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,7 +7,7 @@ import 'package:sharetraveyard/states/main_home.dart';
 import 'package:sharetraveyard/states/payment_upload.dart';
 import 'package:sharetraveyard/states/qr_code.dart';
 import 'package:sharetraveyard/states/select_round.dart';
-import 'package:sharetraveyard/states/select_site.dart'; 
+import 'package:sharetraveyard/states/select_site.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 
 Future<void> main() async {
@@ -16,8 +15,6 @@ Future<void> main() async {
   await Firebase.initializeApp().then((value) {
     runApp(MyApp());
   });
-
-  
 }
 
 class MyApp extends StatelessWidget {
@@ -26,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       //home: QrCode(),
       //home: PaymentUpload(),
       //home: SelectSite(0),

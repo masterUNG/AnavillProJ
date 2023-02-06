@@ -6,6 +6,12 @@ class AppConstant {
   static Color active = const Color.fromARGB(255, 255, 60, 46);
   static Color fieldColor = Colors.white;
 
+  BoxDecoration curveBox() => BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(),
+      );
+
   TextStyle appStyle({
     double? size,
     Color? color,
@@ -28,7 +34,7 @@ class AppConstant {
     );
   }
 
-  TextStyle h2Style({TextDecoration? textDecoration,Color? color}) {
+  TextStyle h2Style({TextDecoration? textDecoration, Color? color}) {
     return AppConstant().appStyle(
       size: 20,
       textDecoration: textDecoration,
@@ -36,13 +42,8 @@ class AppConstant {
     );
   }
 
-  h3Style() {}
-}
-
-
-TextStyle h3Style() {
-  return AppConstant().appStyle(
-    size: 24,
-    fontWeight: FontWeight.bold,
-  );
+  TextStyle h3Style({Color? color, double? size, FontWeight? fontWeight}) {
+    return AppConstant()
+        .appStyle(size: size ?? 14, fontWeight: fontWeight, color: color);
+  }
 }

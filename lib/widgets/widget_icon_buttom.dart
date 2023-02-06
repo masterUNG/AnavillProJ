@@ -1,10 +1,25 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class WidgetIconButtom extends StatelessWidget {
-  const WidgetIconButtom({super.key});
+  const WidgetIconButtom({
+    Key? key,
+    required this.iconData,
+    required this.pressFunc,
+    this.color,
+  }) : super(key: key);
+
+  final IconData iconData;
+  final Function() pressFunc;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return IconButton(
+        onPressed: pressFunc,
+        icon: Icon(
+          iconData,
+          color: color,
+        ));
   }
 }

@@ -70,7 +70,7 @@ class AuthenMobile extends StatelessWidget {
                             Column(
                               children: [
                                 TextOR(),
-                                ButtonGoogle(),
+                                //ButtonGoogle(),
                                 ButtomCreateRegister(),
                                 ButtonCreateForgetpassword()
                               ],
@@ -94,7 +94,6 @@ class AuthenMobile extends StatelessWidget {
       size: boxConstraints.maxWidth * 0.6,
       label: 'Login',
       pressFunc: () {},
-      onPressed: () {},
     );
   }
 
@@ -121,30 +120,30 @@ class AuthenMobile extends StatelessWidget {
     );
   }
 
-  Container ButtonGoogle() {
-    return Container(
-      margin: EdgeInsets.only(top: 8),
-      child: SignInButton(
-        Buttons.Google,
-        onPressed: () => processSingInWithGoogle(),
-      ),
-    );
-  }
+  // Container ButtonGoogle() {
+  //   return Container(
+  //     margin: EdgeInsets.only(top: 8),
+  //     child: SignInButton(
+  //       Buttons.Google,
+  //       onPressed: () => processSingInWithGoogle(),
+  //     ),
+  //   );
+  // }
 
-  Future<Null> processSingInWithGoogle() async {
-    GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: [
-        'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
-      ],
-    );
+  // Future<Null> processSingInWithGoogle() async {
+  //   GoogleSignIn _googleSignIn = GoogleSignIn(
+  //     scopes: [
+  //       'email',
+  //       'https://www.googleapis.com/auth/contacts.readonly',
+  //     ],
+  //   );
 
-    await Firebase.initializeApp().then(
-      (value) async {
-        await _googleSignIn.signIn().then((value) {
-          print('Login With gmail Success');
-        });
-      },
-    );
-  }
+  //   await Firebase.initializeApp().then(
+  //     (value) async {
+  //       await _googleSignIn.signIn().then((value) {
+  //         print('Login With gmail Success');
+  //       });
+  //     },
+  //   );
+  // }
 }

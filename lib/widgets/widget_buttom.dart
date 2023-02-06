@@ -9,7 +9,7 @@ class WidgetButtom extends StatelessWidget {
     Key? key,
     required this.label,
     required this.pressFunc,
-    this.size, required Null Function() onPressed,
+    this.size,
   }) : super(key: key);
 
   final String label;
@@ -18,7 +18,8 @@ class WidgetButtom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(width: size,
+    return SizedBox(
+      width: size,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: AppConstant.active),
           onPressed: pressFunc,

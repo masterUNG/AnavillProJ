@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/models/period1_model.dart';
 import 'package:sharetraveyard/models/picture_model.dart';
 import 'package:sharetraveyard/models/question2_model.dart';
@@ -11,7 +12,9 @@ class AppController extends GetxController {
   RxInt indexBody = 0.obs;
 
   RxList<SiteCodeModel> siteCodeModel = <SiteCodeModel>[].obs;
+  RxList docIdSiteCodes = <String>[].obs;
   RxList<String> chooseSiteCode = <String>[].obs;
+  RxList chooseDocIdSiteCodes = <String>[].obs;
 
   RxList<QuestionModel> question1Models = <QuestionModel>[].obs;
   RxList<String> chooseQusetion1s = <String>[].obs;
@@ -25,6 +28,8 @@ class AppController extends GetxController {
   RxList<PictureModel> pictureModels = <PictureModel>[].obs;
   RxList<String> choosePicture = <String>[].obs;
 
+  RxList assosicateModels = <AsscociateModel>[].obs;
+
   get data => null;
 
   Future<void> readPicture() async {
@@ -36,7 +41,7 @@ class AppController extends GetxController {
       for (var element in value.docs) {
         PictureModel model = PictureModel.fromMap(element.data());
         pictureModels.add(model);
-         print('## picture --> ${element.data()}');
+        print('## picture --> ${element.data()}');
       }
     });
   }
@@ -90,12 +95,14 @@ class AppController extends GetxController {
   Future<void> readSiteCode() async {
     if (siteCodeModel.isNotEmpty) {
       siteCodeModel.clear();
+      docIdSiteCodes.clear();
     }
 
     await FirebaseFirestore.instance.collection('sitecode').get().then((value) {
       for (var element in value.docs) {
         SiteCodeModel model = SiteCodeModel.fromMap(element.data());
         siteCodeModel.add(model);
+        docIdSiteCodes.add(element.id);
       }
     });
   }
