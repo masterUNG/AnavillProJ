@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/bodys/noti_body.dart';
 import 'package:sharetraveyard/bodys/profile_dody.dart';
 import 'package:sharetraveyard/bodys/shop_body.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
+import 'package:sharetraveyard/widgets/widget_icon_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
 class MainHome extends StatefulWidget {
-  
   @override
   State<MainHome> createState() => _MainHomeState();
 }
@@ -56,11 +57,24 @@ class _MainHomeState extends State<MainHome> {
         builder: (AppController appController) {
           print('## indexBody --> ${appController.indexBody}');
           return Scaffold(
-            appBar: AppBar(centerTitle: true,
+            appBar: AppBar(
+              centerTitle: true,
               title: WidgetText(
                 text: titles[appController.indexBody.value],
                 textStyle: AppConstant().h2Style(),
               ),
+              actions: [
+                WidgetIconButtom(
+                  iconData: Icons.exit_to_app,
+                  pressFunc: () async {
+                    SharedPreferences preferences =
+                        await SharedPreferences.getInstance();
+                    preferences.clear().then((value) {
+                      Get.offAllNamed('/authen');
+                    });
+                  },
+                )
+              ],
             ),
             body: bodys[appController.indexBody.value],
             bottomNavigationBar: BottomNavigationBar(

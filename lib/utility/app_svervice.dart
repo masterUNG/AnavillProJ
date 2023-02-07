@@ -3,10 +3,65 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharetraveyard/models/associate_model.dart';
+import 'package:sharetraveyard/models/iphone_model.dart';
+import 'package:sharetraveyard/models/profile_model.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
 
 class AppSvervice {
+  Future<void> readPhotoPD1() async {
+    AppController appController = Get.put(AppController());
+    if (appController.iphoneModels.isNotEmpty) {
+      appController.iphoneModels.clear();
+
+      appController.docIdPhotopd1s.clear();
+    }
+
+    await FirebaseFirestore.instance
+        .collection('photopd1')
+        .orderBy('Name')
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          IphoneModel model = IphoneModel.fromMap(element.data());
+          appController.iphoneModels.add(model);
+          appController.docIdPhotopd1s.add(element.id);
+        }
+      }
+    });
+  }
+
+  Future<void> processFindProfileModels(
+      {required String associateID, required BuildContext context}) async {
+    AppController appController = Get.put(AppController());
+    if (appController.profileModels.isNotEmpty) {
+      appController.profileModels.clear();
+
+      appController.doIdAssociates.clear();
+    }
+    await FirebaseFirestore.instance
+        .collection('associate')
+        .doc(associateID)
+        .collection('profile')
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          ProfileModel model = ProfileModel.fromMap(element.data());
+          appController.profileModels.add(model);
+
+          appController.doIdAssociates.add('associateID');
+        }
+      } else {
+        AppDialog(context: context).normalDialog(
+            title: 'User false ',
+            subTitle:
+                '$associateIDอาจจะผิด หรือ ยังไม่ได้ Create New Register');
+      }
+    });
+  }
+
   Future<String?> findDocIdSiteCode({required String content}) async {
     String? docIdSiteCode;
 
@@ -68,7 +123,7 @@ class AppSvervice {
               subTitle:
                   'Site ${appController.chooseSiteCode.last} ไม่มี ID นี้');
         }
-      }
+      } //end if
     });
   }
 }

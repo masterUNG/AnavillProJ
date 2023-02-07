@@ -1,18 +1,37 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sharetraveyard/bodys/shop_body.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/states/authen_mobile.dart';
-import 'package:sharetraveyard/states/main_home.dart';
-import 'package:sharetraveyard/states/payment_upload.dart';
-import 'package:sharetraveyard/states/qr_code.dart';
-import 'package:sharetraveyard/states/select_round.dart';
 import 'package:sharetraveyard/states/select_site.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 
+var getPage = <GetPage<dynamic>>[
+  GetPage(
+    name: '/authen',
+    page: () => const AuthenMobile(),
+  ),
+  GetPage(
+    name: '/select',
+    page: () => const SelectSite(),
+  ),
+];
+String firstState = '/authen';
+
 Future<void> main() async {
+  HttpOverrides.global = MyHttpOverride();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp().then((value) {
+  await Firebase.initializeApp().then((value) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var user = preferences.getString('user');
+    print('##8feb urer ---> $user');
+
+    if (user != null) {
+      firstState = 'select';
+    }
+
     runApp(MyApp());
   });
 }
@@ -24,13 +43,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      //home: QrCode(),
-      //home: PaymentUpload(),
-      //home: SelectSite(0),
-      //home: SelectRound(),
-      home: AuthenMobile(),
-      //home: MainHome(),
-      //home: ShopBody(),
+      getPages: getPage,
+      initialRoute: firstState,
       theme: ThemeData(
         primarySwatch: Colors.red,
         appBarTheme: AppBarTheme(
@@ -39,5 +53,13 @@ class MyApp extends StatelessWidget {
             foregroundColor: AppConstant.dark),
       ),
     );
+  }
+}
+
+class MyHttpOverride extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (cert, host, port) => true;
   }
 }

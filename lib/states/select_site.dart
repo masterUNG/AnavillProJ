@@ -7,7 +7,7 @@ import 'package:sharetraveyard/widgets/widget_progress.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
 class SelectSite extends StatefulWidget {
-  const SelectSite(period, {super.key});
+  const SelectSite({super.key});
 
   @override
   State<SelectSite> createState() => _SelectSiteState();
@@ -77,8 +77,6 @@ class _SelectSiteState extends State<SelectSite> {
                 onChanged: (value) {
                   appController.choosePeriod.add(value!);
                   Get.to(MainHome());
-
-                
                 },
               ),
             ),

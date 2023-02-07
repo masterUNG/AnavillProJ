@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:sharetraveyard/models/associate_model.dart';
+import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/models/period1_model.dart';
 import 'package:sharetraveyard/models/picture_model.dart';
+import 'package:sharetraveyard/models/profile_model.dart';
 import 'package:sharetraveyard/models/question2_model.dart';
 import 'package:sharetraveyard/models/question_model.dart';
 import 'package:sharetraveyard/models/site_code_model.dart';
@@ -29,6 +31,14 @@ class AppController extends GetxController {
   RxList<String> choosePicture = <String>[].obs;
 
   RxList assosicateModels = <AsscociateModel>[].obs;
+  RxList doIdAssociates = <String>[].obs;
+
+  RxList profileModels = <ProfileModel>[].obs;
+
+  RxList iphoneModels = <IphoneModel>[].obs;
+  RxList docIdPhotopd1s = <String>[].obs;
+
+  RxList urlImage = <String>[].obs;
 
   get data => null;
 

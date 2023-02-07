@@ -11,24 +11,22 @@ class AppDialog {
     required this.context,
   });
 
-  void normalDialog({required String title, required String subTitle}) {
+  void normalDialog({required String title, required String subTitle,Widget? actionWidget}) {
     Get.dialog(
       AlertDialog(
-        title: ListTile(
-          leading: Icon(
-            Icons.dangerous,
-            color: AppConstant.active,
-            size: 72,
-          ),
-          title: WidgetText(
-            text: title,
-            textStyle: AppConstant().h2Style(),
-          ),
-          subtitle: WidgetText(text: subTitle),
+        icon: Icon(
+          Icons.dangerous,
+          color: AppConstant.active,
+          size: 48,
         ),
-        actions: [
+        title: WidgetText(
+          text: title,
+          textStyle: AppConstant().h2Style(),
+        ),
+        content: WidgetText(text: subTitle),
+        actions: [actionWidget ?? const SizedBox(), 
           WidgetButtom(
-            label: 'OK',
+            label: actionWidget == null ? 'OK' : 'Cancel',
             pressFunc: () => Get.back(),
           )
         ],
