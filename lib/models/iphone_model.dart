@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
 class IphoneModel {
   // ignore: non_constant_identifier_names
   final String model;
@@ -9,6 +10,7 @@ class IphoneModel {
   final String serialID;
   final String capacity;
   final String grade;
+  final bool? salseFinish;
   IphoneModel({
     // ignore: non_constant_identifier_names
     required this.model,
@@ -18,6 +20,7 @@ class IphoneModel {
     required this.serialID,
     required this.capacity,
     required this.grade,
+    this.salseFinish,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,6 +32,7 @@ class IphoneModel {
       'serialID': serialID,
       'capacity': capacity,
       'grade': grade,
+      'salseFinish': salseFinish,
     };
   }
 
@@ -41,6 +45,7 @@ class IphoneModel {
       serialID: (map['serialID'] ?? '') as String,
       capacity: (map['capacity'] ?? '') as String,
       grade: (map['grade'] ?? '') as String,
+      salseFinish: map['salseFinish'] ?? false,
     );
   }
 

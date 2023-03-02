@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sharetraveyard/models/associate_model.dart';
+import 'package:sharetraveyard/utility/app_controller.dart';
+import 'package:sharetraveyard/utility/app_svervice.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
 // ignore: use_key_in_widget_constructors
@@ -9,65 +13,42 @@ class ProfileBody extends StatefulWidget {
 }
 
 class _ProfileBodyState extends State<ProfileBody> {
-  final Stream<QuerySnapshot> _usersStream =
-      FirebaseFirestore.instance
-      .collection('user')
-      .where('associcateID')
-      .snapshots();
-  
-  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    AppSvervice().findProfileUserLogin();
+  }
 
   @override
   Widget build(BuildContext context) {
-  return StreamBuilder<QuerySnapshot>(
-      stream: _usersStream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          // ignore: prefer_const_constructors
-          return Text('Something went wrong');
-        }
+    return GetX(
+        init: AppController(),
+        builder: (AppController appController) {
+          print(
+              'profileModel ----- > ${appController.profileAssocicateModels.length}');
+          return ListView(
+            children: [
+              appController.profileAssocicateModels.isEmpty
+                  ? const SizedBox()
+                  : displayProfile(asscociateModel: appController.profileAssocicateModels.last)
+            ],
+          );
+        });
+  }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // ignore: prefer_const_constructors
-          return Text("Loading");
-        }
-
-        return ListView(
-          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data =
-                document.data()! as Map<String, dynamic>;
-            return Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-               children: [
-                
-               // ignore: prefer_const_constructor
-                Center(
-                  child: Column(
-                    children: [
-                      // ignore: prefer_const_constructors
-                      Padding(padding:EdgeInsets.only(bottom: 30)),
-                      // ignore: prefer_const_constructors
-                      WidgetText(text: 'User Login'),
-                      // ignore: prefer_const_constructors
-                      Padding(padding: EdgeInsets.only(bottom: 20)),
-                      WidgetText(text: 'Assosicate ID : ${data['associcateID']}'),
-                      WidgetText(text: 'UserName : ${data['name']}'),
-                      WidgetText(text: 'LastName : ${data['lastname']}'),
-                    ],
-                  ),
-                ),
-                
-
-                
-               ],
-              ),
-            );
-          }).toList(),
-        );
-      },
+  Column displayProfile({required AsscociateModel asscociateModel}) {
+    
+    return Column(
+      children: [
+       
+        Padding(padding: EdgeInsets.only(bottom: 30)),
+        WidgetText(text: 'User Login'),
+        Padding(padding: EdgeInsets.only(bottom: 20)),
+        WidgetText(text: 'Assosicate ID : ${asscociateModel.associateID}'),
+        WidgetText(text: 'UserName : ${asscociateModel.name}'),
+        WidgetText(text: 'LastName :${asscociateModel.lastname}'),
+      ],
     );
-   
   }
 }

@@ -6,12 +6,14 @@ class AsscociateModel {
   final String lastname;
   final String docIdSiteCode;
   final String associateID;
+  final String? admin;
 
   AsscociateModel({
     required this.name,
     required this.lastname,
     required this.docIdSiteCode,
     required this.associateID,
+    this.admin,
   });
 
   Map<String, dynamic> toMap() {
@@ -19,7 +21,8 @@ class AsscociateModel {
       'name': name,
       'lastname': lastname,
       'docIdSiteCode': docIdSiteCode,
-      'associateID': docIdSiteCode,
+      'associateID': associateID,
+      'admin': admin,
     };
   }
 
@@ -29,6 +32,7 @@ class AsscociateModel {
       lastname: (map['lastname'] ?? '') as String,
       docIdSiteCode: (map['docIdSiteCode'] ?? '') as String,
       associateID: (map['associateID'] ?? '') as String,
+      admin: map['admin'] ?? '',
     );
   }
 

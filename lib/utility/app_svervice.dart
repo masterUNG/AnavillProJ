@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/models/profile_model.dart';
@@ -9,12 +9,58 @@ import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
 
 class AppSvervice {
+  Future<void> readAllAssociateId() async {
+    AppController appController = Get.put(AppController());
+    if (appController.associateIdCurrents.isNotEmpty) {
+      appController.associateIdCurrents.clear();
+    }
+    await FirebaseFirestore.instance
+        .collection('associate')
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        appController.associateIdCurrents.add(element.id);
+      }
+    });
+  }
+
+  Future<IphoneModel> findphotodp1ModelWhareDocId(
+      {required String docIdPhoto1}) async {
+    print('##2mar docIdPhoto1 $docIdPhoto1');
+    var result = await FirebaseFirestore.instance
+        .collection('photopd1')
+        .doc(docIdPhoto1)
+        .get();
+
+    IphoneModel iphoneModel = IphoneModel.fromMap(result.data()!);
+
+    print('##2mar iphone ----> ${iphoneModel.toMap()}');
+
+    return iphoneModel;
+  }
+
+  Future<void> findProfileUserLogin() async {
+    AppController appController = Get.put(AppController());
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? docId = preferences.getString('user');
+
+    await FirebaseFirestore.instance
+        .collection('associate')
+        .doc(docId)
+        .get()
+        .then((value) {
+      AsscociateModel model = AsscociateModel.fromMap(value.data()!);
+      appController.profileAssocicateModels.add(model);
+    });
+  }
+
   Future<void> readPhotoPD1() async {
     AppController appController = Get.put(AppController());
     if (appController.iphoneModels.isNotEmpty) {
       appController.iphoneModels.clear();
-
       appController.docIdPhotopd1s.clear();
+      appController.searchIphoneModels.clear();
     }
 
     await FirebaseFirestore.instance
@@ -40,6 +86,8 @@ class AppSvervice {
 
       appController.doIdAssociates.clear();
     }
+
+    print('##2mar associate ----> $associateID');
     await FirebaseFirestore.instance
         .collection('associate')
         .doc(associateID)
@@ -49,8 +97,9 @@ class AppSvervice {
       if (value.docs.isNotEmpty) {
         for (var element in value.docs) {
           ProfileModel model = ProfileModel.fromMap(element.data());
-          appController.profileModels.add(model);
 
+          print('##2mar model ---> ${model.toMap()}');
+          appController.profileModels.add(model);
           appController.doIdAssociates.add('associateID');
         }
       } else {

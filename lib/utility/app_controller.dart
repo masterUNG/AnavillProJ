@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
+import 'package:sharetraveyard/models/order_model.dart';
 import 'package:sharetraveyard/models/period1_model.dart';
 import 'package:sharetraveyard/models/picture_model.dart';
 import 'package:sharetraveyard/models/profile_model.dart';
@@ -37,8 +38,17 @@ class AppController extends GetxController {
 
   RxList iphoneModels = <IphoneModel>[].obs;
   RxList docIdPhotopd1s = <String>[].obs;
+  RxList searchIphoneModels = <IphoneModel>[].obs;
 
   RxList urlImage = <String>[].obs;
+
+  RxList<AsscociateModel> profileAssocicateModels = <AsscociateModel>[].obs;
+
+  RxList<OderModel> orderModels = <OderModel>[].obs;
+
+  RxList<IphoneModel> notiIphoneModels = <IphoneModel>[].obs;
+
+  RxList<String> associateIdCurrents = <String>[].obs;
 
   get data => null;
 
@@ -117,5 +127,3 @@ class AppController extends GetxController {
     });
   }
 }
-
-

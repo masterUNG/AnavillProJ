@@ -1,11 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/states/create_account.dart';
+import 'package:sharetraveyard/states/qurstion_forgot.dart';
 import 'package:sharetraveyard/states/select_site.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
@@ -28,6 +25,13 @@ class _AuthenMobileState extends State<AuthenMobile> {
   String? user, password;
 
   @override
+  void initState() {
+    super.initState();
+
+    AppSvervice().readAllAssociateId();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppConstant.bgColor,
@@ -37,7 +41,7 @@ class _AuthenMobileState extends State<AuthenMobile> {
               init: AppController(),
               builder: (AppController appController) {
                 print(
-                    'profileModels ---->${appController.profileModels.length}');
+                    'associate ---->${appController.associateIdCurrents.length}');
                 return GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () =>
@@ -95,7 +99,8 @@ class _AuthenMobileState extends State<AuthenMobile> {
                                         textOR(),
                                         //ButtonGoogle(),
                                         ButtomCreateRegister(),
-                                        ButtonCreateForgetpassword()
+                                        buttonCreateForgetpassword(
+                                            appController: appController)
                                       ],
                                     ),
                                   ],
@@ -136,8 +141,6 @@ class _AuthenMobileState extends State<AuthenMobile> {
                 preferences.setString('user', user!).then((value) {
                   Get.off(const SelectSite());
                 });
-
-                
               } else {
                 AppDialog(context: context).normalDialog(
                     title: 'password false', subTitle: 'plase try again');
@@ -156,10 +159,47 @@ class _AuthenMobileState extends State<AuthenMobile> {
     );
   }
 
-  WidgetTextButtom ButtonCreateForgetpassword() {
+  WidgetTextButtom buttonCreateForgetpassword(
+      {required AppController appController}) {
+    String? associateId;
     return WidgetTextButtom(
       label: 'Forgot Password',
-      pressFunc: () {},
+      pressFunc: () {
+        AppDialog(context: context).normalDialog(
+            title: 'Fill Associate ID',
+            subTitle: '',
+            contenWidget: WidgetForm(
+              changFunc: (p0) {
+                associateId = p0.trim();
+              },
+              textInputType: TextInputType.number,
+            ),
+            actionWidget: WidgetButtom(
+              label: 'Forgot',
+              pressFunc: () {
+                Get.back;
+                if (associateId?.isEmpty ?? true) {
+                  Get.snackbar(
+                    'Have Space ',
+                    'Please Fill Assocate ID',
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
+                } else {
+                  if (appController.associateIdCurrents.contains(associateId)) {
+                    Get.offAll(QuestionForgot(docIdAssociate: associateId!));
+                  } else {
+                    Get.snackbar(
+                      '$associateId False  ',
+                      'NO This Associate ID',
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                  }
+                }
+              },
+            ));
+      },
     );
   }
 

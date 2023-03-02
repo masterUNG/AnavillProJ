@@ -11,7 +11,12 @@ class AppDialog {
     required this.context,
   });
 
-  void normalDialog({required String title, required String subTitle,Widget? actionWidget}) {
+  void normalDialog({
+    required String title,
+    required String subTitle,
+    Widget? actionWidget,
+    Widget? contenWidget,
+  }) {
     Get.dialog(
       AlertDialog(
         icon: Icon(
@@ -23,8 +28,9 @@ class AppDialog {
           text: title,
           textStyle: AppConstant().h2Style(),
         ),
-        content: WidgetText(text: subTitle),
-        actions: [actionWidget ?? const SizedBox(), 
+        content: contenWidget ??  WidgetText(text: subTitle),
+        actions: [
+          actionWidget ?? const SizedBox(),
           WidgetButtom(
             label: actionWidget == null ? 'OK' : 'Cancel',
             pressFunc: () => Get.back(),
