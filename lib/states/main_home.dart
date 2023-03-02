@@ -9,6 +9,7 @@ import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/widgets/widget_icon_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
+
 class MainHome extends StatefulWidget {
   @override
   State<MainHome> createState() => _MainHomeState();
@@ -16,21 +17,22 @@ class MainHome extends StatefulWidget {
 
 class _MainHomeState extends State<MainHome> {
   var bodys = <Widget>[
-    const ShopBody(),
-    const NotiBoddy(),
-    const ProfileBody(),
+    ShopBody(),
+    NotiBoddy(),
+    ProfileBody(),
   ];
 
   var titles = <String>[
     'Shop',
-    'Notification',
+    'Noitfication',
     'My profile',
   ];
 
   var iconDatas = <IconData>[
     Icons.shopping_basket,
-    Icons.notifications,
+    Icons.notification_add,
     Icons.person_pin
+
   ];
 
   var bottomNavaItims = <BottomNavigationBarItem>[];

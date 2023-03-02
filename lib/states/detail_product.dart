@@ -25,13 +25,64 @@ class DetailProduct extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: WidgetText(
-          text: iphoneModel.Name,
+          text: iphoneModel.model,
           textStyle: AppConstant().h2Style(),
         ),
       ),
       body: Column(
         children: [
           WidgetImageNetwork(urlImage: iphoneModel.cover),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const Expanded(
+                  flex: 1,
+                  child: WidgetText(text: 'SeriaID'),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: WidgetText(
+                    text: iphoneModel.serialID.toString(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const Expanded(
+                  flex: 1,
+                  child: WidgetText(text: 'Capacity'),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: WidgetText(
+                    text: iphoneModel.capacity.toString(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+           Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const Expanded(
+                  flex: 1,
+                  child: WidgetText(text: 'Grade'),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: WidgetText(
+                    text: iphoneModel.grade.toString(),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -79,7 +130,8 @@ class DetailProduct extends StatelessWidget {
                       Get.back();
                       Get.to(
                         PaymentUpload(
-                          iphoneModel: iphoneModel, docIdPhotoPd1: docIdPhotoPd1,
+                          iphoneModel: iphoneModel,
+                          docIdPhotoPd1: docIdPhotoPd1,
                         ),
                       );
                     },

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharetraveyard/states/detail_product.dart';
@@ -20,9 +21,11 @@ class _ShopBodyState extends State<ShopBody> {
     AppSvervice().readPhotoPD1();
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       body: GetX(
           init: AppController(),
           builder: (AppController appController) {
@@ -35,8 +38,8 @@ class _ShopBodyState extends State<ShopBody> {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
-                      // mainAxisExtent: 4,
-                      // crossAxisSpacing: 4,
+                       //mainAxisExtent: 4,
+                       //crossAxisSpacing: 4,
                     ),
                     itemBuilder: (context, index) => InkWell(
                       onTap: () {
@@ -47,13 +50,14 @@ class _ShopBodyState extends State<ShopBody> {
                       },
                       child: Card(
                         child: Column(
+                           
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             WidgetImageNetwork(
                                 urlImage:
                                     appController.iphoneModels[index].cover),
                             WidgetText(
-                                text: appController.iphoneModels[index].Name),
+                                text: appController.iphoneModels[index].serialID),
                           ],
                         ),
                       ),

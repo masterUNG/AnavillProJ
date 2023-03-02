@@ -19,7 +19,7 @@ class AppSvervice {
 
     await FirebaseFirestore.instance
         .collection('photopd1')
-        .orderBy('Name')
+        .orderBy('model')
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {
