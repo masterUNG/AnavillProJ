@@ -31,9 +31,13 @@ class AppDialog {
         content: contenWidget ??  WidgetText(text: subTitle),
         actions: [
           actionWidget ?? const SizedBox(),
-          WidgetButtom(
-            label: actionWidget == null ? 'OK' : 'Cancel',
-            pressFunc: () => Get.back(),
+          Column(
+            children: [ 
+              WidgetButtom(
+                label: actionWidget == null ? 'OK' : 'Cancel',
+                pressFunc: () => Get.back(),
+              ),
+            ],
           )
         ],
       ),

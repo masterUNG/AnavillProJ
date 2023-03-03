@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/models/order_model.dart';
+import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_svervice.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
@@ -56,18 +57,27 @@ class _NotiBoddyState extends State<NotiBoddy> {
           print('##notiIphone ----->${appController.notiIphoneModels.length}');
           return (appController.orderModels.isEmpty)
               ? const SizedBox()
-              : ListView.builder(
-                  itemCount: appController.notiIphoneModels.length,
-                  itemBuilder: (context, index) => Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      WidgetText(
-                          text: appController.notiIphoneModels[index].model),
-                      WidgetText(
-                          text: appController.notiIphoneModels[index].serialID),
-                    ],
-                  ),
-                );
+              : Column(
+                children: [
+                  WidgetText(text: "Status Sales",textStyle: AppConstant().h1Style(),),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ScrollPhysics(),
+                      itemCount: appController.notiIphoneModels.length,
+                      itemBuilder: (context, index) => Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+
+                          WidgetText(text: 'Sales'),
+                          WidgetText(
+                              text: appController.notiIphoneModels[index].model),
+                          WidgetText(
+                              text: appController.notiIphoneModels[index].serialID),
+                        ],
+                      ),
+                    ),
+                ],
+              );
         });
   }
 }

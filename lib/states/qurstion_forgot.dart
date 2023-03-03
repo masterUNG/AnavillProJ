@@ -98,11 +98,15 @@ class _QuestionForgotState extends State<QuestionForgot> {
                                 title: 'password',
                                 subTitle:
                                     appController.profileModels.last.password,
-                                actionWidget: WidgetButtom(
-                                  label: 'Authen',
-                                  pressFunc: () {
-                                    Get.offAll(const AuthenMobile());
-                                  },
+                                actionWidget: Column(
+                                  children: [
+                                    WidgetButtom(
+                                      label: 'Authen',
+                                      pressFunc: () {
+                                        Get.offAll(const AuthenMobile());
+                                      },
+                                    ),
+                                  ],
                                 ));
                           }
                         },

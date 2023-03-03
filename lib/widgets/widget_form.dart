@@ -10,18 +10,20 @@ class WidgetForm extends StatelessWidget {
     required this.changFunc,
     this.textInputType,
     this.sufixWidget,
+    this.margin,
   }) : super(key: key);
 
   final bool? obsecu;
   final Function(String) changFunc;
   final TextInputType? textInputType;
   final Widget? sufixWidget;
+  final EdgeInsetsGeometry? margin;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 40,
-      margin: const EdgeInsets.only(top: 8, bottom: 24),
+      margin: margin ?? EdgeInsets.only(top: 8, bottom: 24),
       child: TextFormField(
         keyboardType: textInputType,
         onChanged: changFunc,

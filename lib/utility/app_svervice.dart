@@ -9,6 +9,24 @@ import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
 
 class AppSvervice {
+  Future<void> readAllAssociate() async {
+    AppController appController = Get.put(AppController());
+    if (appController.assosicateModels.isNotEmpty) {
+      appController.assosicateModels.clear();
+    }
+
+    await FirebaseFirestore.instance
+        .collection('associate')
+        .get()
+        .then((value) {
+          for (var element in value.docs) {
+            AsscociateModel model = AsscociateModel.fromMap(element.data());
+            appController.assosicateModels.add(model);
+            
+          }
+        }); 
+  }
+
   Future<void> readAllAssociateId() async {
     AppController appController = Get.put(AppController());
     if (appController.associateIdCurrents.isNotEmpty) {

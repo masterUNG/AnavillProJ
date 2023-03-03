@@ -174,30 +174,34 @@ class _AuthenMobileState extends State<AuthenMobile> {
               },
               textInputType: TextInputType.number,
             ),
-            actionWidget: WidgetButtom(
-              label: 'Forgot',
-              pressFunc: () {
-                Get.back;
-                if (associateId?.isEmpty ?? true) {
-                  Get.snackbar(
-                    'Have Space ',
-                    'Please Fill Assocate ID',
-                    backgroundColor: Colors.red,
-                    colorText: Colors.white,
-                  );
-                } else {
-                  if (appController.associateIdCurrents.contains(associateId)) {
-                    Get.offAll(QuestionForgot(docIdAssociate: associateId!));
-                  } else {
-                    Get.snackbar(
-                      '$associateId False  ',
-                      'NO This Associate ID',
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white,
-                    );
-                  }
-                }
-              },
+            actionWidget: Column(
+              children: [
+                WidgetButtom(
+                  label: 'Forgot',
+                  pressFunc: () {
+                    Get.back;
+                    if (associateId?.isEmpty ?? true) {
+                      Get.snackbar(
+                        'Have Space ',
+                        'Please Fill Assocate ID',
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                      );
+                    } else {
+                      if (appController.associateIdCurrents.contains(associateId)) {
+                        Get.offAll(QuestionForgot(docIdAssociate: associateId!));
+                      } else {
+                        Get.snackbar(
+                          '$associateId False  ',
+                          'NO This Associate ID',
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                        );
+                      }
+                    }
+                  },
+                ),
+              ],
             ));
       },
     );

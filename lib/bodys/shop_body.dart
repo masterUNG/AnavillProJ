@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
-
 import 'package:sharetraveyard/states/detail_product.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
@@ -52,8 +51,9 @@ class _ShopBodyState extends State<ShopBody> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          
                           SizedBox(
-                            width: 250,
+                            width: 350,
                             child: WidgetForm(
                               changFunc: (p0) {
                                 debouncer.run(() {
@@ -80,6 +80,8 @@ class _ShopBodyState extends State<ShopBody> {
                                 });
                               },
                               sufixWidget: const Icon(Icons.search),
+                              
+                              
                             ),
                           ),
                         ],
