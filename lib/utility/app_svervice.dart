@@ -19,12 +19,11 @@ class AppSvervice {
         .collection('associate')
         .get()
         .then((value) {
-          for (var element in value.docs) {
-            AsscociateModel model = AsscociateModel.fromMap(element.data());
-            appController.assosicateModels.add(model);
-            
-          }
-        }); 
+      for (var element in value.docs) {
+        AsscociateModel model = AsscociateModel.fromMap(element.data());
+        appController.assosicateModels.add(model);
+      }
+    });
   }
 
   Future<void> readAllAssociateId() async {
@@ -46,7 +45,7 @@ class AppSvervice {
       {required String docIdPhoto1}) async {
     print('##2mar docIdPhoto1 $docIdPhoto1');
     var result = await FirebaseFirestore.instance
-        .collection('photopd1')
+        .collection('product1')
         .doc(docIdPhoto1)
         .get();
 
@@ -73,7 +72,7 @@ class AppSvervice {
     });
   }
 
-  Future<void> readPhotoPD1() async {
+  Future<void> readPhotoPD1({required String nameCollection}) async {
     AppController appController = Get.put(AppController());
     if (appController.iphoneModels.isNotEmpty) {
       appController.iphoneModels.clear();
@@ -81,8 +80,12 @@ class AppSvervice {
       appController.searchIphoneModels.clear();
     }
 
+    print(
+        '##mar8 @@@@readPhotoPD1 displaySiteCode ---->${appController.displaySiteCode}');
+
+    
     await FirebaseFirestore.instance
-        .collection('photopd1')
+        .collection(nameCollection)
         .orderBy('model')
         .get()
         .then((value) {

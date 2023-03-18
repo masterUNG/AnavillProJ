@@ -50,6 +50,8 @@ class AppController extends GetxController {
 
   RxList<String> associateIdCurrents = <String>[].obs;
 
+  RxString displaySiteCode = ''.obs;
+
   get data => null;
 
   Future<void> readPicture() async {

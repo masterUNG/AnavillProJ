@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharetraveyard/models/associate_model.dart';
+import 'package:sharetraveyard/models/site_code_model.dart';
 import 'package:sharetraveyard/states/main_home.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
+import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_progress.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
@@ -21,6 +26,32 @@ class _SelectSiteState extends State<SelectSite> {
     super.initState();
     controller.readSiteCode();
     controller.readPeriod();
+    findUserLogin();
+  }
+
+  Future<void> findUserLogin() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? user = preferences.getString('user');
+    print('findUserLogin --> $user');
+
+    await FirebaseFirestore.instance
+        .collection('associate')
+        .doc(user)
+        .get()
+        .then((value) async {
+      AsscociateModel asscociateModel = AsscociateModel.fromMap(value.data()!);
+      String docIdSiteCode = asscociateModel.docIdSiteCode;
+      print('docIdSiteCode ---> $docIdSiteCode');
+      await FirebaseFirestore.instance
+          .collection('sitecode')
+          .doc(docIdSiteCode)
+          .get()
+          .then((value) {
+        SiteCodeModel siteCodeModel = SiteCodeModel.fromMap(value.data()!);
+        print('siteCodeModel ---->${siteCodeModel.toMap()}');
+        controller.displaySiteCode.value = siteCodeModel.name;
+      });
+    });
   }
 
   @override
@@ -39,15 +70,31 @@ class _SelectSiteState extends State<SelectSite> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     sitecode(),
-                    dropdown(appController),
-                    period1(),
-                    dropdownperiod(appController),
+                    appController.displaySiteCode.isEmpty
+                        ? const SizedBox()
+                        : WidgetText(
+                            text: appController.displaySiteCode.value,
+                            textStyle: AppConstant().h2Style(),
+                          ),
+
+                    // dropdown(appController),
+                    //period1(),
+                    //dropdownperiod(appController),
+                    clickbuttomGoToShop()
+                    
                   ],
                 ),
               ),
             );
           }),
     );
+  }
+
+  WidgetButtom clickbuttomGoToShop() {
+    return WidgetButtom(label: 'Go to Shop', pressFunc:() {
+                     Get.to(MainHome());
+                    
+                  },);
   }
 
   Container dropdownperiod(AppController appController) {
@@ -62,7 +109,7 @@ class _SelectSiteState extends State<SelectSite> {
           : Center(
               child: DropdownButton(
                 isExpanded: true,
-                hint: WidgetText(text: 'Palease Choose Site Code'),
+                hint: WidgetText(text: 'Palease Choose number'),
                 value: appController.choosePeriod.isEmpty
                     ? null
                     : appController.choosePeriod.last,
@@ -87,9 +134,9 @@ class _SelectSiteState extends State<SelectSite> {
     return Container(
       margin: const EdgeInsets.only(left: 24, right: 24, top: 60, bottom: 20),
       child: WidgetText(
-        text: 'Period',
+        text: '!!! Click !!!',
         textStyle:
-            AppConstant().appStyle(size: 50, fontWeight: FontWeight.bold),
+            AppConstant().appStyle(size: 30, fontWeight: FontWeight.bold),
       ),
     );
   }

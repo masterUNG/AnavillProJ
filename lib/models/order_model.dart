@@ -8,6 +8,9 @@ class OderModel {
   final String docPhotopd1;
   final String urlSlip;
   final Timestamp timestamp;
+  
+  
+  
   OderModel({
     required this.docIdAssociate,
     required this.docPhotopd1,
@@ -30,6 +33,7 @@ class OderModel {
       docPhotopd1: (map['docPhotopd1'] ?? '') as String,
       urlSlip: (map['urlSlip'] ?? '') as String,
       timestamp: map['timestamp'],
+      //timestamp: map['timestamp'],
     );
   }
 

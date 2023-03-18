@@ -25,11 +25,27 @@ class _ShopBodyState extends State<ShopBody> {
   AppController controller = Get.put(AppController());
 
   var searchIphoneModels = <IphoneModel>[];
+  String nameCollection = 'PCH-KhonKaen';
 
   @override
   void initState() {
     super.initState();
-    AppSvervice().readPhotoPD1().then((value) {
+
+    switch (controller.displaySiteCode.value) {
+      case 'PCH-KhonKaen':
+        nameCollection = 'product1';
+        break;
+      case 'PCH-ChiangMai':
+        nameCollection = 'product2';
+        break;
+      case 'PCH-Bangkok':
+        nameCollection = 'product3';
+        break;
+      default:
+    }
+    print('##mar8 nameCollection---->${nameCollection}');
+
+    AppSvervice().readPhotoPD1(nameCollection: nameCollection).then((value) {
       for (var element in controller.iphoneModels) {
         searchIphoneModels.add(element);
       }
@@ -51,7 +67,6 @@ class _ShopBodyState extends State<ShopBody> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          
                           SizedBox(
                             width: 350,
                             child: WidgetForm(
@@ -80,8 +95,6 @@ class _ShopBodyState extends State<ShopBody> {
                                 });
                               },
                               sufixWidget: const Icon(Icons.search),
-                              
-                              
                             ),
                           ),
                         ],
@@ -99,7 +112,7 @@ class _ShopBodyState extends State<ShopBody> {
                         itemBuilder: (context, index) => InkWell(
                           onTap: () async {
                             await FirebaseFirestore.instance
-                                .collection('photopd1')
+                                .collection(nameCollection)
                                 .where('serialID',
                                     isEqualTo:
                                         searchIphoneModels[index].serialID)
@@ -110,6 +123,7 @@ class _ShopBodyState extends State<ShopBody> {
 
                                 if (!(searchIphoneModels[index].salseFinish!)) {
                                   Get.to(DetailProduct(
+                                    
                                     iphoneModel: searchIphoneModels[index],
                                     docIdPhotoPd1: docIdPhotopd1,
                                   ));

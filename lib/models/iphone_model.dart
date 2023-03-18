@@ -13,6 +13,7 @@ class IphoneModel {
   final bool? salseFinish;
   IphoneModel({
     // ignore: non_constant_identifier_names
+    
     required this.model,
     required this.cover,
     required this.price,
