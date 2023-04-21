@@ -18,11 +18,27 @@ class NotiBoddy extends StatefulWidget {
 
 class _NotiBoddyState extends State<NotiBoddy> {
   AppController controller = Get.put(AppController());
+  
+  String? nameCollection;
 
   @override
   void initState() {
     super.initState();
     findMyOrder();
+
+  switch (controller.displaySiteCode.value) {
+      case 'PCH-KhonKaen':
+        nameCollection = 'product1';
+        break;
+      case 'PCH-ChiangMai':
+        nameCollection = 'product2';
+        break;
+      case 'PCH-Bangkok':
+        nameCollection = 'product3';
+        break;
+      default:
+    }
+
   }
 
   Future<void> findMyOrder() async {
@@ -44,7 +60,7 @@ class _NotiBoddyState extends State<NotiBoddy> {
         OderModel model = OderModel.fromMap(element.data());
         controller.orderModels.add(model);
         IphoneModel iphoneModel = await AppSvervice()
-            .findphotodp1ModelWhareDocId(docIdPhoto1: model.docPhotopd1);
+            .findphotodp1ModelWhareDocId(docIdPhoto1: model.docPhotopd1, collectionProduct: nameCollection!);
         controller.notiIphoneModels.add(iphoneModel);
       }
     });

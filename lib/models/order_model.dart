@@ -8,14 +8,18 @@ class OderModel {
   final String docPhotopd1;
   final String urlSlip;
   final Timestamp timestamp;
-  
-  
-  
+  final bool? salseFinish;
+  final String? collectionProduct;
+  final String price;
+
   OderModel({
     required this.docIdAssociate,
     required this.docPhotopd1,
     required this.urlSlip,
     required this.timestamp,
+    this.salseFinish,
+    this.collectionProduct,
+    required this.price,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,6 +28,9 @@ class OderModel {
       'docPhotopd1': docPhotopd1,
       'urlSlip': urlSlip,
       'timestamp': timestamp,
+      'salseFinish': salseFinish,
+      'collectionProduct': collectionProduct,
+      'price': price,
     };
   }
 
@@ -32,12 +39,17 @@ class OderModel {
       docIdAssociate: (map['docIdAssociate'] ?? '') as String,
       docPhotopd1: (map['docPhotopd1'] ?? '') as String,
       urlSlip: (map['urlSlip'] ?? '') as String,
-      timestamp: map['timestamp'],
-      //timestamp: map['timestamp'],
+      timestamp: (map['timestamp']),
+      salseFinish: map['salseFinish'] != null ? map['salseFinish'] as bool : null,
+      collectionProduct: map['collectionProduct'] != null ? map['collectionProduct'] as String : null,
+      price: (map['price'] ?? '') as String,
     );
   }
-
+// timestamp: (map['timestamp'] ),
+// salseFinish: map['salseFinish'] ?? false,
+// collectiomProduct: map['collectiomProduct'] ?? 'product1',
   String toJson() => json.encode(toMap());
 
-  factory OderModel.fromJson(String source) => OderModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory OderModel.fromJson(String source) =>
+      OderModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

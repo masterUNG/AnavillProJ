@@ -25,20 +25,23 @@ class _ShopBodyState extends State<ShopBody> {
   AppController controller = Get.put(AppController());
 
   var searchIphoneModels = <IphoneModel>[];
-  String nameCollection = 'PCH-KhonKaen';
+  String nameCollection = 'product2';
 
   @override
   void initState() {
     super.initState();
 
     switch (controller.displaySiteCode.value) {
-      case 'PCH-KhonKaen':
+      case 'PCH-Sriracha':
+       //user: sriracha password :sc123456
         nameCollection = 'product1';
         break;
-      case 'PCH-ChiangMai':
+      case 'PCH-PackChong':
+      //user: packchong password :pc123456
         nameCollection = 'product2';
         break;
       case 'PCH-Bangkok':
+       //user: bangkok password : bk123456
         nameCollection = 'product3';
         break;
       default:
@@ -125,7 +128,7 @@ class _ShopBodyState extends State<ShopBody> {
                                   Get.to(DetailProduct(
                                     
                                     iphoneModel: searchIphoneModels[index],
-                                    docIdPhotoPd1: docIdPhotopd1,
+                                    docIdPhotoPd1: docIdPhotopd1, collectionProduct: nameCollection,
                                   ));
                                 }
                               }

@@ -42,10 +42,10 @@ class AppSvervice {
   }
 
   Future<IphoneModel> findphotodp1ModelWhareDocId(
-      {required String docIdPhoto1}) async {
+      {required String docIdPhoto1,required String collectionProduct}) async {
     print('##2mar docIdPhoto1 $docIdPhoto1');
     var result = await FirebaseFirestore.instance
-        .collection('product1')
+        .collection(collectionProduct)
         .doc(docIdPhoto1)
         .get();
 
@@ -83,7 +83,6 @@ class AppSvervice {
     print(
         '##mar8 @@@@readPhotoPD1 displaySiteCode ---->${appController.displaySiteCode}');
 
-    
     await FirebaseFirestore.instance
         .collection(nameCollection)
         .orderBy('model')
@@ -92,8 +91,11 @@ class AppSvervice {
       if (value.docs.isNotEmpty) {
         for (var element in value.docs) {
           IphoneModel model = IphoneModel.fromMap(element.data());
-          appController.iphoneModels.add(model);
-          appController.docIdPhotopd1s.add(element.id);
+
+          if (!(model.reserve!)) {
+            appController.iphoneModels.add(model);
+            appController.docIdPhotopd1s.add(element.id);
+          }
         }
       }
     });

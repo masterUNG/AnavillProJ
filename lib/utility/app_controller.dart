@@ -52,6 +52,8 @@ class AppController extends GetxController {
 
   RxString displaySiteCode = ''.obs;
 
+ RxList price = <String>[].obs;
+
   get data => null;
 
   Future<void> readPicture() async {

@@ -11,9 +11,9 @@ class IphoneModel {
   final String capacity;
   final String grade;
   final bool? salseFinish;
+  final bool? reserve;
   IphoneModel({
     // ignore: non_constant_identifier_names
-    
     required this.model,
     required this.cover,
     required this.price,
@@ -22,6 +22,7 @@ class IphoneModel {
     required this.capacity,
     required this.grade,
     this.salseFinish,
+    this.reserve,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,6 +35,7 @@ class IphoneModel {
       'capacity': capacity,
       'grade': grade,
       'salseFinish': salseFinish,
+      'reserve': reserve,
     };
   }
 
@@ -47,6 +49,7 @@ class IphoneModel {
       capacity: (map['capacity'] ?? '') as String,
       grade: (map['grade'] ?? '') as String,
       salseFinish: map['salseFinish'] ?? false,
+      reserve: map['reserve']  ?? false,
     );
   }
 

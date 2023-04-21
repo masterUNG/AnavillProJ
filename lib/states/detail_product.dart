@@ -15,10 +15,12 @@ class DetailProduct extends StatelessWidget {
     Key? key,
     required this.iphoneModel,
     required this.docIdPhotoPd1,
+    required this.collectionProduct,
   }) : super(key: key);
 
   final IphoneModel iphoneModel;
   final String docIdPhotoPd1;
+  final String collectionProduct;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,7 @@ class DetailProduct extends StatelessWidget {
               ],
             ),
           ),
-           Padding(
+          Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
@@ -123,7 +125,7 @@ class DetailProduct extends StatelessWidget {
               AppDialog(context: context).normalDialog(
                   title: 'Buy Sure ?',
                   subTitle:
-                      'คุณต้องโอนเงินจำนวน ${iphoneModel.price} บาท ไปที่ ธนาคาร 419-2323-2323 และ upload slip',
+                      'คุณต้องโอนเงินจำนวน ${iphoneModel.price} บาท ไปที่ ธนาคาร และ upload slip',
                   actionWidget: WidgetButtom(
                     label: 'upload Slip',
                     pressFunc: () {
@@ -131,7 +133,7 @@ class DetailProduct extends StatelessWidget {
                       Get.to(
                         PaymentUpload(
                           iphoneModel: iphoneModel,
-                          docIdPhotoPd1: docIdPhotoPd1,
+                          docIdPhotoPd1: docIdPhotoPd1, collectionProduct: collectionProduct,
                         ),
                       );
                     },
