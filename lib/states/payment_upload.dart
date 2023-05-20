@@ -1,7 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
@@ -12,7 +14,7 @@ import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_storage_service.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
-
+import 'package:image_picker/image_picker.dart';
 
 class PaymentUpload extends StatefulWidget {
   const PaymentUpload({
@@ -31,6 +33,18 @@ class PaymentUpload extends StatefulWidget {
 
 class _PaymentUploadState extends State<PaymentUpload> {
   String? urlGetOR;
+  File? image;
+  Future picker() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+    } on PlatformException catch (e) {
+      print('Failed to pick  image $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +130,6 @@ class _PaymentUploadState extends State<PaymentUpload> {
                                   collectionProduct: widget.collectionProduct,
                                   timestamp: Timestamp.fromDate(DateTime.now()),
                                   price: widget.iphoneModel.price.toString());
-                                  
 
                               print(
                                   '##8feb OderModel ---> ${oderModel.toMap()}');
