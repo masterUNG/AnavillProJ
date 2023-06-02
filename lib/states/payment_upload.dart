@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -15,6 +14,7 @@ import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_storage_service.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 
 class PaymentUpload extends StatefulWidget {
   const PaymentUpload({
@@ -30,13 +30,15 @@ class PaymentUpload extends StatefulWidget {
   @override
   State<PaymentUpload> createState() => _PaymentUploadState();
 }
+
 class _PaymentUploadState extends State<PaymentUpload> {
   String? urlGetOR;
   File? image;
 
   Future<void> picker() async {
     try {
-      final XFile? pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final XFile? pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedImage == null) return;
 
       final imageTemporary = File(pickedImage.path);
@@ -74,7 +76,7 @@ class _PaymentUploadState extends State<PaymentUpload> {
                     children: [
                       Center(
                         child: WidgetText(
-                            text: 'Please Transfer to SCB : 4194821427'),
+                            text: 'Please Transfer to SCB : 000-000-000'),
                       ),
                     ],
                   ),
@@ -86,7 +88,7 @@ class _PaymentUploadState extends State<PaymentUpload> {
                       Center(
                         child: WidgetText(
                           text:
-                              'Total amount to be paid: ${widget.iphoneModel.price}',
+                              'Total amount to be price : ${widget.iphoneModel.price}',
                         ),
                       ),
                     ],
@@ -98,31 +100,28 @@ class _PaymentUploadState extends State<PaymentUpload> {
                       WidgetButtom(
                         label: 'Upload Payment',
                         pressFunc: () async {
-                          await picker(); // Await the completion of the picker function
 
-                          final results = await FilePicker.platform.pickFiles(
-                            allowMultiple: false,
-                            type: FileType.custom,
-                           
-                          );
+                          var result = await ImagePicker().pickImage(
+                              source: ImageSource.gallery,
+                              maxWidth: 800,
+                              maxHeight: 800);
 
-                          if (results == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('No file selected'),
-                              ),
-                            );
-                            return;
-                          }
+                          File file = File(result!.path);
 
-                          final path = results.files.single.path!;
-                          final fileName = results.files.single.name;
+                          final path = result.path;
+                          final fileName = basename(file.path);
+
+                          //final path = results.files.single.path!;
+                          //final fileName = results.files.single.name;
 
                           print(path);
                           print(fileName);
 
                           await storage
-                              .uploadFile(path, fileName, )
+                              .uploadFile(
+                            path,
+                            fileName,
+                          )
                               .then((_) async {
                             SharedPreferences preferences =
                                 await SharedPreferences.getInstance();
