@@ -10,7 +10,7 @@ class Storage {
 
   Future<void> uploadFile(
     String filePath,
-    String fileName,
+    String fileName, 
   ) async {
     AppController appController = Get.put(AppController());
 
@@ -45,3 +45,5 @@ class Storage {
     return result;
   }
 }
+
+
