@@ -18,7 +18,7 @@ class NotiBoddy extends StatefulWidget {
 
 class _NotiBoddyState extends State<NotiBoddy> {
   AppController controller = Get.put(AppController());
-  
+
   String? nameCollection;
 
   @override
@@ -26,7 +26,7 @@ class _NotiBoddyState extends State<NotiBoddy> {
     super.initState();
     findMyOrder();
 
-  switch (controller.displaySiteCode.value) {
+    switch (controller.displaySiteCode.value) {
       case 'PCH-KhonKaen':
         nameCollection = 'product1';
         break;
@@ -36,12 +36,11 @@ class _NotiBoddyState extends State<NotiBoddy> {
       case 'PCH-Bangkok':
         nameCollection = 'product3';
         break;
-       case 'PCH-Hanoi':
+      case 'PCH-Hanoi':
         nameCollection = 'product4';
         break;
       default:
     }
-
   }
 
   Future<void> findMyOrder() async {
@@ -63,8 +62,11 @@ class _NotiBoddyState extends State<NotiBoddy> {
         OderModel model = OderModel.fromMap(element.data());
         controller.orderModels.add(model);
         IphoneModel iphoneModel = await AppSvervice()
-            .findphotodp1ModelWhareDocId(docIdPhoto1: model.docPhotopd1, collectionProduct: nameCollection!);
+            .findphotodp1ModelWhareDocId(
+                docIdPhoto1: model.docPhotopd1,
+                collectionProduct: nameCollection!);
         controller.notiIphoneModels.add(iphoneModel);
+        
       }
     });
   }
@@ -76,27 +78,36 @@ class _NotiBoddyState extends State<NotiBoddy> {
           print('##notiIphone ----->${appController.notiIphoneModels.length}');
           return (appController.orderModels.isEmpty)
               ? const SizedBox()
-              : Column(
-                children: [
-                  WidgetText(text: "Status Sales",textStyle: AppConstant().h1Style(),),
-                  ListView.builder(
+              : ListView(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        WidgetText(
+                          text: "Status Sales",
+                          textStyle: AppConstant().h1Style(),
+                        ),
+                      ],
+                    ),
+                    ListView.builder(
                       shrinkWrap: true,
                       physics: const ScrollPhysics(),
                       itemCount: appController.notiIphoneModels.length,
                       itemBuilder: (context, index) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-
                           WidgetText(text: 'Sales'),
                           WidgetText(
-                              text: appController.notiIphoneModels[index].model),
+                              text:
+                                  appController.notiIphoneModels[index].model),
                           WidgetText(
-                              text: appController.notiIphoneModels[index].serialID),
+                              text: appController
+                                  .notiIphoneModels[index].serialID),
                         ],
                       ),
                     ),
-                ],
-              );
+                  ],
+                );
         });
   }
 }

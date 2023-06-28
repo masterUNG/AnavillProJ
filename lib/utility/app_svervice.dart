@@ -9,6 +9,20 @@ import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
 
 class AppSvervice {
+  AppController appController = Get.put(AppController());
+
+  Future<void> processEditProfile(
+      {required String docIdProfile,
+      required Map<String, dynamic> map,
+      required String docIdAssociate}) async {
+    FirebaseFirestore.instance
+        .collection('associate')
+        .doc(docIdAssociate)
+        .collection('profile')
+        .doc(docIdProfile)
+        .update(map);
+  }
+
   Future<void> readAllAssociate() async {
     AppController appController = Get.put(AppController());
     if (appController.assosicateModels.isNotEmpty) {
@@ -42,7 +56,7 @@ class AppSvervice {
   }
 
   Future<IphoneModel> findphotodp1ModelWhareDocId(
-      {required String docIdPhoto1,required String collectionProduct}) async {
+      {required String docIdPhoto1, required String collectionProduct}) async {
     print('##2mar docIdPhoto1 $docIdPhoto1');
     var result = await FirebaseFirestore.instance
         .collection(collectionProduct)
@@ -124,6 +138,7 @@ class AppSvervice {
           print('##2mar model ---> ${model.toMap()}');
           appController.profileModels.add(model);
           appController.doIdAssociates.add('associateID');
+          appController.docIdProfiles.add(element.id);
         }
       } else {
         AppDialog(context: context).normalDialog(

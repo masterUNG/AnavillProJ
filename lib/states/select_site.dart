@@ -1,7 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/models/site_code_model.dart';
 import 'package:sharetraveyard/states/main_home.dart';
@@ -12,7 +14,12 @@ import 'package:sharetraveyard/widgets/widget_progress.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
 class SelectSite extends StatefulWidget {
-  const SelectSite({super.key});
+  const SelectSite({
+    Key? key,
+    this.assoiate,
+  }) : super(key: key);
+
+  final String? assoiate;
 
   @override
   State<SelectSite> createState() => _SelectSiteState();
@@ -20,18 +27,20 @@ class SelectSite extends StatefulWidget {
 
 class _SelectSiteState extends State<SelectSite> {
   AppController controller = Get.put(AppController());
+  String? user;
 
   @override
   void initState() {
     super.initState();
     controller.readSiteCode();
-    controller.readPeriod();
-    findUserLogin();
+    findUserLogin().then((value) {
+      controller.readPeriod(assoiate: widget.assoiate ?? user!);
+    });
   }
 
   Future<void> findUserLogin() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? user = preferences.getString('user');
+    user = preferences.getString('user');
     print('findUserLogin --> $user');
 
     await FirebaseFirestore.instance
@@ -61,8 +70,8 @@ class _SelectSiteState extends State<SelectSite> {
       body: GetX(
           init: AppController(),
           builder: (AppController appController) {
-            print('## pperiod --> ${appController.periodModels}');
-            print('## Sitecode --> ${appController.siteCodeModel}');
+            print('## pperiod --> ${appController.periodModels.length}');
+            print('## Sitecode --> ${appController.siteCodeModel.length}');
 
             return SafeArea(
               child: Center(
@@ -80,7 +89,21 @@ class _SelectSiteState extends State<SelectSite> {
                     //dropdown(appController),
                     //period1(),
                     //dropdownperiod(appController),
-                    clickbuttomGoToShop()
+                    clickbuttomGoToShop(),
+
+                    appController.periodModels.isEmpty
+                        ? const SizedBox()
+                        : WidgetText(
+                            text:
+                                'Period : ${appController.periodModels.last.periodsale}'),
+
+
+                    
+                    appController.periodModels.isEmpty
+                        ? const SizedBox()
+                        : WidgetText(
+                            text:
+                                'Salse Day : ${appController.periodModels.last.saleday}'),
                   ],
                 ),
               ),

@@ -7,12 +7,14 @@ class ProfileModel {
   final String answer1;
   final String question2;
   final String answer2;
+  final bool? approve;
   ProfileModel({
     required this.password,
     required this.question1,
     required this.answer1,
     required this.question2,
     required this.answer2,
+    this.approve,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,6 +24,7 @@ class ProfileModel {
       'answer1': answer1,
       'question2': question2,
       'answer2': answer2,
+      'approve': approve,
     };
   }
 
@@ -32,6 +35,7 @@ class ProfileModel {
       answer1: (map['answer1'] ?? '') as String,
       question2: (map['question2'] ?? '') as String,
       answer2: (map['answer2'] ?? '') as String,
+      approve: map['approve'] ?? true,
     );
   }
 

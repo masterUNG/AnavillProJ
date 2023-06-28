@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppConstant {
+  static int timePasswordFalse = 5;
   static Color bgColor = Colors.yellow;
   static Color dark = Colors.black;
   static Color active = const Color.fromARGB(255, 255, 60, 46);

@@ -44,7 +44,6 @@ class _ShopBodyState extends State<ShopBody> {
         nameCollection = 'product3';
         break;
       case 'PCH-Hanoi':
-       //user: bangkok password : bk123456
         nameCollection = 'product4';
         break;
       default:

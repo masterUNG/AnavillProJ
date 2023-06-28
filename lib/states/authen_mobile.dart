@@ -24,6 +24,8 @@ class AuthenMobile extends StatefulWidget {
 class _AuthenMobileState extends State<AuthenMobile> {
   String? user, password;
 
+  int i = 1;
+
   @override
   void initState() {
     super.initState();
@@ -133,18 +135,58 @@ class _AuthenMobileState extends State<AuthenMobile> {
               .processFindProfileModels(associateID: user!, context: context)
               .then((value) async {
             if (appController.profileModels.isNotEmpty) {
-              if (password == appController.profileModels.last.password) {
-                //password true
 
-                SharedPreferences preferences =
-                    await SharedPreferences.getInstance();
-                preferences.setString('user', user!).then((value) {
-                  Get.off(const SelectSite());
-                });
+              if (appController.profileModels.last.approve) {
+
+              int timesPasswordFalse = AppConstant.timePasswordFalse;
+
+                if (password == appController.profileModels.last.password) {
+                  //password true
+
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+                  preferences.setString('user', user!).then((value) {
+                    Get.off(SelectSite(assoiate: user!,));
+                  });
+                } else {
+                  if (i <= timesPasswordFalse) {
+                    AppDialog(context: context).normalDialog(
+                        title: 'password false ครั้งที่ $i',
+                        subTitle: 'plase try again');
+                  } else {
+                    Map<String, dynamic> map =
+                        appController.profileModels.last.toMap();
+                    print('##28june map before at authen mobile--> $map');
+                    map['approve'] = false;
+                    print('##28june map after at authen mobile--> $map');
+                    print(
+                        '##28june docIdProfiles --->${appController.docIdProfiles.last}');
+
+                    AppSvervice()
+                        .processEditProfile(
+                            docIdProfile: appController.docIdProfiles.last,
+                            map: map,
+                            docIdAssociate: user!)
+                        .then((value) {
+                      AppDialog(context: context).normalDialog(
+                          title: ' Wrong Password more than  5 times',
+                          subTitle: 'Plase Contact admin unlock password ');
+                    });
+                  }
+
+                  i++;
+                }
+                
               } else {
                 AppDialog(context: context).normalDialog(
-                    title: 'password false', subTitle: 'plase try again');
+                    title: ' Wrong Password more than  5 times',
+                    subTitle: 'Plase Contact admin unlock password ');
+                
+                
               }
+
+
+              
             }
           });
         }
@@ -188,8 +230,10 @@ class _AuthenMobileState extends State<AuthenMobile> {
                         colorText: Colors.white,
                       );
                     } else {
-                      if (appController.associateIdCurrents.contains(associateId)) {
-                        Get.offAll(QuestionForgot(docIdAssociate: associateId!));
+                      if (appController.associateIdCurrents
+                          .contains(associateId)) {
+                        Get.offAll(
+                            QuestionForgot(docIdAssociate: associateId!));
                       } else {
                         Get.snackbar(
                           '$associateId False  ',

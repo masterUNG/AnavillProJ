@@ -11,6 +11,7 @@ class WidgetForm extends StatelessWidget {
     this.textInputType,
     this.sufixWidget,
     this.margin,
+    this.textEditingController,
   }) : super(key: key);
 
   final bool? obsecu;
@@ -18,13 +19,14 @@ class WidgetForm extends StatelessWidget {
   final TextInputType? textInputType;
   final Widget? sufixWidget;
   final EdgeInsetsGeometry? margin;
+  final TextEditingController? textEditingController;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 40,
-      margin: margin ?? EdgeInsets.only(top: 8, bottom: 24),
-      child: TextFormField(
+      margin: margin ?? const EdgeInsets.only(top: 8, bottom: 24),
+      child: TextFormField(controller: textEditingController,
         keyboardType: textInputType,
         onChanged: changFunc,
         obscureText: obsecu ?? false,

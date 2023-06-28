@@ -18,41 +18,30 @@ class AppController extends GetxController {
   RxList docIdSiteCodes = <String>[].obs;
   RxList<String> chooseSiteCode = <String>[].obs;
   RxList chooseDocIdSiteCodes = <String>[].obs;
-
   RxList<QuestionModel> question1Models = <QuestionModel>[].obs;
   RxList<String> chooseQusetion1s = <String>[].obs;
-
   RxList<Question2Model> question2Models = <Question2Model>[].obs;
   RxList<String> chooseQuestions2 = <String>[].obs;
-
   RxList<Period1Model> periodModels = <Period1Model>[].obs;
   RxList<String> choosePeriod = <String>[].obs;
-
   RxList<PictureModel> pictureModels = <PictureModel>[].obs;
   RxList<String> choosePicture = <String>[].obs;
-
   RxList assosicateModels = <AsscociateModel>[].obs;
   RxList doIdAssociates = <String>[].obs;
-
   RxList profileModels = <ProfileModel>[].obs;
+
+  RxList<String> docIdProfiles = <String>[].obs;
 
   RxList iphoneModels = <IphoneModel>[].obs;
   RxList docIdPhotopd1s = <String>[].obs;
   RxList searchIphoneModels = <IphoneModel>[].obs;
-
   RxList urlImage = <String>[].obs;
-
   RxList<AsscociateModel> profileAssocicateModels = <AsscociateModel>[].obs;
-
   RxList<OderModel> orderModels = <OderModel>[].obs;
-
   RxList<IphoneModel> notiIphoneModels = <IphoneModel>[].obs;
-
   RxList<String> associateIdCurrents = <String>[].obs;
-
   RxString displaySiteCode = ''.obs;
-
- RxList price = <String>[].obs;
+  RxList price = <String>[].obs;
 
   get data => null;
 
@@ -70,12 +59,16 @@ class AppController extends GetxController {
     });
   }
 
-  Future<void> readPeriod() async {
+  Future<void> readPeriod({required String assoiate}) async {
     if (periodModels.isEmpty) {
       periodModels.clear();
     }
 
-    await FirebaseFirestore.instance.collection('pperiod1').get().then((value) {
+    await FirebaseFirestore.instance
+        .collection('period')
+        .where('associate', isEqualTo: assoiate)
+        .get()
+        .then((value) {
       for (var element in value.docs) {
         Period1Model model = Period1Model.fromMap(element.data());
         periodModels.add(model);

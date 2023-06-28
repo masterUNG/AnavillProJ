@@ -171,7 +171,7 @@ class _PaymentUploadState extends State<PaymentUpload> {
                                   .then((_) {
                                 print(
                                     '##18mar controller.displaySiteCode.value ----> ${appController.displaySiteCode.value}');
-                                Get.offAll(const SelectSite());
+                                Get.offAll(const SelectSite(assoiate: '',));
                               });
                             });
                           });
