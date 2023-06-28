@@ -30,11 +30,14 @@ class _NotiBoddyState extends State<NotiBoddy> {
       case 'PCH-KhonKaen':
         nameCollection = 'product1';
         break;
-      case 'PCH-ChiangMai':
+      case 'PCH-Sriracha':
         nameCollection = 'product2';
         break;
       case 'PCH-Bangkok':
         nameCollection = 'product3';
+        break;
+       case 'PCH-Hanoi':
+        nameCollection = 'product4';
         break;
       default:
     }

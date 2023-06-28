@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,8 +11,6 @@ import 'package:sharetraveyard/utility/app_svervice.dart';
 import 'package:sharetraveyard/widgets/widget_form.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 import 'package:sharetraveyard/widgets/wigget_image_network.dart';
-
-
 
 class ShopBody extends StatefulWidget {
   const ShopBody({super.key});
@@ -27,25 +24,28 @@ class _ShopBodyState extends State<ShopBody> {
   AppController controller = Get.put(AppController());
 
   var searchIphoneModels = <IphoneModel>[];
-  String nameCollection = 'product2';
+  String nameCollection = 'product4';
 
   @override
   void initState() {
-    
     super.initState();
 
     switch (controller.displaySiteCode.value) {
       case 'PCH-Sriracha':
-       //user: sriracha password :sc123456
+        //user: sriracha password :sc123456
         nameCollection = 'product1';
         break;
       case 'PCH-PackChong':
-      //user: packchong password :pc123456
+        //user: packchong password :pc123456
         nameCollection = 'product2';
         break;
       case 'PCH-Bangkok':
-       //user: bangkok password : bk123456
+        //user: bangkok password : bk123456
         nameCollection = 'product3';
+        break;
+      case 'PCH-Hanoi':
+       //user: bangkok password : bk123456
+        nameCollection = 'product4';
         break;
       default:
     }
@@ -129,9 +129,9 @@ class _ShopBodyState extends State<ShopBody> {
 
                                 if (!(searchIphoneModels[index].salseFinish!)) {
                                   Get.to(DetailProduct(
-                                    
                                     iphoneModel: searchIphoneModels[index],
-                                    docIdPhotoPd1: docIdPhotopd1, collectionProduct: nameCollection,
+                                    docIdPhotoPd1: docIdPhotopd1,
+                                    collectionProduct: nameCollection,
                                   ));
                                 }
                               }

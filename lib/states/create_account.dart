@@ -252,7 +252,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
   WidgetForm formAssociateID(BuildContext context) {
     return WidgetForm(
-      textInputType: TextInputType.number,
+      textInputType: TextInputType.text,
       sufixWidget: WidgetIconButtom(
         iconData: Icons.cloud_upload,
         color: AppConstant.active,

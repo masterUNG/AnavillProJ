@@ -18,19 +18,19 @@ class MainHome extends StatefulWidget {
 class _MainHomeState extends State<MainHome> {
   var bodys = <Widget>[
     ShopBody(),
-    //NotiBoddy(),
+    NotiBoddy(),
     ProfileBody(),
   ];
 
   var titles = <String>[
     'Shop',
-    //'Noitfication',
+    'Noitfication',
     'My profile',
   ];
 
   var iconDatas = <IconData>[
     Icons.shopping_basket,
-   // Icons.notification_add,
+   Icons.notification_add,
     Icons.person_pin
 
   ];

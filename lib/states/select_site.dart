@@ -77,11 +77,10 @@ class _SelectSiteState extends State<SelectSite> {
                             textStyle: AppConstant().h2Style(),
                           ),
 
-                    // dropdown(appController),
+                    //dropdown(appController),
                     //period1(),
                     //dropdownperiod(appController),
                     clickbuttomGoToShop()
-                    
                   ],
                 ),
               ),
@@ -91,10 +90,12 @@ class _SelectSiteState extends State<SelectSite> {
   }
 
   WidgetButtom clickbuttomGoToShop() {
-    return WidgetButtom(label: 'Go to Shop', pressFunc:() {
-                     Get.to(MainHome());
-                    
-                  },);
+    return WidgetButtom(
+      label: 'Go to Shop',
+      pressFunc: () {
+        Get.to(MainHome());
+      },
+    );
   }
 
   Container dropdownperiod(AppController appController) {
@@ -109,15 +110,14 @@ class _SelectSiteState extends State<SelectSite> {
           : Center(
               child: DropdownButton(
                 isExpanded: true,
-                hint: WidgetText(text: 'Palease Choose number'),
                 value: appController.choosePeriod.isEmpty
                     ? null
                     : appController.choosePeriod.last,
                 items: appController.periodModels
                     .map(
                       (element) => DropdownMenuItem(
-                        child: WidgetText(text: element.period),
-                        value: element.period,
+                        child: WidgetText(text: element.saleday),
+                        value: element.saleday,
                       ),
                     )
                     .toList(),

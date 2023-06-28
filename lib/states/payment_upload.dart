@@ -76,7 +76,7 @@ class _PaymentUploadState extends State<PaymentUpload> {
                     children: [
                       Center(
                         child: WidgetText(
-                            text: 'Please Transfer to SCB : 000-000-000'),
+                            text: 'Please Transfer to ธ.กรุงศรี : 348-1291-750'),
                       ),
                     ],
                   ),
