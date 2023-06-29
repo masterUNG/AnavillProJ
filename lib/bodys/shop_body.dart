@@ -30,6 +30,10 @@ class _ShopBodyState extends State<ShopBody> {
   void initState() {
     super.initState();
 
+    refreshData();
+  }
+
+  void refreshData() {
     switch (controller.displaySiteCode.value) {
       case 'PCH-Sriracha':
         //user: sriracha password :sc123456
@@ -131,7 +135,11 @@ class _ShopBodyState extends State<ShopBody> {
                                     iphoneModel: searchIphoneModels[index],
                                     docIdPhotoPd1: docIdPhotopd1,
                                     collectionProduct: nameCollection,
-                                  ));
+                                  ))!
+                                      .then((value) {
+                                    searchIphoneModels.clear();
+                                    refreshData();
+                                  });
                                 }
                               }
                             });
@@ -144,6 +152,23 @@ class _ShopBodyState extends State<ShopBody> {
                                     urlImage: searchIphoneModels[index].cover),
                                 WidgetText(
                                     text: searchIphoneModels[index].serialID),
+                                searchIphoneModels[index].timestamp ==
+                                        Timestamp(0, 0)
+                                    ? const SizedBox()
+                                    : searchIphoneModels[index]
+                                                .timestamp!
+                                                .toDate()
+                                                .difference(DateTime.now())
+                                                .inMinutes <
+                                            -1
+                                        ? const SizedBox()
+                                        : Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            decoration: BoxDecoration(
+                                                color: Colors.yellow),
+                                            child: WidgetText(text: 'Reserve'),
+                                          ),
                                 searchIphoneModels[index].salseFinish!
                                     ? WidgetText(
                                         text: 'SaleOut !!',

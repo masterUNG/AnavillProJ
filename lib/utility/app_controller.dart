@@ -59,17 +59,19 @@ class AppController extends GetxController {
     });
   }
 
-  Future<void> readPeriod({required String assoiate}) async {
+  Future<void> readPeriod({required String docIdSiteCode}) async {
     if (periodModels.isEmpty) {
       periodModels.clear();
     }
-
+    print('##29june docIdSiteCode ------>$docIdSiteCode');
     await FirebaseFirestore.instance
         .collection('period')
-        .where('associate', isEqualTo: assoiate)
+        .where('docIdSiteCode', isEqualTo: docIdSiteCode)
         .get()
         .then((value) {
+      print('##29june volue --->${value.docs}');
       for (var element in value.docs) {
+        print('##29june element ---> ${element.data()}');
         Period1Model model = Period1Model.fromMap(element.data());
         periodModels.add(model);
       }

@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
+
 class IphoneModel {
   // ignore: non_constant_identifier_names
   final String model;
@@ -12,6 +15,9 @@ class IphoneModel {
   final String grade;
   final bool? salseFinish;
   final bool? reserve;
+  final Timestamp? timestamp;
+  final String? associate;
+
   IphoneModel({
     // ignore: non_constant_identifier_names
     required this.model,
@@ -23,6 +29,8 @@ class IphoneModel {
     required this.grade,
     this.salseFinish,
     this.reserve,
+    this.timestamp,
+    this.associate,
   });
 
   Map<String, dynamic> toMap() {
@@ -36,6 +44,8 @@ class IphoneModel {
       'grade': grade,
       'salseFinish': salseFinish,
       'reserve': reserve,
+      'timestamp': timestamp,
+      'associate': associate,
     };
   }
 
@@ -49,9 +59,21 @@ class IphoneModel {
       capacity: (map['capacity'] ?? '') as String,
       grade: (map['grade'] ?? '') as String,
       salseFinish: map['salseFinish'] ?? false,
-      reserve: map['reserve']  ?? false,
+      reserve: map['reserve'] ?? false,
+      timestamp: map['timestamp'] ?? Timestamp(0, 0),
+      associate: map['associate'] ?? '',
     );
   }
+  // model: (map['model'] ?? '') as String,
+  //     cover: (map['cover'] ?? '') as String,
+  //     price: (map['price'] ?? 0) as int,
+  //     stock: (map['stock'] ?? 0) as int,
+  //     serialID: (map['serialID'] ?? '') as String,
+  //     capacity: (map['capacity'] ?? '') as String,
+  //     grade: (map['grade'] ?? '') as String,
+  //     salseFinish: map['salseFinish'] ?? false,
+  //     reserve: map['reserve'] ?? false,
+  //     timestamp: map['timestamp'] ?? Timestamp(0, 0),
 
   String toJson() => json.encode(toMap());
 

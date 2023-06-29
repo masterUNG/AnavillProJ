@@ -9,7 +9,6 @@ import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/widgets/widget_icon_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
-
 class MainHome extends StatefulWidget {
   @override
   State<MainHome> createState() => _MainHomeState();
@@ -24,15 +23,14 @@ class _MainHomeState extends State<MainHome> {
 
   var titles = <String>[
     'Shop',
-    'Noitfication',
+    'History buy',
     'My profile',
   ];
 
   var iconDatas = <IconData>[
     Icons.shopping_basket,
-   Icons.notification_add,
+    Icons.history,
     Icons.person_pin
-
   ];
 
   var bottomNavaItims = <BottomNavigationBarItem>[];
@@ -66,6 +64,12 @@ class _MainHomeState extends State<MainHome> {
                 textStyle: AppConstant().h2Style(),
               ),
               actions: [
+                appController.indexBody.value != 0
+                    ? const SizedBox()
+                    : WidgetIconButtom(
+                        iconData: Icons.restart_alt,
+                        pressFunc: () {},
+                      ),
                 WidgetIconButtom(
                   iconData: Icons.exit_to_app,
                   pressFunc: () async {

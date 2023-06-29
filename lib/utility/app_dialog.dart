@@ -15,6 +15,7 @@ class AppDialog {
     required String title,
     required String subTitle,
     Widget? actionWidget,
+    Widget? action2Widget,
     Widget? contenWidget,
   }) {
     Get.dialog(
@@ -31,6 +32,7 @@ class AppDialog {
         content: contenWidget ??  WidgetText(text: subTitle),
         actions: [
           actionWidget ?? const SizedBox(),
+          action2Widget ?? const SizedBox(),
           Column(
             children: [ 
               WidgetButtom(

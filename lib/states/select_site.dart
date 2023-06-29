@@ -28,13 +28,17 @@ class SelectSite extends StatefulWidget {
 class _SelectSiteState extends State<SelectSite> {
   AppController controller = Get.put(AppController());
   String? user;
+  String? docIdSiteCode;
 
   @override
   void initState() {
     super.initState();
     controller.readSiteCode();
     findUserLogin().then((value) {
-      controller.readPeriod(assoiate: widget.assoiate ?? user!);
+      controller.readPeriod(docIdSiteCode: docIdSiteCode!).then((value) {
+        print(
+            '##29june periodModel ----->${controller.periodModels.last.toMap()}');
+      });
     });
   }
 
@@ -49,7 +53,7 @@ class _SelectSiteState extends State<SelectSite> {
         .get()
         .then((value) async {
       AsscociateModel asscociateModel = AsscociateModel.fromMap(value.data()!);
-      String docIdSiteCode = asscociateModel.docIdSiteCode;
+      docIdSiteCode = asscociateModel.docIdSiteCode;
       print('docIdSiteCode ---> $docIdSiteCode');
       await FirebaseFirestore.instance
           .collection('sitecode')
@@ -97,8 +101,6 @@ class _SelectSiteState extends State<SelectSite> {
                             text:
                                 'Period : ${appController.periodModels.last.periodsale}'),
 
-
-                    
                     appController.periodModels.isEmpty
                         ? const SizedBox()
                         : WidgetText(

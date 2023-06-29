@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/models/order_model.dart';
 import 'package:sharetraveyard/states/select_site.dart';
@@ -34,6 +35,24 @@ class PaymentUpload extends StatefulWidget {
 class _PaymentUploadState extends State<PaymentUpload> {
   String? urlGetOR;
   File? image;
+
+  AsscociateModel? asscociateModel; 
+
+  @override
+  void initState() {
+    super.initState();
+    findAssociateModel();
+    
+  }
+Future<void> findAssociateModel() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String? associate = preferences.getString('user');
+
+
+ var  result = await FirebaseFirestore.instance.collection('associate').doc(associate).get();
+ asscociateModel = AsscociateModel.fromMap(result.data()!);
+
+}
 
   Future<void> picker() async {
     try {
@@ -135,7 +154,11 @@ class _PaymentUploadState extends State<PaymentUpload> {
                               salseFinish: false,
                               collectionProduct: widget.collectionProduct,
                               timestamp: Timestamp.fromDate(DateTime.now()),
-                              price: widget.iphoneModel.price.toString(),
+                              price: widget.iphoneModel.price.toString(), 
+                              nameAssociate: asscociateModel!.name, 
+                              itemName: widget.iphoneModel.model, 
+                              roundID: appController.periodModels.last.roundID, 
+                              roundStatus: appController.periodModels.last.saleday,
                             );
 
                             print('##8feb OderModel ---> ${oderModel.toMap()}');
