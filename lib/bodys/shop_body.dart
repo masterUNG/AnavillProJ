@@ -159,7 +159,8 @@ class _ShopBodyState extends State<ShopBody> {
                                                 .timestamp!
                                                 .toDate()
                                                 .difference(DateTime.now())
-                                                .inMinutes <
+                                                .inMinutes < 
+                                                //inMinutes ปรับเวลาตรงนี้ และ ตรง file detail states  line 144
                                             -1
                                         ? const SizedBox()
                                         : Container(

@@ -16,6 +16,7 @@ import 'package:sharetraveyard/widgets/widget_storage_service.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:sharetraveyard/widgets/wigget_image_network.dart';
 
 class PaymentUpload extends StatefulWidget {
   const PaymentUpload({
@@ -36,23 +37,24 @@ class _PaymentUploadState extends State<PaymentUpload> {
   String? urlGetOR;
   File? image;
 
-  AsscociateModel? asscociateModel; 
+  AsscociateModel? asscociateModel;
 
   @override
   void initState() {
     super.initState();
     findAssociateModel();
-    
   }
-Future<void> findAssociateModel() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  String? associate = preferences.getString('user');
 
+  Future<void> findAssociateModel() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? associate = preferences.getString('user');
 
- var  result = await FirebaseFirestore.instance.collection('associate').doc(associate).get();
- asscociateModel = AsscociateModel.fromMap(result.data()!);
-
-}
+    var result = await FirebaseFirestore.instance
+        .collection('associate')
+        .doc(associate)
+        .get();
+    asscociateModel = AsscociateModel.fromMap(result.data()!);
+  }
 
   Future<void> picker() async {
     try {
@@ -95,7 +97,8 @@ Future<void> findAssociateModel() async {
                     children: [
                       Center(
                         child: WidgetText(
-                            text: 'Please Transfer to ธ.กรุงศรี : 348-1291-750'),
+                            text:
+                                'Please Transfer to ธ.กรุงศรี : 348-1291-750'),
                       ),
                     ],
                   ),
@@ -113,13 +116,22 @@ Future<void> findAssociateModel() async {
                     ],
                   ),
                 ),
+                const SizedBox(
+                  height: 32,
+                ),
+
+                WidgetImageNetwork(urlImage: AppConstant.urlPromPay),
+
+                const SizedBox(
+                  height: 32,
+                ),
+
                 Container(
                   child: Column(
                     children: [
                       WidgetButtom(
                         label: 'Upload Payment',
                         pressFunc: () async {
-
                           var result = await ImagePicker().pickImage(
                               source: ImageSource.gallery,
                               maxWidth: 800,
@@ -154,11 +166,12 @@ Future<void> findAssociateModel() async {
                               salseFinish: false,
                               collectionProduct: widget.collectionProduct,
                               timestamp: Timestamp.fromDate(DateTime.now()),
-                              price: widget.iphoneModel.price.toString(), 
-                              nameAssociate: asscociateModel!.name, 
-                              itemName: widget.iphoneModel.model, 
-                              roundID: appController.periodModels.last.roundID, 
-                              roundStatus: appController.periodModels.last.saleday,
+                              price: widget.iphoneModel.price.toString(),
+                              nameAssociate: asscociateModel!.name,
+                              itemName: widget.iphoneModel.model,
+                              roundID: appController.periodModels.last.roundID,
+                              roundStatus:
+                                  appController.periodModels.last.saleday,
                             );
 
                             print('##8feb OderModel ---> ${oderModel.toMap()}');
@@ -194,7 +207,9 @@ Future<void> findAssociateModel() async {
                                   .then((_) {
                                 print(
                                     '##18mar controller.displaySiteCode.value ----> ${appController.displaySiteCode.value}');
-                                Get.offAll(const SelectSite(assoiate: '',));
+                                Get.offAll(const SelectSite(
+                                  assoiate: '',
+                                ));
                               });
                             });
                           });

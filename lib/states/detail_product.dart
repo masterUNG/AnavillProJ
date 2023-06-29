@@ -49,7 +49,11 @@ class _DetailProductState extends State<DetailProduct> {
       ),
       body: Column(
         children: [
-          WidgetImageNetwork(urlImage: widget.iphoneModel.cover),
+          Container(
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
+              decoration: AppConstant().borderCurveBox(),
+              child: WidgetImageNetwork(urlImage: widget.iphoneModel.cover)),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -141,6 +145,7 @@ class _DetailProductState extends State<DetailProduct> {
                           .toDate()
                           .difference(DateTime.now())
                           .inMinutes <
+                      //inMinutes ปรับเวลาตรงนี้ และ ตรง file shop bodys line 163
                       -1
                   ? BuyButtom(context)
                   : InkWell(

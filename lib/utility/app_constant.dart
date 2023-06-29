@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 
 class AppConstant {
+  static String urlPromPay =
+      'https://firebasestorage.googleapis.com/v0/b/ditproject-52990.appspot.com/o/Qrpayment%2F355914621_260476469922539_853846598839689794_n.jpg?alt=media&token=d406dfcb-9759-4342-8b49-cbb4d6b11c2c';
+
   static int timePasswordFalse = 5;
   static Color bgColor = Colors.yellow;
   static Color dark = Colors.black;
   static Color active = const Color.fromARGB(255, 255, 60, 46);
   static Color fieldColor = Colors.white;
 
+  BoxDecoration borderCurveBox() => BoxDecoration(border: Border.all(),borderRadius: BorderRadius.circular(30));
+  //BorderRadius.circular(30) เส้นโค้งของขอบ
+
   BoxDecoration curveBox() => BoxDecoration(
+        //ทำกรอป
         color: Colors.white,
         borderRadius: BorderRadius.circular(30),
         border: Border.all(),
       );
-
+ 
   TextStyle appStyle({
     double? size,
     Color? color,
