@@ -11,6 +11,8 @@ import 'package:sharetraveyard/utility/app_dialog.dart';
 class AppSvervice {
   AppController appController = Get.put(AppController());
 
+  AsscociateModel? asscociateModel;
+
   Future<void> processEditProfile(
       {required String docIdProfile,
       required Map<String, dynamic> map,
@@ -182,34 +184,63 @@ class AppSvervice {
       print('value ===> ${value.data()}');
 
       if (value.data() == null) {
-        AppDialog(context: context).normalDialog(
-            title: 'Associate ID fale', subTitle: 'Plase try Again');
-      } else {
-        AsscociateModel asscociateModel =
-            AsscociateModel.fromMap(value.data()!);
+        print(
+            '##29july docIDSite ที่เลือก ---> ${appController.chooseDocIdSiteCodes.last}');
 
-        if (asscociateModel.docIdSiteCode.trim() ==
-            appController.chooseDocIdSiteCodes.last.trim()) {
-          await FirebaseFirestore.instance
-              .collection('associate')
-              .doc(associateID)
-              .collection('profile')
-              .get()
-              .then((value) {
-            if (value.docs.isEmpty) {
-              appController.assosicateModels.add(asscociateModel);
-            } else {
-              AppDialog(context: context).normalDialog(
-                  title: '$associateID นี้ create Account แล้ว',
-                  subTitle: 'เปลี่ยน Associate ID ใหม่');
-            }
-          });
-        } else {
-          AppDialog(context: context).normalDialog(
-              title: 'AssosiciateID ไม่มี ',
-              subTitle:
-                  'Site ${appController.chooseSiteCode.last} ไม่มี ID นี้');
-        }
+        FirebaseFirestore.instance
+            .collection('sitecode')
+            .doc(appController.chooseDocIdSiteCodes.last)
+            .collection('associateId')
+            .where('id', isEqualTo: associateID)
+            .get()
+            .then((value) {
+          print('##29july value at associteId ---->${value.docs}');
+
+          if (value.docs.isEmpty) {
+            AppDialog(context: context).normalDialog(
+                title: 'ค่า AssociateID ไม่ถูกต้อง',
+                subTitle:
+                    'ไม่มี $associateID ใน site code ${appController.chooseSiteCode.last}');
+          } else {
+            appController.checkId.value = false;
+
+            asscociateModel = AsscociateModel(
+                admin: 'user',
+                name: '',
+                lastname: '',
+                docIdSiteCode: appController.chooseDocIdSiteCodes.last,
+                associateID: associateID);
+
+            FirebaseFirestore.instance
+                .collection('associate')
+                .doc(associateID)
+                .set(asscociateModel!.toMap())
+                .then((value) {
+              Get.snackbar('STEP1 SUCCEED', ' Go to STEP2',
+                  backgroundColor: Colors.red.shade700,
+                  colorText: Colors.white);
+            });
+
+            // FirebaseFirestore.instance
+            //     .collection('associate')
+            //     .doc(associateID)
+            //     .collection('profile')
+            //     .get()
+            //     .then((value) {
+            //   if (value.docs.isEmpty) {
+            //     appController.assosicateModels.add(asscociateModel);
+            //   } else {
+            //     AppDialog(context: context).normalDialog(
+            //         title: '$associateID นี้ create Account แล้ว',
+            //         subTitle: 'เปลี่ยน Associate ID ใหม่');
+            //   }
+            // });
+          }
+        });
+      } else {
+        AppDialog(context: context).normalDialog(
+            title: 'Associate ID ซ้ำ',
+            subTitle: 'เปลี่ยน Associate ID นี่สมัครไปแล้ว');
       } //end if
     });
   }

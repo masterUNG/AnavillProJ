@@ -1,6 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/models/profile_model.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
@@ -76,34 +79,13 @@ class _CreateAccountState extends State<CreateAccount> {
                   titleStep1(),
                   titleSitecode(),
                   dropdownSitecode(appController),
-                  WidgetText(
-                    text: 'Associate ID',
-                    textStyle: AppConstant().h2Style(),
-                  ),
+                  titleassociateID(),
                   formAssociateID(context),
                   displayNameLastName(appController),
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    child: WidgetText(
-                      text: 'STEP 2',
-                      textStyle: AppConstant().h2Style(),
-                    ),
-                  ),
-                  WidgetText(
-                    text: 'Password Fill Twice',
-                    textStyle: AppConstant().h2Style(),
-                  ),
-                  WidgetText(
-                    text: 'Password :',
-                    textStyle: AppConstant().h2Style(),
-                  ),
-                  WidgetForm(
-                    obsecu: true,
-                    changFunc: (p0) {
-                      password = p0.trim();
-                      //print("##password = ${password}");
-                    },
-                  ),
+                  titlestep2(),
+                  passwordFillTwice(),
+                  passwordTitle(),
+                  password1form(),
                   WidgetText(
                     text: '2nd Time Password :',
                     textStyle: AppConstant().h2Style(),
@@ -251,6 +233,47 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  WidgetForm password1form() {
+    return WidgetForm(
+      obsecu: true,
+      changFunc: (p0) {
+        password = p0.trim();
+        //print("##password = ${password}");
+      },
+    );
+  }
+
+  WidgetText passwordTitle() {
+    return WidgetText(
+      text: 'Password :',
+      textStyle: AppConstant().h2Style(),
+    );
+  }
+
+  WidgetText passwordFillTwice() {
+    return WidgetText(
+      text: 'Password Fill Twice',
+      textStyle: AppConstant().h2Style(),
+    );
+  }
+
+  Container titlestep2() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: WidgetText(
+        text: 'STEP 2',
+        textStyle: AppConstant().h2Style(),
+      ),
+    );
+  }
+
+  WidgetText titleassociateID() {
+    return WidgetText(
+      text: 'Associate ID',
+      textStyle: AppConstant().h2Style(),
+    );
+  }
+
   Widget displayNameLastName(AppController appController) {
     return appController.assosicateModels.isEmpty
         ? const SizedBox()
@@ -285,38 +308,46 @@ class _CreateAccountState extends State<CreateAccount> {
           );
   }
 
-  WidgetForm formAssociateID(BuildContext context) {
-    return WidgetForm(
-      textInputType: TextInputType.text,
-      sufixWidget: WidgetIconButtom(
-        iconData: Icons.cloud_upload,
-        color: AppConstant.active,
-        pressFunc: () {
-          if (associateId?.isEmpty ?? true) {
-            AppDialog(context: context).normalDialog(
-                title: 'No AssociateId', subTitle: 'Plase Fill AssociateID');
-          } else {
-            AppSvervice()
-                .readAssociate(associateID: associateId!, context: context);
-          }
+  Widget formAssociateID(BuildContext context) {
+    return Obx(() {
+      return WidgetForm(
+        textInputType: TextInputType.text,
+        sufixWidget: controller.checkId.value
+            ? WidgetIconButtom(
+                iconData: Icons.cloud_upload,
+                color: AppConstant.active,
+                pressFunc: () {
+                  if (associateId?.isEmpty ?? true) {
+                    AppDialog(context: context).normalDialog(
+                        title: 'No AssociateId',
+                        subTitle: 'Plase Fill AssociateID');
+                  } else {
+                    AppSvervice().readAssociate(
+                        associateID: associateId!, context: context);
+                  }
+                },
+              )
+            : const SizedBox(),
+        changFunc: (p0) {
+          associateId = p0.trim();
+          print("##associateId = ${associateId}");
         },
-      ),
-      changFunc: (p0) {
-        associateId = p0.trim();
-        print("##associateId = ${associateId}");
-      },
-    );
+      );
+    });
   }
 
   Future<void> methodVerify(
       AppController appController, BuildContext context) async {
-    if (appController.chooseSiteCode.isEmpty) {
+    if (appController.checkId.value) {
+      AppDialog(context: context).normalDialog(
+          title: 'Check Associate ID ?', subTitle: 'Please click check ID ');
+    } else if (appController.chooseSiteCode.isEmpty) {
       AppDialog(context: context).normalDialog(
           title: 'Site Code ?', subTitle: 'Please choose Site code');
     } else if (associateId?.isEmpty ?? true) {
       AppDialog(context: context).normalDialog(
           title: 'No Associate', subTitle: 'Plase Fill Associate ID');
-    } else if (appController.assosicateModels.isEmpty) {
+    } else if ((uname?.isEmpty ?? true) || (ulastname?.isEmpty ?? true)) {
       AppDialog(context: context).normalDialog(
           title: 'No Name, Surname', subTitle: 'PleaseTap Cluod Icon');
     } else if ((password?.isEmpty ?? true) || (repassword?.isEmpty ?? true)) {
@@ -338,6 +369,9 @@ class _CreateAccountState extends State<CreateAccount> {
     } else if (answer2?.isEmpty ?? true) {
       AppDialog(context: context)
           .normalDialog(title: 'Answer2 ?', subTitle: 'Plase Fill amnswer2');
+    } else if ((address?.isEmpty ?? true) || (phone?.isEmpty ?? true)) {
+      AppDialog(context: context).normalDialog(
+          title: 'Address, phone', subTitle: 'pleas Fill address phone');
     } else {
       ProfileModel profileModel = ProfileModel(
           password: password!,
@@ -348,7 +382,10 @@ class _CreateAccountState extends State<CreateAccount> {
           phone: phone!,
           address: address!,
           sitecode: appController.chooseSiteCode.last,
-          uname: uname!, ulastname: ulastname!);
+          uname: uname!,
+          ulastname: ulastname!);
+
+      print('##29july profileModel --> ${profileModel.toMap()}');
 
       await FirebaseFirestore.instance
           .collection('associate')
@@ -356,7 +393,23 @@ class _CreateAccountState extends State<CreateAccount> {
           .collection('profile')
           .doc()
           .set(profileModel.toMap())
-          .then((value) => Get.back());
+          .then((value) {
+        AsscociateModel asscociateModel = AsscociateModel(
+          admin: 'user',
+            name: uname!,
+            lastname: ulastname!,
+            docIdSiteCode: controller.chooseDocIdSiteCodes.last,
+            associateID: associateId!,
+            shopPhone: true,
+            shopPed: false);
+        Map<String, dynamic> map = asscociateModel.toMap();
+
+        FirebaseFirestore.instance
+            .collection('associate')
+            .doc(associateId)
+            .update(map)
+            .then((value) => Get.back());
+      });
     }
   }
 

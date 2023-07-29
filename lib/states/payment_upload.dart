@@ -83,7 +83,7 @@ class _PaymentUploadState extends State<PaymentUpload> {
           return Container(
             margin:
                 const EdgeInsets.only(left: 50, right: 50, top: 60, bottom: 30),
-            child: Column(
+            child: ListView(
               children: [
                 Center(
                   child: WidgetText(

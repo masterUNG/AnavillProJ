@@ -42,14 +42,11 @@ class AppController extends GetxController {
   RxList<String> associateIdCurrents = <String>[].obs;
   RxString displaySiteCode = ''.obs;
   RxList price = <String>[].obs;
-
-
+  RxBool checkId = true.obs;
 
   get data => null;
 
-  
-  
-   Future<void> readPicture() async {
+  Future<void> readPicture() async {
     if (pictureModels.isEmpty) {
       periodModels.clear();
     }
