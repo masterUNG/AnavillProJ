@@ -44,6 +44,10 @@ class AppController extends GetxController {
   RxList price = <String>[].obs;
   RxBool checkId = true.obs;
 
+  RxList<AsscociateModel> currentAssociateLogin = <AsscociateModel>[].obs;
+
+  RxInt indexShop = 0.obs;
+
   get data => null;
 
   Future<void> readPicture() async {

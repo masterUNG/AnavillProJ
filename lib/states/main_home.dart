@@ -4,8 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/bodys/noti_body.dart';
 import 'package:sharetraveyard/bodys/profile_dody.dart';
 import 'package:sharetraveyard/bodys/shop_body.dart';
+import 'package:sharetraveyard/bodys/shop_ped_body.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
+import 'package:sharetraveyard/utility/app_svervice.dart';
 import 'package:sharetraveyard/widgets/widget_icon_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
@@ -15,11 +17,20 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
-  var bodys = <Widget>[
-    ShopBody(),
-    NotiBoddy(),
-    ProfileBody(),
-  ];
+  Widget? mainShop;
+
+  var shops = <Widget>[const ShopBody(), const ShopPedBody()];
+  PageController? pageController;
+
+  AppController controller = Get.put(AppController());
+
+  // var bodys = <Widget>[
+  //   const ShopBody(),
+  //   const NotiBoddy(),
+  //   ProfileBody(),
+  // ];
+
+  var bodys = <Widget>[];
 
   var titles = <String>[
     'Shop',
@@ -39,6 +50,18 @@ class _MainHomeState extends State<MainHome> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    AppSvervice().findCurrenAssociateLogin();
+    pageController = PageController(initialPage: controller.indexShop.value);
+
+    mainShop = PageView(
+      controller: pageController,
+      children: shops,
+    );
+
+    bodys.add(mainShop!);
+    bodys.add(const NotiBoddy());
+    bodys.add(ProfileBody());
 
     for (var i = 0; i < titles.length; i++) {
       bottomNavaItims.add(
@@ -66,10 +89,12 @@ class _MainHomeState extends State<MainHome> {
               actions: [
                 appController.indexBody.value != 0
                     ? const SizedBox()
-                    : WidgetIconButtom(
-                        iconData: Icons.restart_alt,
-                        pressFunc: () {},
-                      ),
+                    : appController.currentAssociateLogin.isEmpty
+                        ? const SizedBox()
+                        : WidgetIconButtom(
+                            iconData: Icons.restart_alt,
+                            pressFunc: () {},
+                          ),
                 WidgetIconButtom(
                   iconData: Icons.exit_to_app,
                   pressFunc: () async {

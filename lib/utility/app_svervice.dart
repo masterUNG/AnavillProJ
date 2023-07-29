@@ -244,4 +244,22 @@ class AppSvervice {
       } //end if
     });
   }
+
+  Future<void> findCurrenAssociateLogin() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var result = preferences.getString('user');
+    if (result != null) {
+      print('##29july ---> $result');
+
+      FirebaseFirestore.instance
+          .collection('associate')
+          .doc(result)
+          .get()
+          .then((value) {
+        AsscociateModel asscociateModel =
+            AsscociateModel.fromMap(value.data()!);
+        appController.currentAssociateLogin.add(asscociateModel);
+      });
+    }
+  }
 }
