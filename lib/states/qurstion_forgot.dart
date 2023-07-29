@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:sharetraveyard/models/profile_model.dart';
 import 'package:sharetraveyard/states/authen_mobile.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
@@ -104,6 +106,8 @@ class _QuestionForgotState extends State<QuestionForgot> {
                                       label: 'Authen',
                                       pressFunc: () {
                                         Get.offAll(const AuthenMobile());
+                                        
+                                       
                                       },
                                     ),
                                   ],

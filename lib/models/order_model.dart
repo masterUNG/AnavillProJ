@@ -15,6 +15,8 @@ class OderModel {
   final bool? salseFinish;
   final String? collectionProduct;
   final String price;
+  final String branch;
+  final String periodsale;
 
   OderModel({
     required this.docIdAssociate,
@@ -28,6 +30,8 @@ class OderModel {
     this.salseFinish,
     this.collectionProduct,
     required this.price,
+    required this.branch,
+    required this.periodsale,
   });
 
   Map<String, dynamic> toMap() {
@@ -43,6 +47,8 @@ class OderModel {
       'salseFinish': salseFinish,
       'collectionProduct': collectionProduct,
       'price': price,
+      'branch': branch,
+      'periodsale': periodsale,
     };
   }
 
@@ -55,10 +61,12 @@ class OderModel {
       itemName: (map['itemName'] ?? '') as String,
       docPhotopd1: (map['docPhotopd1'] ?? '') as String,
       urlSlip: (map['urlSlip'] ?? '') as String,
-      timestamp: map['timestamp']  ?? Timestamp(0, 0),
+      timestamp: map['timestamp'] ?? Timestamp(0, 0),
       salseFinish: map['salseFinish'] ?? false,
-      collectionProduct: map['collectionProduct']  ?? '',
+      collectionProduct: map['collectionProduct'] ?? '',
       price: (map['price'] ?? '') as String,
+      branch: (map['branch'] ?? '') as String,
+      periodsale: (map['periodsale'] ?? '') as String,
     );
   }
 // timestamp: (map['timestamp'] ),

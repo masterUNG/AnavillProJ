@@ -64,7 +64,7 @@ class _AuthenMobileState extends State<AuthenMobile> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 WidgetText(
-                                  text: 'User Name',
+                                  text: 'Associate ID',
                                   textStyle: AppConstant().h2Style(),
                                 ),
                                 WidgetForm(

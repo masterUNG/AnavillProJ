@@ -50,6 +50,9 @@ class _ShopBodyState extends State<ShopBody> {
       case 'PCH-Hanoi':
         nameCollection = 'product4';
         break;
+        case 'PCH-BK':
+        nameCollection = 'producttest';
+        break;
       default:
     }
     print('##mar8 nameCollection---->${nameCollection}');

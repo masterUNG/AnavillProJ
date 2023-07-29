@@ -22,7 +22,16 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   AppController controller = Get.put(AppController());
 
-  String? associateId, password, repassword, answer1, answer2;
+  String? associateId,
+      password,
+      repassword,
+      answer1,
+      answer2,
+      phone,
+      address,
+      sitecode,
+      uname,
+      ulastname;
 
   @override
   void initState() {
@@ -31,8 +40,6 @@ class _CreateAccountState extends State<CreateAccount> {
     controller.readQuestion1();
     controller.readQuestion2();
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +115,20 @@ class _CreateAccountState extends State<CreateAccount> {
                       //print("##repassword = ${repassword}");
                     },
                   ),
+                  WidgetText(
+                    text: 'Name (eng) :',
+                    textStyle: AppConstant().h2Style(),
+                  ),
+                  WidgetForm(changFunc: ((p0) {
+                    uname = p0.trim();
+                  })),
+                  WidgetText(
+                    text: 'LastName (eng) :',
+                    textStyle: AppConstant().h2Style(),
+                  ),
+                  WidgetForm(changFunc: ((p0) {
+                    ulastname = p0.trim();
+                  })),
                   Container(
                     margin: const EdgeInsets.only(bottom: 16),
                     child: WidgetText(
@@ -199,6 +220,20 @@ class _CreateAccountState extends State<CreateAccount> {
                       //print("##answer2 = ${answer2}");
                     },
                   ),
+                  WidgetText(
+                    text: 'Input Address ',
+                    textStyle: AppConstant().h2Style(),
+                  ),
+                  WidgetForm(changFunc: ((p0) {
+                    address = p0.trim();
+                  })),
+                  WidgetText(
+                    text: 'Input PhoneNumber ',
+                    textStyle: AppConstant().h2Style(),
+                  ),
+                  WidgetForm(changFunc: ((p0) {
+                    phone = p0.trim();
+                  })),
                   Divider(
                     color: AppConstant.dark,
                     thickness: 1,
@@ -309,7 +344,11 @@ class _CreateAccountState extends State<CreateAccount> {
           question1: appController.chooseQusetion1s.last,
           answer1: answer1!,
           question2: appController.chooseQuestions2.last,
-          answer2: answer2!);
+          answer2: answer2!,
+          phone: phone!,
+          address: address!,
+          sitecode: appController.chooseSiteCode.last,
+          uname: uname!, ulastname: ulastname!);
 
       await FirebaseFirestore.instance
           .collection('associate')

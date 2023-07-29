@@ -39,6 +39,9 @@ class _NotiBoddyState extends State<NotiBoddy> {
       case 'PCH-Hanoi':
         nameCollection = 'product4';
         break;
+      case 'PCH-BK':
+        nameCollection = 'producttest';
+        break;
       default:
     }
   }
@@ -66,7 +69,6 @@ class _NotiBoddyState extends State<NotiBoddy> {
                 docIdPhoto1: model.docPhotopd1,
                 collectionProduct: nameCollection!);
         controller.notiIphoneModels.add(iphoneModel);
-        
       }
     });
   }

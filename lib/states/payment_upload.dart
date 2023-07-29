@@ -88,17 +88,22 @@ class _PaymentUploadState extends State<PaymentUpload> {
                 Center(
                   child: WidgetText(
                     text: 'Payment',
-                    textStyle: AppConstant().h2Style(),
+                    textStyle: AppConstant().h4Style(),
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 30),
                   child: Column(
                     children: [
+                      WidgetText(text: 'บัญชี : บริษัท มาร์ส เพ็ทแคร์',textStyle: AppConstant().h2Style(),),
+                      const SizedBox(
+                        height: 32,
+                      ),
                       Center(
                         child: WidgetText(
-                            text:
-                                'Please Transfer to ธ.กรุงศรี : 348-1291-750'),
+                          text: 'SCB : 622-2-46005-8',
+                          textStyle: AppConstant().h2Style(),
+                        ),
                       ),
                     ],
                   ),
@@ -172,6 +177,9 @@ class _PaymentUploadState extends State<PaymentUpload> {
                               roundID: appController.periodModels.last.roundID,
                               roundStatus:
                                   appController.periodModels.last.saleday,
+                              branch: appController.displaySiteCode.value,
+                              periodsale:
+                                  appController.periodModels.last.periodsale,
                             );
 
                             print('##8feb OderModel ---> ${oderModel.toMap()}');

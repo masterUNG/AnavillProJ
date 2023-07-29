@@ -167,7 +167,7 @@ class _ProfileBodyState extends State<ProfileBody> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              WidgetText(text: 'LastName :${asscociateModel.lastname}'),
+              WidgetText(text: 'LastName : ${asscociateModel.lastname}'),
               WidgetIconButtom(
                 iconData: Icons.edit,
                 pressFunc: () {

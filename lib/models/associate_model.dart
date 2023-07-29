@@ -9,7 +9,10 @@ class AsscociateModel {
   final String? admin;
   final bool? shopPhone;
   final bool? shopPed;
+ 
 
+ 
+  
   AsscociateModel({
     required this.name,
     required this.lastname,
@@ -18,6 +21,8 @@ class AsscociateModel {
     this.admin,
     this.shopPhone,
     this.shopPed,
+
+    
   });
 
   Map<String, dynamic> toMap() {
@@ -29,20 +34,25 @@ class AsscociateModel {
       'admin': admin,
       'shopPhone': shopPhone,
       'shopPed': shopPed,
+
+      
     };
   }
 
   factory AsscociateModel.fromMap(Map<String, dynamic> map) {
     return AsscociateModel(
-      name: (map['name'] ?? '') as String,
+       name: (map['name'] ?? '') as String,
       lastname: (map['lastname'] ?? '') as String,
       docIdSiteCode: (map['docIdSiteCode'] ?? '') as String,
       associateID: (map['associateID'] ?? '') as String,
       admin: map['admin'] ?? '',
       shopPhone: map['shopPhone'] ?? true,
       shopPed: map['shopPed'] ?? true,
+    
+     
     );
   }
+
 
   String toJson() => json.encode(toMap());
 

@@ -163,7 +163,7 @@ class _AddNewAssociateState extends State<AddNewAssociate> {
                                     lastname: lastname!,
                                     docIdSiteCode:
                                         appController.chooseDocIdSiteCodes.last,
-                                    associateID: associateId!);
+                                    associateID: associateId! );
 
                                 await FirebaseFirestore.instance
                                     .collection('associate')

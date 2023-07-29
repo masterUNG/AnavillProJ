@@ -168,7 +168,7 @@ class _SelectSiteState extends State<SelectSite> {
 
   WidgetText sitecode() {
     return WidgetText(
-      text: 'Select Site',
+      text: '- Welcome -',
       textStyle: AppConstant().appStyle(
         size: 48,
         fontWeight: FontWeight.bold,
