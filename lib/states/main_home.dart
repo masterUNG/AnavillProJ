@@ -24,12 +24,7 @@ class _MainHomeState extends State<MainHome> {
 
   AppController controller = Get.put(AppController());
 
-  // var bodys = <Widget>[
-  //   const ShopBody(),
-  //   const NotiBoddy(),
-  //   ProfileBody(),
-  // ];
-
+  
   var bodys = <Widget>[];
 
   var titles = <String>[
@@ -93,7 +88,11 @@ class _MainHomeState extends State<MainHome> {
                         ? const SizedBox()
                         : WidgetIconButtom(
                             iconData: Icons.restart_alt,
-                            pressFunc: () {},
+                            pressFunc: () {
+                              //swit to shop ped
+                              appController.indexShop.value = ((appController.indexShop.value + 1)%2);
+                              pageController!.jumpToPage(appController.indexShop.value);
+                            },
                           ),
                 WidgetIconButtom(
                   iconData: Icons.exit_to_app,
