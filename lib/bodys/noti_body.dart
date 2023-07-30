@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/models/order_model.dart';
+import 'package:sharetraveyard/states/desplay_order_detail.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_svervice.dart';
@@ -55,23 +56,35 @@ class _NotiBoddyState extends State<NotiBoddy> {
 
     await FirebaseFirestore.instance
         .collection('order')
-        .where('docIdAssociate', isEqualTo: docIdAssociate)
+        .orderBy('timestamp')
+        // .where('docIdAssociate', isEqualTo: docIdAssociate)
         .get()
         .then((value) async {
       if (controller.orderModels.isNotEmpty) {
         controller.orderModels.clear();
+        controller.nameModel.clear();
+        controller.nameSerialID.clear();
       }
       for (var element in value.docs) {
-
         OderModel model = OderModel.fromMap(element.data());
-        controller.orderModels.add(model);
+        if (model.docIdAssociate == docIdAssociate) {
+          controller.orderModels.add(model);
 
-        
-        IphoneModel iphoneModel = await AppSvervice()
-            .findphotodp1ModelWhareDocId(
-                docIdPhoto1: model.docPhotopd1,
-                collectionProduct: nameCollection!);
-        controller.notiIphoneModels.add(iphoneModel);
+          if (model.docPhotopd1.isNotEmpty) {
+            //for mobile
+            IphoneModel iphoneModel = await AppSvervice()
+                .findphotodp1ModelWhareDocId(
+                    docIdPhoto1: model.docPhotopd1,
+                    collectionProduct: nameCollection!);
+
+            controller.nameModel.add('${iphoneModel.model}[mobile]');
+            controller.nameSerialID.add(iphoneModel.serialID);
+          } else {
+            //for ped
+            controller.nameModel.add('${model.mapPed!['model']}[Ped]');
+            controller.nameSerialID.add(model.mapPed!['pedID']);
+          }
+        }
       }
     });
   }
@@ -81,7 +94,8 @@ class _NotiBoddyState extends State<NotiBoddy> {
         init: AppController(),
         builder: (AppController appController) {
           print('##notiIphone ----->${appController.notiIphoneModels.length}');
-          return (appController.orderModels.isEmpty)
+          return ((appController.nameModel.isEmpty) ||
+                  (appController.nameSerialID.isEmpty))
               ? const SizedBox()
               : ListView(
                   children: [
@@ -95,20 +109,36 @@ class _NotiBoddyState extends State<NotiBoddy> {
                       ],
                     ),
                     ListView.builder(
+                      reverse: true,
                       shrinkWrap: true,
                       physics: const ScrollPhysics(),
-                      itemCount: appController.notiIphoneModels.length,
-                      itemBuilder: (context, index) => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          WidgetText(text: 'Sales'),
-                          WidgetText(
-                              text:
-                                  appController.notiIphoneModels[index].model),
-                          WidgetText(
-                              text: appController
-                                  .notiIphoneModels[index].serialID),
-                        ],
+                      itemCount: appController.nameModel.length,
+                      itemBuilder: (context, index) => InkWell(
+                        onTap: () {
+                          Get.to(DisplayOrderDetail(
+                            nameProdcut: appController.nameModel[index],
+                            orderModel: appController.orderModels[index],
+                          ));
+                        },
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: const WidgetText(text: 'Sales')),
+                                Expanded(
+                                    flex: 3,
+                                    child: WidgetText(
+                                        text: appController.nameModel[index])),
+                                Expanded(
+                                    child: WidgetText(
+                                        text:
+                                            appController.nameSerialID[index])),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ],

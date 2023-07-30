@@ -9,6 +9,7 @@ import 'package:sharetraveyard/models/site_code_model.dart';
 import 'package:sharetraveyard/states/main_home.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
+import 'package:sharetraveyard/utility/app_svervice.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_progress.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
@@ -33,6 +34,9 @@ class _SelectSiteState extends State<SelectSite> {
   @override
   void initState() {
     super.initState();
+
+    AppSvervice().findCurrenAssociateLogin();
+
     controller.readSiteCode();
     findUserLogin().then((value) {
       controller.readPeriod(docIdSiteCode: docIdSiteCode!).then((value) {

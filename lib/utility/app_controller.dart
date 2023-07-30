@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/models/order_model.dart';
+import 'package:sharetraveyard/models/ped_model.dart';
 import 'package:sharetraveyard/models/period1_model.dart';
 import 'package:sharetraveyard/models/picture_model.dart';
 import 'package:sharetraveyard/models/profile_model.dart';
@@ -48,6 +49,14 @@ class AppController extends GetxController {
 
   RxInt indexShop = 0.obs;
 
+  RxList<PedModel> pedmodels = <PedModel>[].obs;
+
+  RxList<String> docIdPeds = <String>[].obs;
+  RxList<String> collectionPeds = <String>[].obs;
+
+  RxList<String> nameModel = <String>[].obs;
+  RxList<String> nameSerialID = <String>[].obs;
+  RxList<IphoneModel> detailIphones = <IphoneModel>[].obs;
   get data => null;
 
   Future<void> readPicture() async {

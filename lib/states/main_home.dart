@@ -19,12 +19,12 @@ class MainHome extends StatefulWidget {
 class _MainHomeState extends State<MainHome> {
   Widget? mainShop;
 
-  var shops = <Widget>[const ShopBody(), const ShopPedBody()];
+  // var shops = <Widget>[const ShopBody(), const ShopPedBody()];
+  var shops = <Widget>[];
   PageController? pageController;
 
   AppController controller = Get.put(AppController());
 
-  
   var bodys = <Widget>[];
 
   var titles = <String>[
@@ -46,13 +46,23 @@ class _MainHomeState extends State<MainHome> {
     // TODO: implement initState
     super.initState();
 
-    AppSvervice().findCurrenAssociateLogin();
-    pageController = PageController(initialPage: controller.indexShop.value);
+    
+      if (controller.currentAssociateLogin.last.shopPhone!) {
+        shops.add(const ShopBody());
+      }
+      if (controller.currentAssociateLogin.last.shopPed!) {
+        shops.add(const ShopPedBody());
+      } else {}
 
-    mainShop = PageView(
-      controller: pageController,
-      children: shops,
-    );
+      pageController = PageController(initialPage: controller.indexShop.value);
+
+      mainShop = PageView(
+        controller: pageController,
+        children: shops,
+      );
+    
+
+    
 
     bodys.add(mainShop!);
     bodys.add(const NotiBoddy());
@@ -90,8 +100,10 @@ class _MainHomeState extends State<MainHome> {
                             iconData: Icons.restart_alt,
                             pressFunc: () {
                               //swit to shop ped
-                              appController.indexShop.value = ((appController.indexShop.value + 1)%2);
-                              pageController!.jumpToPage(appController.indexShop.value);
+                              appController.indexShop.value =
+                                  ((appController.indexShop.value + 1) % 2);
+                              pageController!
+                                  .jumpToPage(appController.indexShop.value);
                             },
                           ),
                 WidgetIconButtom(

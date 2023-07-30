@@ -8,6 +8,9 @@ import 'package:sharetraveyard/models/profile_model.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
 
+import '../models/ped_model.dart';
+import '../models/site_code_model.dart';
+
 class AppSvervice {
   AppController appController = Get.put(AppController());
 
@@ -261,5 +264,34 @@ class AppSvervice {
         appController.currentAssociateLogin.add(asscociateModel);
       });
     }
+  }
+
+  Future<void> findProductPed() async {
+    FirebaseFirestore.instance
+        .collection('sitecode')
+        .doc(appController.currentAssociateLogin.last.docIdSiteCode)
+        .get()
+        .then((value) {
+      SiteCodeModel siteCodeModel = SiteCodeModel.fromMap(value.data()!);
+      appController.collectionPeds.add(siteCodeModel.ped);
+
+      FirebaseFirestore.instance
+          .collection(siteCodeModel.ped)
+          .get()
+          .then((value) {
+        if (appController.pedmodels.isNotEmpty) {
+          appController.pedmodels.clear();
+          appController.docIdPeds.clear();
+        }
+
+        if (value.docs.isNotEmpty) {
+          for (var element in value.docs) {
+            PedModel pedModel = PedModel.fromMap(element.data());
+            appController.pedmodels.add(pedModel);
+            appController.docIdPeds.add(element.id);
+          }
+        }
+      });
+    });
   }
 }

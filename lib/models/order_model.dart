@@ -17,6 +17,8 @@ class OderModel {
   final String price;
   final String branch;
   final String periodsale;
+  final String? docIdPed;
+  final Map<String, dynamic>? mapPed;
 
   OderModel({
     required this.docIdAssociate,
@@ -32,6 +34,8 @@ class OderModel {
     required this.price,
     required this.branch,
     required this.periodsale,
+    this.docIdPed,
+    this.mapPed,
   });
 
   Map<String, dynamic> toMap() {
@@ -49,6 +53,8 @@ class OderModel {
       'price': price,
       'branch': branch,
       'periodsale': periodsale,
+      'docIdPed': docIdPed,
+      'mapPed': mapPed,
     };
   }
 
@@ -67,11 +73,15 @@ class OderModel {
       price: (map['price'] ?? '') as String,
       branch: (map['branch'] ?? '') as String,
       periodsale: (map['periodsale'] ?? '') as String,
+      docIdPed: (map['docIdPed'] ?? '') as String,
+      mapPed: Map<String, dynamic>.from(map['mapPed'] ?? {}),
     );
   }
-// timestamp: (map['timestamp'] ),
-// salseFinish: map['salseFinish'] ?? false,
-// collectiomProduct: map['collectiomProduct'] ?? 'product1',
+  // collectionProduct: map['collectionProduct'] ??'',
+  // mapPed: Map<String, dynamic>.from(map['mapPed'] ?? {}),
+  // timestamp: map['timestamp'] ?? Timestamp(0, 0),
+  // salseFinish: map['salseFinish'] ?? false,
+
   String toJson() => json.encode(toMap());
 
   factory OderModel.fromJson(String source) =>

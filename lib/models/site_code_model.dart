@@ -4,19 +4,24 @@ import 'dart:convert';
 class SiteCodeModel {
 
   final String name;
+  final String ped;
+
   SiteCodeModel({
     required this.name,
+    required this.ped,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
+      'ped': ped,
     };
   }
 
   factory SiteCodeModel.fromMap(Map<String, dynamic> map) {
     return SiteCodeModel(
       name: (map['name'] ?? '') as String,
+      ped: (map['ped'] ?? '') as String,
     );
   }
 
