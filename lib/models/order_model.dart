@@ -19,6 +19,7 @@ class OderModel {
   final String periodsale;
   final String? docIdPed;
   final Map<String, dynamic>? mapPed;
+  final int? amountPed;
 
   OderModel({
     required this.docIdAssociate,
@@ -36,6 +37,7 @@ class OderModel {
     required this.periodsale,
     this.docIdPed,
     this.mapPed,
+    this.amountPed,
   });
 
   Map<String, dynamic> toMap() {
@@ -55,6 +57,7 @@ class OderModel {
       'periodsale': periodsale,
       'docIdPed': docIdPed,
       'mapPed': mapPed,
+      'amountPed': amountPed,
     };
   }
 
@@ -75,12 +78,26 @@ class OderModel {
       periodsale: (map['periodsale'] ?? '') as String,
       docIdPed: (map['docIdPed'] ?? '') as String,
       mapPed: Map<String, dynamic>.from(map['mapPed'] ?? {}),
+      amountPed: map['amountPed'] ?? 1,
     );
   }
-  // collectionProduct: map['collectionProduct'] ??'',
-  // mapPed: Map<String, dynamic>.from(map['mapPed'] ?? {}),
-  // timestamp: map['timestamp'] ?? Timestamp(0, 0),
-  // salseFinish: map['salseFinish'] ?? false,
+
+//  docIdAssociate: (map['docIdAssociate'] ?? '') as String,
+//       nameAssociate: (map['nameAssociate'] ?? '') as String,
+//       roundID: (map['roundID'] ?? '') as String,
+//       roundStatus: (map['roundStatus'] ?? '') as String,
+//       itemName: (map['itemName'] ?? '') as String,
+//       docPhotopd1: (map['docPhotopd1'] ?? '') as String,
+//       urlSlip: (map['urlSlip'] ?? '') as String,
+//       timestamp: map['timestamp'] ?? Timestamp(0, 0),
+//       salseFinish: map['salseFinish'] ?? false,
+//       collectionProduct: map['collectionProduct'] ?? '',
+//       price: (map['price'] ?? '') as String,
+//       branch: (map['branch'] ?? '') as String,
+//       periodsale: (map['periodsale'] ?? '') as String,
+//       docIdPed: (map['docIdPed'] ?? '') as String,
+//       mapPed: Map<String, dynamic>.from(map['mapPed'] ?? {}),
+//       amountPed: map['amountPed'] ?? 1,
 
   String toJson() => json.encode(toMap());
 

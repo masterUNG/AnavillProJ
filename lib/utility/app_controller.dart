@@ -57,6 +57,9 @@ class AppController extends GetxController {
   RxList<String> nameModel = <String>[].obs;
   RxList<String> nameSerialID = <String>[].obs;
   RxList<IphoneModel> detailIphones = <IphoneModel>[].obs;
+
+  RxInt amountPed = 1.obs;
+
   get data => null;
 
   Future<void> readPicture() async {

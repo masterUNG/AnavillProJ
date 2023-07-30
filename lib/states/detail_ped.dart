@@ -9,8 +9,10 @@ import 'package:sharetraveyard/models/ped_model.dart';
 import 'package:sharetraveyard/states/payment_upload.dart';
 import 'package:sharetraveyard/states/payment_upload_ped.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
+import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
+import 'package:sharetraveyard/widgets/widget_icon_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 import 'package:sharetraveyard/widgets/wigget_image_network.dart';
 
@@ -32,6 +34,7 @@ class DetailPed extends StatefulWidget {
 
 class _DetailPedState extends State<DetailPed> {
   PedModel? pedModel;
+  AppController appController = Get.put(AppController());
 
   @override
   void initState() {
@@ -152,6 +155,7 @@ class _DetailPedState extends State<DetailPed> {
     return WidgetButtom(
       label: 'Reserve or Buy',
       pressFunc: () {
+        appController.amountPed.value = 1;
         productBuy(context);
       },
     );
@@ -161,27 +165,51 @@ class _DetailPedState extends State<DetailPed> {
     AppDialog(context: context).normalDialog(
       title: 'Reserve or Buy',
       subTitle: 'Please Recerve or buy',
-      actionWidget: WidgetButtom(
-        label: 'Reserve',
-        pressFunc: () async {
-          SharedPreferences preferences = await SharedPreferences.getInstance();
-          String? associate = preferences.getString('user');
-
-          Map<String, dynamic> map = pedModel!.toMap();
-          map['timestamp'] = Timestamp.fromDate(DateTime.now());
-          map['associate'] = associate!;
-
-          FirebaseFirestore.instance
-              .collection(widget.collectionPed)
-              .doc(widget.docIdPed)
-              .update(map)
-              .then((value) {
-            Get.back();
-            pedModel = PedModel.fromMap(map);
-            setState(() {});
-          });
-        },
+      contenWidget: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          WidgetIconButtom(
+            iconData: Icons.remove_circle,
+            pressFunc: () {
+              if (appController.amountPed > 1) {
+                appController.amountPed--;
+              }
+            },
+          ),
+          Obx(() {
+            return WidgetText(text: appController.amountPed.value.toString());
+          }),
+          WidgetIconButtom(
+            iconData: Icons.add_circle,
+            pressFunc: () {
+              if (appController.amountPed < int.parse(pedModel!.stock)) {
+                appController.amountPed++;
+              }
+            },
+          )
+        ],
       ),
+      // actionWidget: WidgetButtom(
+      //   label: 'Reserve',
+      //   pressFunc: () async {
+      //     SharedPreferences preferences = await SharedPreferences.getInstance();
+      //     String? associate = preferences.getString('user');
+
+      //     Map<String, dynamic> map = pedModel!.toMap();
+      //     map['timestamp'] = Timestamp.fromDate(DateTime.now());
+      //     map['associate'] = associate!;
+
+      //     FirebaseFirestore.instance
+      //         .collection(widget.collectionPed)
+      //         .doc(widget.docIdPed)
+      //         .update(map)
+      //         .then((value) {
+      //       Get.back();
+      //       pedModel = PedModel.fromMap(map);
+      //       setState(() {});
+      //     });
+      //   },
+      // ),
       action2Widget: WidgetButtom(
         label: 'Buy',
         pressFunc: () {

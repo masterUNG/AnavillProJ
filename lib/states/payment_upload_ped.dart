@@ -186,8 +186,8 @@ class _PaymentUploadPedState extends State<PaymentUploadPed> {
                               branch: appController.displaySiteCode.value,
                               periodsale:
                                   appController.periodModels.last.periodsale,
-                                  docIdPed: widget.docIdPed,
-                                  mapPed: widget.pedModel.toMap(),
+                              docIdPed: widget.docIdPed,
+                              mapPed: widget.pedModel.toMap(),
                             );
 
                             print('##8feb OderModel ---> ${oderModel.toMap()}');
@@ -211,9 +211,13 @@ class _PaymentUploadPedState extends State<PaymentUploadPed> {
 
                               var map = pedModel.toMap();
                               map['reserve'] = true;
+
+                              int stockInt = int.parse(pedModel.stock)- appController.amountPed.value;
+
+
+                              map['stock'] = stockInt.toString();
                               pedModel = PedModel.fromMap(map);
 
-                              
                               await FirebaseFirestore.instance
                                   .collection(widget.collectionPed)
                                   .doc(widget.docIdPed)
