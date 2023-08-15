@@ -188,6 +188,7 @@ class _PaymentUploadPedState extends State<PaymentUploadPed> {
                                   appController.periodModels.last.periodsale,
                               docIdPed: widget.docIdPed,
                               mapPed: widget.pedModel.toMap(),
+                              amountPed: appController.amountPed.value,
                             );
 
                             print('##8feb OderModel ---> ${oderModel.toMap()}');
@@ -217,6 +218,8 @@ class _PaymentUploadPedState extends State<PaymentUploadPed> {
 
                               map['stock'] = stockInt.toString();
                               pedModel = PedModel.fromMap(map);
+
+                              print('##15aug pedModel---->${pedModel.toMap()}');
 
                               await FirebaseFirestore.instance
                                   .collection(widget.collectionPed)

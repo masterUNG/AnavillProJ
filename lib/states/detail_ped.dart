@@ -224,7 +224,7 @@ class _DetailPedState extends State<DetailPed> {
     AppDialog(context: context).normalDialog(
         title: 'Buy Sure ?',
         subTitle:
-            'คุณต้องโอนเงินจำนวน ${pedModel!.price} บาท ไปที่ ธนาคาร และ upload slip',
+            'คุณต้องโอนเงินจำนวน\n ${appController.amountPed.value}x ${pedModel!.price} = ${appController.amountPed.value * int.parse(pedModel!.price)} บาท\n ไปที่ ธนาคาร และ upload slip',
         actionWidget: WidgetButtom(
           label: 'upload Slip',
           pressFunc: () {
