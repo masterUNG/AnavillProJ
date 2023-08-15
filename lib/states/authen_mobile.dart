@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharetraveyard/models/check_associate_model.dart';
 import 'package:sharetraveyard/states/create_account.dart';
+import 'package:sharetraveyard/states/display_check_associate.dart';
+import 'package:sharetraveyard/states/display_wait_admin.dart';
 import 'package:sharetraveyard/states/qurstion_forgot.dart';
 import 'package:sharetraveyard/states/select_site.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
@@ -135,10 +139,8 @@ class _AuthenMobileState extends State<AuthenMobile> {
               .processFindProfileModels(associateID: user!, context: context)
               .then((value) async {
             if (appController.profileModels.isNotEmpty) {
-
               if (appController.profileModels.last.approve) {
-
-              int timesPasswordFalse = AppConstant.timePasswordFalse;
+                int timesPasswordFalse = AppConstant.timePasswordFalse;
 
                 if (password == appController.profileModels.last.password) {
                   //password true
@@ -146,7 +148,9 @@ class _AuthenMobileState extends State<AuthenMobile> {
                   SharedPreferences preferences =
                       await SharedPreferences.getInstance();
                   preferences.setString('user', user!).then((value) {
-                    Get.off(SelectSite(assoiate: user!,));
+                    Get.off(SelectSite(
+                      assoiate: user!,
+                    ));
                   });
                 } else {
                   if (i <= timesPasswordFalse) {
@@ -176,17 +180,11 @@ class _AuthenMobileState extends State<AuthenMobile> {
 
                   i++;
                 }
-                
               } else {
                 AppDialog(context: context).normalDialog(
                     title: ' Wrong Password more than  5 times',
                     subTitle: 'Plase Contact admin unlock password ');
-                
-                
               }
-
-
-              
             }
           });
         }
@@ -254,8 +252,28 @@ class _AuthenMobileState extends State<AuthenMobile> {
   WidgetTextButtom ButtomCreateRegister() {
     return WidgetTextButtom(
       label: 'Create New Register',
-      pressFunc: () {
-        Get.to(const CreateAccount());
+      pressFunc: () async {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        String? docId = preferences.getString('docIdCheckAssociate');
+
+        if (docId == null) {
+          Get.to(const CreateAccount());
+        } else {
+          FirebaseFirestore.instance
+              .collection('checkassociate')
+              .doc(docId)
+              .get()
+              .then((value) {
+            CheckAssociateModel checkAssociateModel =
+                CheckAssociateModel.fromMap(value.data()!);
+
+            if ((checkAssociateModel.cheeck)&&(checkAssociateModel.resultAdmin ?? true)) {
+              Get.to( DisplayCheckAssociate(checkAssociateModel: checkAssociateModel,));
+            } else {
+              Get.to(const DisplayWaitAdmin());
+            }
+          });
+        }
       },
     );
   }

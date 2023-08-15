@@ -1,10 +1,11 @@
 // ignore_for_file: avoid_print
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sharetraveyard/models/associate_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharetraveyard/models/check_associate_model.dart';
 import 'package:sharetraveyard/models/profile_model.dart';
+import 'package:sharetraveyard/states/display_wait_admin.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
@@ -310,24 +311,25 @@ class _CreateAccountState extends State<CreateAccount> {
 
   Widget formAssociateID(BuildContext context) {
     return Obx(() {
+      print('${controller.checkId.value}');
       return WidgetForm(
         textInputType: TextInputType.text,
-        sufixWidget: controller.checkId.value
-            ? WidgetIconButtom(
-                iconData: Icons.cloud_upload,
-                color: AppConstant.active,
-                pressFunc: () {
-                  if (associateId?.isEmpty ?? true) {
-                    AppDialog(context: context).normalDialog(
-                        title: 'No AssociateId',
-                        subTitle: 'Plase Fill AssociateID');
-                  } else {
-                    AppSvervice().readAssociate(
-                        associateID: associateId!, context: context);
-                  }
-                },
-              )
-            : const SizedBox(),
+        // sufixWidget: controller.checkId.value
+        //     ? WidgetIconButtom(
+        //         iconData: Icons.cloud_upload,
+        //         color: AppConstant.active,
+        //         pressFunc: () {
+        //           if (associateId?.isEmpty ?? true) {
+        //             AppDialog(context: context).normalDialog(
+        //                 title: 'No AssociateId',
+        //                 subTitle: 'Plase Fill AssociateID');
+        //           } else {
+        //             AppSvervice().readAssociate(
+        //                 associateID: associateId!, context: context);
+        //           }
+        //         },
+        //       )
+        //     : const SizedBox(),
         changFunc: (p0) {
           associateId = p0.trim();
           print("##associateId = ${associateId}");
@@ -338,10 +340,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
   Future<void> methodVerify(
       AppController appController, BuildContext context) async {
-    if (appController.checkId.value) {
-      AppDialog(context: context).normalDialog(
-          title: 'Check Associate ID ?', subTitle: 'Please click check ID ');
-    } else if (appController.chooseSiteCode.isEmpty) {
+    if (appController.chooseSiteCode.isEmpty) {
       AppDialog(context: context).normalDialog(
           title: 'Site Code ?', subTitle: 'Please choose Site code');
     } else if (associateId?.isEmpty ?? true) {
@@ -386,30 +385,53 @@ class _CreateAccountState extends State<CreateAccount> {
           ulastname: ulastname!);
 
       print('##29july profileModel --> ${profileModel.toMap()}');
+      CheckAssociateModel checkAssociateModel = CheckAssociateModel(
+          mapProfile: profileModel.toMap(),
+          timestamp: Timestamp.fromDate(DateTime.now()),
+          cheeck: false,
+          associateId: associateId!,
+          docIdSiteCode: appController.docIdSiteCodes.last);
 
-      await FirebaseFirestore.instance
-          .collection('associate')
-          .doc(associateId)
-          .collection('profile')
-          .doc()
-          .set(profileModel.toMap())
-          .then((value) {
-        AsscociateModel asscociateModel = AsscociateModel(
-          admin: 'user',
-            name: uname!,
-            lastname: ulastname!,
-            docIdSiteCode: controller.chooseDocIdSiteCodes.last,
-            associateID: associateId!,
-            shopPhone: true,
-            shopPed: false);
-        Map<String, dynamic> map = asscociateModel.toMap();
+      DocumentReference documentReference =
+          FirebaseFirestore.instance.collection('checkassociate').doc();
 
-        FirebaseFirestore.instance
-            .collection('associate')
-            .doc(associateId)
-            .update(map)
-            .then((value) => Get.back());
+      await documentReference
+          .set(checkAssociateModel.toMap())
+          .then((value) async {
+        String docIdCheckAssociate = documentReference.id;
+        print('##docId-----> $docIdCheckAssociate');
+
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences
+            .setString('docIdCheckAssociate', docIdCheckAssociate)
+            .then((value) {
+          Get.offAll(const DisplayWaitAdmin());
+        });
       });
+
+      // await FirebaseFirestore.instance
+      //     .collection('associate')
+      //     .doc(associateId)
+      //     .collection('profile')
+      //     .doc()
+      //     .set(profileModel.toMap())
+      //     .then((value) {
+      //   AsscociateModel asscociateModel = AsscociateModel(
+      //       admin: 'user',
+      //       name: uname!,
+      //       lastname: ulastname!,
+      //       docIdSiteCode: controller.chooseDocIdSiteCodes.last,
+      //       associateID: associateId!,
+      //       shopPhone: true,
+      //       shopPed: false);
+      //   Map<String, dynamic> map = asscociateModel.toMap();
+
+      //   FirebaseFirestore.instance
+      //       .collection('associate')
+      //       .doc(associateId)
+      //       .update(map)
+      //       .then((value) => Get.back());
+      // });
     }
   }
 
