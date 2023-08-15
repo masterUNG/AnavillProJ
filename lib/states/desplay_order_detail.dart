@@ -60,21 +60,138 @@ class _DisplayOrderDetailState extends State<DisplayOrderDetail> {
                   urlImage: widget.orderModel.mapPed!['coverped'],
                   width: double.infinity,
                 ),
-                WidgetText(text: widget.orderModel.mapPed!['model']),
-                WidgetText(text: widget.orderModel.mapPed!['pedID']),
+                Row(
+                  children: [
+                    const Expanded(child: WidgetText(text: 'Model :')),
+                    Expanded(child: WidgetText(text: widget.orderModel.mapPed!['model'])),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Expanded(child: WidgetText(text: 'PedID :')),
+                    Expanded(child: WidgetText(text: widget.orderModel.mapPed!['pedID'])),
+                  ],
+                ),
+                
+                Row(
+                  children: [
+                    const Expanded(child: WidgetText(text: 'UserName :')),
+                    Expanded(
+                        child:
+                            WidgetText(text: widget.orderModel.nameAssociate)),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Expanded(child: WidgetText(text: 'RoundStatus :')),
+                    Expanded(
+                        child:
+                            WidgetText(text: widget.orderModel.roundStatus)),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Expanded(child: WidgetText(text: 'RoundID :')),
+                    Expanded(
+                        child: WidgetText(text: widget.orderModel.roundID)),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Expanded(child: WidgetText(text: 'Site :')),
+                    Expanded(
+                        child: WidgetText(text: widget.orderModel.branch)),
+                  ],
+                ),
               ],
             )
           : Obx(() {
               return appController.detailIphones.isEmpty
                   ? const SizedBox()
                   : ListView(
-                    children: [
-                      WidgetText(text: 'For Mobile'),
-                      WidgetImageNetwork(urlImage: appController.detailIphones.last.cover,width: double.infinity,),
-                      WidgetText(text: appController.detailIphones.last.model),
-                      WidgetText(text: appController.detailIphones.last.price.toString()),
-                    ],
-                  );
+                      children: [
+                        const WidgetText(text: 'For Mobile'),
+                        WidgetImageNetwork(
+                          urlImage: appController.detailIphones.last.cover,
+                          width: double.infinity,
+                        ),
+                        Row(
+                          children: [
+                            const Expanded(
+                              child: WidgetText(text: 'Model :'),
+                            ),
+                            Expanded(
+                              child: WidgetText(
+                                  text: appController.detailIphones.last.model),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Expanded(
+                              
+                              child: WidgetText(text: 'Price : '),
+                            ),
+                            Expanded(
+                              child: WidgetText(
+                                text: appController.detailIphones.last.price
+                                    .toString(),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Expanded(
+                              child: WidgetText(text: 'Associate ID : '),
+                            ),
+                            Expanded(
+                              child: WidgetText(
+                                text: appController.orderModels.last.docIdAssociate,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Expanded(
+                              child: WidgetText(text: 'Site : '),
+                            ),
+                            Expanded(
+                              child: WidgetText(
+                                text: appController
+                                    .orderModels.last.branch,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Expanded(
+                              child: WidgetText(text: 'RoundStatus : '),
+                            ),
+                            Expanded(
+                              child: WidgetText(
+                                text: appController.orderModels.last.roundStatus,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Expanded(
+                              child: WidgetText(text: 'UserName : '),
+                            ),
+                            Expanded(
+                              child: WidgetText(
+                                text:
+                                    appController.orderModels.last.nameAssociate,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
             }),
     );
   }
