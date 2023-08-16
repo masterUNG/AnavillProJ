@@ -8,6 +8,7 @@ import 'package:sharetraveyard/states/desplay_order_detail.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_svervice.dart';
+import 'package:sharetraveyard/widgets/widget_icon_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
 class NotiBoddy extends StatefulWidget {
@@ -64,6 +65,7 @@ class _NotiBoddyState extends State<NotiBoddy> {
         controller.orderModels.clear();
         controller.nameModel.clear();
         controller.nameSerialID.clear();
+        controller.docIOrder.clear();
       }
       for (var element in value.docs) {
         OderModel model = OderModel.fromMap(element.data());
@@ -79,10 +81,12 @@ class _NotiBoddyState extends State<NotiBoddy> {
 
             controller.nameModel.add('${iphoneModel.model}[mobile]');
             controller.nameSerialID.add(iphoneModel.serialID);
+            controller.docIOrder.add(element.id);
           } else {
             //for ped
             controller.nameModel.add('${model.mapPed!['model']}[Ped]');
             controller.nameSerialID.add(model.mapPed!['pedID']);
+            controller.docIOrder.add(element.id);
           }
         }
       }
@@ -135,6 +139,23 @@ class _NotiBoddyState extends State<NotiBoddy> {
                                     child: WidgetText(
                                         text:
                                             appController.nameSerialID[index])),
+                                Expanded(
+                                  child: WidgetIconButtom(
+                                    iconData: Icons.delete_forever,
+                                    pressFunc: () async {
+                                      print(
+                                          'delete at ${controller.docIOrder[index]}');
+
+                                      FirebaseFirestore.instance
+                                          .collection('order')
+                                          .doc(controller.docIOrder[index])
+                                          .delete()
+                                          .then((value) {
+                                        findMyOrder();
+                                      });
+                                    },
+                                  ),
+                                )
                               ],
                             ),
                           ),

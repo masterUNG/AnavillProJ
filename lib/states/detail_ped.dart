@@ -35,11 +35,32 @@ class DetailPed extends StatefulWidget {
 class _DetailPedState extends State<DetailPed> {
   PedModel? pedModel;
   AppController appController = Get.put(AppController());
+  int amountStock = 0;
 
   @override
   void initState() {
     super.initState();
     pedModel = widget.pedModel;
+    findCurrentStock();
+  }
+
+  void findCurrentStock() {
+    int amountReserve = 0;
+    if (pedModel!.maps!.isNotEmpty) {
+      for (var element in pedModel!.maps!) {
+        //
+        DateTime dateTimeReserve = element['timestamp'].toDate();
+        //ปรับเวลาตรงนี้
+        dateTimeReserve = dateTimeReserve.add(Duration(minutes: 3));
+
+        if (dateTimeReserve.difference(DateTime.now()).inMinutes > 0) {
+          int amount = element['amount'];
+          amountReserve = amountReserve + amount;
+        }
+      }
+      print('amountReserve --->$amountReserve');
+      amountStock = int.parse(pedModel!.stock) - amountReserve;
+    }
   }
 
   @override
@@ -103,7 +124,7 @@ class _DetailPedState extends State<DetailPed> {
                 Expanded(
                   flex: 2,
                   child: WidgetText(
-                    text: pedModel!.stock,
+                    text: amountStock.toString(),
                   ),
                 ),
               ],
@@ -151,14 +172,21 @@ class _DetailPedState extends State<DetailPed> {
     );
   }
 
-  WidgetButtom BuyButtom(BuildContext context) {
-    return WidgetButtom(
-      label: 'Reserve or Buy',
-      pressFunc: () {
-        appController.amountPed.value = 1;
-        productBuy(context);
-      },
-    );
+  Widget BuyButtom(BuildContext context) {
+    return amountStock == 0
+        ? WidgetText(
+            text: 'Sale Out',
+            textStyle: AppConstant().h3Style(
+              color: Colors.red,
+            ),
+          )
+        : WidgetButtom(
+            label: 'Reserve or Buy',
+            pressFunc: () {
+              appController.amountPed.value = 1;
+              productBuy(context);
+            },
+          );
   }
 
   void productBuy(BuildContext context) {
@@ -210,6 +238,48 @@ class _DetailPedState extends State<DetailPed> {
       //     });
       //   },
       // ),
+
+      actionWidget: WidgetButtom(
+        label: 'Reserve',
+        pressFunc: () async {
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+
+          Map<String, dynamic> map = {};
+          map['amount'] = appController.amountPed.value;
+          map['associateID'] = preferences.getString('user');
+          map['timestamp'] = Timestamp.fromDate(DateTime.now());
+          print('##16aug map----->$map');
+
+          Map<String, dynamic> mapPedModel = widget.pedModel.toMap();
+          print('mapPedmodel before ---> $mapPedModel');
+
+          var maps = <Map<String, dynamic>>[];
+          if (mapPedModel['maps'].isNotEmpty) {
+            for (var element in mapPedModel['maps']) {
+              maps.add(element);
+            }
+          }
+          print('maps before ---->$maps');
+
+          maps.add(map);
+
+          print('maps after ---->$maps');
+
+          mapPedModel['maps'] = maps;
+
+          print('mapPedmodel after ---> $mapPedModel');
+
+          FirebaseFirestore.instance
+              .collection(widget.collectionPed)
+              .doc(widget.docIdPed)
+              .update(mapPedModel)
+              .then((value) {
+            print('update Success');
+            Get.back();
+            Get.back();
+          });
+        },
+      ),
       action2Widget: WidgetButtom(
         label: 'Buy',
         pressFunc: () {
@@ -225,7 +295,7 @@ class _DetailPedState extends State<DetailPed> {
         title: 'Buy Sure ?',
         subTitle:
             'คุณต้องโอนเงินจำนวน\n ${appController.amountPed.value}x ${pedModel!.price} = ${appController.amountPed.value * int.parse(pedModel!.price)} บาท\n ไปที่ ธนาคาร และ upload slip',
-        actionWidget: WidgetButtom(
+        action2Widget: WidgetButtom(
           label: 'upload Slip',
           pressFunc: () {
             Get.back();

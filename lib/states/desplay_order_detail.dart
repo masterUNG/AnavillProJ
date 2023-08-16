@@ -54,8 +54,9 @@ class _DisplayOrderDetailState extends State<DisplayOrderDetail> {
       ),
       body: widget.orderModel.docPhotopd1.isEmpty
           ? ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               children: [
-                WidgetText(text: 'For Ped'),
+                const WidgetText(text: 'For Ped'),
                 WidgetImageNetwork(
                   urlImage: widget.orderModel.mapPed!['coverped'],
                   width: double.infinity,
@@ -63,16 +64,19 @@ class _DisplayOrderDetailState extends State<DisplayOrderDetail> {
                 Row(
                   children: [
                     const Expanded(child: WidgetText(text: 'Model :')),
-                    Expanded(child: WidgetText(text: widget.orderModel.mapPed!['model'])),
+                    Expanded(
+                        child: WidgetText(
+                            text: widget.orderModel.mapPed!['model'])),
                   ],
                 ),
                 Row(
                   children: [
                     const Expanded(child: WidgetText(text: 'PedID :')),
-                    Expanded(child: WidgetText(text: widget.orderModel.mapPed!['pedID'])),
+                    Expanded(
+                        child: WidgetText(
+                            text: widget.orderModel.mapPed!['pedID'])),
                   ],
                 ),
-                
                 Row(
                   children: [
                     const Expanded(child: WidgetText(text: 'UserName :')),
@@ -85,8 +89,7 @@ class _DisplayOrderDetailState extends State<DisplayOrderDetail> {
                   children: [
                     const Expanded(child: WidgetText(text: 'RoundStatus :')),
                     Expanded(
-                        child:
-                            WidgetText(text: widget.orderModel.roundStatus)),
+                        child: WidgetText(text: widget.orderModel.roundStatus)),
                   ],
                 ),
                 Row(
@@ -99,10 +102,10 @@ class _DisplayOrderDetailState extends State<DisplayOrderDetail> {
                 Row(
                   children: [
                     const Expanded(child: WidgetText(text: 'Site :')),
-                    Expanded(
-                        child: WidgetText(text: widget.orderModel.branch)),
+                    Expanded(child: WidgetText(text: widget.orderModel.branch)),
                   ],
                 ),
+                
               ],
             )
           : Obx(() {
@@ -129,7 +132,6 @@ class _DisplayOrderDetailState extends State<DisplayOrderDetail> {
                         Row(
                           children: [
                             const Expanded(
-                              
                               child: WidgetText(text: 'Price : '),
                             ),
                             Expanded(
@@ -147,7 +149,8 @@ class _DisplayOrderDetailState extends State<DisplayOrderDetail> {
                             ),
                             Expanded(
                               child: WidgetText(
-                                text: appController.orderModels.last.docIdAssociate,
+                                text: appController
+                                    .orderModels.last.docIdAssociate,
                               ),
                             ),
                           ],
@@ -159,8 +162,7 @@ class _DisplayOrderDetailState extends State<DisplayOrderDetail> {
                             ),
                             Expanded(
                               child: WidgetText(
-                                text: appController
-                                    .orderModels.last.branch,
+                                text: appController.orderModels.last.branch,
                               ),
                             ),
                           ],
@@ -172,7 +174,8 @@ class _DisplayOrderDetailState extends State<DisplayOrderDetail> {
                             ),
                             Expanded(
                               child: WidgetText(
-                                text: appController.orderModels.last.roundStatus,
+                                text:
+                                    appController.orderModels.last.roundStatus,
                               ),
                             ),
                           ],
@@ -184,8 +187,8 @@ class _DisplayOrderDetailState extends State<DisplayOrderDetail> {
                             ),
                             Expanded(
                               child: WidgetText(
-                                text:
-                                    appController.orderModels.last.nameAssociate,
+                                text: appController
+                                    .orderModels.last.nameAssociate,
                               ),
                             ),
                           ],

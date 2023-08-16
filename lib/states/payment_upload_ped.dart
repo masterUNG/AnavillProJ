@@ -16,6 +16,7 @@ import 'package:sharetraveyard/models/ped_model.dart';
 import 'package:sharetraveyard/states/select_site.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
+import 'package:sharetraveyard/utility/app_dialog.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_storage_service.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
@@ -121,7 +122,7 @@ class _PaymentUploadPedState extends State<PaymentUploadPed> {
                       Center(
                         child: WidgetText(
                           text:
-                              'Total amount to be price : ${widget.pedModel.price}',
+                              'Total amount to be price : ${appController.amountPed * int.parse(widget.pedModel.price)}',
                         ),
                       ),
                     ],
@@ -213,8 +214,8 @@ class _PaymentUploadPedState extends State<PaymentUploadPed> {
                               var map = pedModel.toMap();
                               map['reserve'] = true;
 
-                              int stockInt = int.parse(pedModel.stock)- appController.amountPed.value;
-
+                              int stockInt = int.parse(pedModel.stock) -
+                                  appController.amountPed.value;
 
                               map['stock'] = stockInt.toString();
                               pedModel = PedModel.fromMap(map);
@@ -226,11 +227,23 @@ class _PaymentUploadPedState extends State<PaymentUploadPed> {
                                   .doc(widget.docIdPed)
                                   .update(pedModel.toMap())
                                   .then((_) {
+                                AppDialog(context: context).normalDialog(
+                                    title: 'Order Succes',
+                                    subTitle: 'Thank you for order',
+                                    oneActionWidget: WidgetButtom(
+                                      label: 'OK',
+                                      pressFunc: () {
+                                        Get.offAll(const SelectSite(
+                                          assoiate: '',
+                                        ));
+
+
+
+                                      },
+                                    ));
                                 print(
                                     '##18mar controller.displaySiteCode.value ----> ${appController.displaySiteCode.value}');
-                                Get.offAll(const SelectSite(
-                                  assoiate: '',
-                                ));
+                                
                               });
                             });
                           });

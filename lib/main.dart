@@ -9,6 +9,7 @@ import 'package:sharetraveyard/states/authen_web.dart';
 import 'package:sharetraveyard/states/select_site.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:sharetraveyard/utility/app_controller.dart';
 
 var getPage = <GetPage<dynamic>>[
   GetPage(
@@ -48,6 +49,8 @@ Future<void> main() async {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       var user = preferences.getString('user');
       print('##8feb urer ---> $user');
+
+      
 
       if (user != null) {
         firstState = '/select';

@@ -15,6 +15,7 @@ class AppDialog {
     required String title,
     required String subTitle,
     Widget? actionWidget,
+    Widget? oneActionWidget,
     Widget? action2Widget,
     Widget? contenWidget,
   }) {
@@ -29,18 +30,19 @@ class AppDialog {
           text: title,
           textStyle: AppConstant().h2Style(),
         ),
-        content: contenWidget ??  WidgetText(text: subTitle),
+        content: contenWidget ?? WidgetText(text: subTitle),
         actions: [
           actionWidget ?? const SizedBox(),
           action2Widget ?? const SizedBox(),
-          Column(
-            children: [ 
-              WidgetButtom(
-                label: action2Widget == null ? 'OK' : 'Cancel',
-                pressFunc: () => Get.back(),
-              ),
-            ],
-          )
+          oneActionWidget ??
+              Column(
+                children: [
+                  WidgetButtom(
+                    label: action2Widget == null ? 'OK' : 'Cancel',
+                    pressFunc: () => Get.back(),
+                  ),
+                ],
+              )
         ],
       ),
       barrierDismissible: false,

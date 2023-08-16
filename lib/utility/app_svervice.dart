@@ -267,6 +267,9 @@ class AppSvervice {
   }
 
   Future<void> findProductPed() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? associateID = preferences.getString('user');
+
     FirebaseFirestore.instance
         .collection('sitecode')
         .doc(appController.currentAssociateLogin.last.docIdSiteCode)
@@ -282,6 +285,7 @@ class AppSvervice {
         if (appController.pedmodels.isNotEmpty) {
           appController.pedmodels.clear();
           appController.docIdPeds.clear();
+          appController.reservePeds.clear();
         }
 
         if (value.docs.isNotEmpty) {
@@ -289,6 +293,39 @@ class AppSvervice {
             PedModel pedModel = PedModel.fromMap(element.data());
             appController.pedmodels.add(pedModel);
             appController.docIdPeds.add(element.id);
+
+            if (pedModel.maps!.isEmpty) {
+              appController.reservePeds.add(false);
+            } else {
+              bool result = false;
+              int indexMaps = 0;
+
+              for (var element in pedModel.maps!) {
+                if (element['associateID'] == associateID) {
+                  DateTime dateTimeReserve = element['timestamp'].toDate();
+
+                  print('dateReserve before ---> $dateTimeReserve');
+
+                  dateTimeReserve = dateTimeReserve.add(Duration(minutes: 3));
+                  //ปรับเวลาตรงนี้
+
+                  print('dateReserve after ---> $dateTimeReserve');
+
+                  if (dateTimeReserve.difference(DateTime.now()).inMinutes <
+                      0) {
+                    //หมดเวลา
+                    // pedModel.maps!.removeAt(indexMaps);
+                  } else {
+                    appController.amountPed.value = element['amount'];
+                    //เวลายังไม่หมด รู้ว่า amount เท่าไหร่
+                    result = true;
+                  }
+                }
+                indexMaps++;
+              }
+
+              appController.reservePeds.add(result);
+            }
           }
         }
       });

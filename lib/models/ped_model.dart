@@ -11,6 +11,7 @@ class PedModel {
   final String stock;
   final String associate;
   final Timestamp timestamp;
+  final List<Map<String, dynamic>>? maps;
 
   PedModel({
     required this.coverped,
@@ -20,6 +21,7 @@ class PedModel {
     required this.stock,
     required this.associate,
     required this.timestamp,
+    this.maps,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,6 +33,7 @@ class PedModel {
       'stock': stock,
       'associate': associate,
       'timestamp': timestamp,
+      'maps': maps,
     };
   }
 
@@ -42,9 +45,18 @@ class PedModel {
       price: (map['price'] ?? '') as String,
       stock: (map['stock'] ?? '') as String,
       associate: (map['associate'] ?? '') as String,
-      timestamp: (map['timestamp'] ?? Timestamp(0, 0)),
+     timestamp: (map['timestamp'] ?? Timestamp(0, 0)),
+     maps: List<Map<String, dynamic>>.from(map['maps'] ?? []),
     );
   }
+  // coverped: (map['coverped'] ?? '') as String,
+  //     model: (map['model'] ?? '') as String,
+  //     pedID: (map['pedID'] ?? '') as String,
+  //     price: (map['price'] ?? '') as String,
+  //     stock: (map['stock'] ?? '') as String,
+  //     associate: (map['associate'] ?? '') as String,
+  //     timestamp: (map['timestamp'] ?? Timestamp(0, 0)),
+  //     map: List<Map<String, dynamic>>.from(map['map'] ?? []),
 
   String toJson() => json.encode(toMap());
 

@@ -39,6 +39,7 @@ class AppController extends GetxController {
   RxList urlImage = <String>[].obs;
   RxList<AsscociateModel> profileAssocicateModels = <AsscociateModel>[].obs;
   RxList<OderModel> orderModels = <OderModel>[].obs;
+  RxList<String> docIOrder = <String>[].obs;
   RxList<IphoneModel> notiIphoneModels = <IphoneModel>[].obs;
   RxList<String> associateIdCurrents = <String>[].obs;
   RxString displaySiteCode = ''.obs;
@@ -57,6 +58,8 @@ class AppController extends GetxController {
   RxList<String> nameModel = <String>[].obs;
   RxList<String> nameSerialID = <String>[].obs;
   RxList<IphoneModel> detailIphones = <IphoneModel>[].obs;
+
+  RxList<bool> reservePeds = <bool>[].obs;
 
   RxInt amountPed = 1.obs;
 
