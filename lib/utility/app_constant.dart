@@ -60,4 +60,12 @@ class AppConstant {
     return AppConstant()
         .appStyle(size: size ?? 50, fontWeight: fontWeight, color: color);
   }
+
+
+
+  TextStyle h5Style({Color? color, double? size, FontWeight? fontWeight}) {
+    return AppConstant()
+        .appStyle(size: size ?? 40, fontWeight: fontWeight, color: color);
+  }
 }
+

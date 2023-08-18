@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/models/ped_model.dart';
-import 'package:sharetraveyard/states/payment_upload.dart';
 import 'package:sharetraveyard/states/payment_upload_ped.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
@@ -46,21 +44,22 @@ class _DetailPedState extends State<DetailPed> {
 
   void findCurrentStock() {
     int amountReserve = 0;
+
     if (pedModel!.maps!.isNotEmpty) {
       for (var element in pedModel!.maps!) {
-        //
         DateTime dateTimeReserve = element['timestamp'].toDate();
-        //ปรับเวลาตรงนี้
-        dateTimeReserve = dateTimeReserve.add(Duration(minutes: 3));
+
+        //ปรับเวลาตรงนี่
+        dateTimeReserve = dateTimeReserve.add(const Duration(minutes: 3));
 
         if (dateTimeReserve.difference(DateTime.now()).inMinutes > 0) {
           int amount = element['amount'];
           amountReserve = amountReserve + amount;
         }
       }
-      print('amountReserve --->$amountReserve');
-      amountStock = int.parse(pedModel!.stock) - amountReserve;
+      print('amountRecerve ---> $amountReserve');
     }
+    amountStock = int.parse(pedModel!.stock) - amountReserve;
   }
 
   @override
@@ -157,7 +156,7 @@ class _DetailPedState extends State<DetailPed> {
                         }
                       },
                       child: Container(
-                        decoration: BoxDecoration(color: Colors.yellow),
+                        decoration: const BoxDecoration(color: Colors.yellow),
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: WidgetText(
@@ -174,12 +173,12 @@ class _DetailPedState extends State<DetailPed> {
 
   Widget BuyButtom(BuildContext context) {
     return amountStock == 0
-        ? WidgetText(
-            text: 'Sale Out',
-            textStyle: AppConstant().h3Style(
-              color: Colors.red,
+        ? Center(
+          child: WidgetText(
+              text: 'Sole Out',
+              textStyle: AppConstant().h5Style(color: Colors.red),
             ),
-          )
+        )
         : WidgetButtom(
             label: 'Reserve or Buy',
             pressFunc: () {
@@ -238,7 +237,6 @@ class _DetailPedState extends State<DetailPed> {
       //     });
       //   },
       // ),
-
       actionWidget: WidgetButtom(
         label: 'Reserve',
         pressFunc: () async {
@@ -248,26 +246,29 @@ class _DetailPedState extends State<DetailPed> {
           map['amount'] = appController.amountPed.value;
           map['associateID'] = preferences.getString('user');
           map['timestamp'] = Timestamp.fromDate(DateTime.now());
-          print('##16aug map----->$map');
+
+          print('##16aug map ----> $map');
 
           Map<String, dynamic> mapPedModel = widget.pedModel.toMap();
-          print('mapPedmodel before ---> $mapPedModel');
+          print('mapPedModel ก่อน --> $mapPedModel');
 
           var maps = <Map<String, dynamic>>[];
+
           if (mapPedModel['maps'].isNotEmpty) {
             for (var element in mapPedModel['maps']) {
               maps.add(element);
             }
           }
-          print('maps before ---->$maps');
+
+          print('maps ก่อน ---> $maps');
 
           maps.add(map);
 
-          print('maps after ---->$maps');
+          print('maps หลัง ---> $maps');
 
           mapPedModel['maps'] = maps;
 
-          print('mapPedmodel after ---> $mapPedModel');
+          print('mapPedModel หลัง --> $mapPedModel');
 
           FirebaseFirestore.instance
               .collection(widget.collectionPed)
@@ -294,11 +295,12 @@ class _DetailPedState extends State<DetailPed> {
     AppDialog(context: context).normalDialog(
         title: 'Buy Sure ?',
         subTitle:
-            'คุณต้องโอนเงินจำนวน\n ${appController.amountPed.value}x ${pedModel!.price} = ${appController.amountPed.value * int.parse(pedModel!.price)} บาท\n ไปที่ ธนาคาร และ upload slip',
-        action2Widget: WidgetButtom(
+            'คุณต้องโอนเงินจำนวน\n ${appController.amountPed.value} X ${pedModel!.price} = ${appController.amountPed.value * int.parse(pedModel!.price)} บาท\n ไปที่ ธนาคาร และ upload slip',
+        actionWidget: WidgetButtom(
           label: 'upload Slip',
           pressFunc: () {
             Get.back();
+
             Get.to(PaymentUploadPed(
                 pedModel: widget.pedModel,
                 docIdPed: widget.docIdPed,

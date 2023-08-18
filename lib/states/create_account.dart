@@ -390,7 +390,7 @@ class _CreateAccountState extends State<CreateAccount> {
           timestamp: Timestamp.fromDate(DateTime.now()),
           cheeck: false,
           associateId: associateId!,
-          docIdSiteCode: appController.docIdSiteCodes.last);
+          docIdSiteCode: controller.chooseDocIdSiteCodes.last);
 
       DocumentReference documentReference =
           FirebaseFirestore.instance.collection('checkassociate').doc();
