@@ -17,6 +17,8 @@ class IphoneModel {
   final bool? reserve;
   final Timestamp? timestamp;
   final String? associate;
+  final bool? buy;
+  final String? associateBuy;
 
   IphoneModel({
     // ignore: non_constant_identifier_names
@@ -31,6 +33,8 @@ class IphoneModel {
     this.reserve,
     this.timestamp,
     this.associate,
+    this.buy,
+    this.associateBuy,
   });
 
   Map<String, dynamic> toMap() {
@@ -46,6 +50,8 @@ class IphoneModel {
       'reserve': reserve,
       'timestamp': timestamp,
       'associate': associate,
+      'buy': buy,
+      'associateBuy': associateBuy,
     };
   }
 
@@ -62,18 +68,10 @@ class IphoneModel {
       reserve: map['reserve'] ?? false,
       timestamp: map['timestamp'] ?? Timestamp(0, 0),
       associate: map['associate'] ?? '',
+      buy: (map['buy'] ?? false) as bool,
+      associateBuy: (map['associateBuy'] ?? '') as String,
     );
   }
-  // model: (map['model'] ?? '') as String,
-  //     cover: (map['cover'] ?? '') as String,
-  //     price: (map['price'] ?? 0) as int,
-  //     stock: (map['stock'] ?? 0) as int,
-  //     serialID: (map['serialID'] ?? '') as String,
-  //     capacity: (map['capacity'] ?? '') as String,
-  //     grade: (map['grade'] ?? '') as String,
-  //     salseFinish: map['salseFinish'] ?? false,
-  //     reserve: map['reserve'] ?? false,
-  //     timestamp: map['timestamp'] ?? Timestamp(0, 0),
 
   String toJson() => json.encode(toMap());
 

@@ -332,4 +332,24 @@ class AppSvervice {
       });
     });
   }
+
+  Future<IphoneModel> checkBuy(
+      {required String collection, required String docId}) async {
+    var result = await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(docId)
+        .get();
+
+    IphoneModel iphoneModel = IphoneModel.fromMap(result.data()!);
+    print('##10sep buy -----> ${iphoneModel.buy}');
+
+    return iphoneModel;
+  }
+
+  Future<void> processEditProduct(
+      {required String collection,
+      required String docId,
+      required Map<String, dynamic> map}) async {
+    FirebaseFirestore.instance.collection(collection).doc(docId).update(map);
+  }
 }

@@ -35,6 +35,8 @@ class _DetailPedState extends State<DetailPed> {
   PedModel? pedModel;
   AppController appController = Get.put(AppController());
   int amountStock = 0;
+  
+  int total = 0;
 
   @override
   void initState() {
@@ -175,11 +177,11 @@ class _DetailPedState extends State<DetailPed> {
   Widget BuyButtom(BuildContext context) {
     return amountStock == 0
         ? Center(
-          child: WidgetText(
+            child: WidgetText(
               text: 'Sole Out',
               textStyle: AppConstant().h5Style(color: Colors.red),
             ),
-        )
+          )
         : WidgetButtom(
             label: 'Reserve or Buy',
             pressFunc: () {
@@ -205,12 +207,25 @@ class _DetailPedState extends State<DetailPed> {
             },
           ),
           Obx(() {
-            return WidgetText(text: appController.amountPed.value.toString());
+            total = int.parse(widget.pedModel.price) *
+                appController.amountPed.value;
+
+            print('total ---> $total');
+
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                WidgetText(
+                    text:
+                        '${widget.pedModel.price} X ${appController.amountPed.value}'),
+                WidgetText(text: total.toString())
+              ],
+            );
           }),
           WidgetIconButtom(
             iconData: Icons.add_circle,
             pressFunc: () {
-              if (appController.amountPed < int.parse(pedModel!.stock)) {
+              if ((appController.amountPed < int.parse(pedModel!.stock)) && (total < 2000) ) {
                 appController.amountPed++;
               }
             },

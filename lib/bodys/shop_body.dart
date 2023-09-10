@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/states/detail_product.dart';
+import 'package:sharetraveyard/states/payment_upload.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
+import 'package:sharetraveyard/utility/app_dialog.dart';
 import 'package:sharetraveyard/utility/app_svervice.dart';
+import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_form.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 import 'package:sharetraveyard/widgets/wigget_image_network.dart';
@@ -50,12 +53,16 @@ class _ShopBodyState extends State<ShopBody> {
       case 'PCH-Hanoi':
         nameCollection = 'product4';
         break;
-        case 'PCH-BK':
+      case 'PCH-BK':
         nameCollection = 'producttest';
         break;
       default:
     }
     print('##mar8 nameCollection---->${nameCollection}');
+
+    if (searchIphoneModels.isNotEmpty) {
+      searchIphoneModels.clear();
+    }
 
     AppSvervice().readPhotoPD1(nameCollection: nameCollection).then((value) {
       for (var element in controller.iphoneModels) {
@@ -117,10 +124,10 @@ class _ShopBodyState extends State<ShopBody> {
                         itemCount: searchIphoneModels.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          //mainAxisExtent: 4,
-                          //crossAxisSpacing: 4,
-                        ),
+                                crossAxisCount: 3, childAspectRatio: 2 / 3
+                                //mainAxisExtent: 4,
+                                //crossAxisSpacing: 4,
+                                ),
                         itemBuilder: (context, index) => InkWell(
                           onTap: () async {
                             await FirebaseFirestore.instance
@@ -134,15 +141,66 @@ class _ShopBodyState extends State<ShopBody> {
                                 String docIdPhotopd1 = element.id;
 
                                 if (!(searchIphoneModels[index].salseFinish!)) {
-                                  Get.to(DetailProduct(
-                                    iphoneModel: searchIphoneModels[index],
-                                    docIdPhotoPd1: docIdPhotopd1,
-                                    collectionProduct: nameCollection,
-                                  ))!
-                                      .then((value) {
-                                    searchIphoneModels.clear();
-                                    refreshData();
-                                  });
+                                  if (!(searchIphoneModels[index].buy!)) {
+                                    Get.to(DetailProduct(
+                                      iphoneModel: searchIphoneModels[index],
+                                      docIdPhotoPd1: docIdPhotopd1,
+                                      collectionProduct: nameCollection,
+                                    ))!
+                                        .then((value) {
+                                      searchIphoneModels.clear();
+                                      refreshData();
+                                    });
+                                  } else if (appController.currentAssociateLogin
+                                          .last.associateID ==
+                                      searchIphoneModels[index].associateBuy) {
+                                    //เจ้าของ buy
+
+                                    AppDialog(context: context).normalDialog(
+                                      title: 'Please Choose',
+                                      subTitle: 'Upload Slip or ยกเลิก Buy',
+                                      actionWidget: WidgetButtom(
+                                        label: 'Upload Slip',
+                                        pressFunc: () {
+                                          Get.back();
+                                          Get.to(
+                                            PaymentUpload(
+                                              iphoneModel:
+                                                  searchIphoneModels[index],
+                                              docIdPhotoPd1: docIdPhotopd1,
+                                              collectionProduct: nameCollection,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      action2Widget: WidgetButtom(
+                                        label: 'ยกเลิก Buy',
+                                        pressFunc: () async {
+                                          Map<String, dynamic> map =
+                                              searchIphoneModels[index].toMap();
+
+                                          print('map ก่อน ---> $map');
+
+                                          map['buy'] = false;
+                                          map['associateBun'] = '';
+
+                                          print('map หลัง ---> $map');
+
+                                          await AppSvervice()
+                                              .processEditProduct(
+                                                  collection: nameCollection,
+                                                  docId: docIdPhotopd1,
+                                                  map: map)
+                                              .then((value) {
+                                            Get.back();
+                                            refreshData();
+                                          });
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    //Guest
+                                  }
                                 }
                               }
                             });
@@ -162,8 +220,8 @@ class _ShopBodyState extends State<ShopBody> {
                                                 .timestamp!
                                                 .toDate()
                                                 .difference(DateTime.now())
-                                                .inMinutes < 
-                                                //inMinutes ปรับเวลาตรงนี้ และ ตรง file detail states  line 144
+                                                .inMinutes <
+                                            //inMinutes ปรับเวลาตรงนี้ และ ตรง file detail states  line 144
                                             -1
                                         ? const SizedBox()
                                         : Container(
@@ -179,7 +237,10 @@ class _ShopBodyState extends State<ShopBody> {
                                         textStyle: AppConstant()
                                             .h3Style(color: Colors.red),
                                       )
-                                    : const SizedBox()
+                                    : const SizedBox(),
+                                searchIphoneModels[index].buy!
+                                    ? WidgetText(text: 'Choosed')
+                                    : const SizedBox(),
                               ],
                             ),
                           ),

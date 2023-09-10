@@ -8,9 +8,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/states/payment_upload.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
+import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
+import 'package:sharetraveyard/utility/app_svervice.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
+import 'package:sharetraveyard/widgets/widget_text_buttom.dart';
 import 'package:sharetraveyard/widgets/wigget_image_network.dart';
 
 class DetailProduct extends StatefulWidget {
@@ -194,45 +197,81 @@ class _DetailProductState extends State<DetailProduct> {
     AppDialog(context: context).normalDialog(
       title: 'Reserve or Buy',
       subTitle: 'Please Recerve or buy',
-      actionWidget: WidgetButtom(
-        label: 'Reserve',
-        pressFunc: () async {
-          SharedPreferences preferences = await SharedPreferences.getInstance();
-          String? associate = preferences.getString('user');
 
-          Map<String, dynamic> map = iphoneModel!.toMap();
-          map['timestamp'] = Timestamp.fromDate(DateTime.now());
-          map['associate'] = associate!;
+      // actionWidget: WidgetButtom(
+      //   label: 'Reserve',
+      //   pressFunc: () async {
+      //     SharedPreferences preferences = await SharedPreferences.getInstance();
+      //     String? associate = preferences.getString('user');
 
-          FirebaseFirestore.instance
-              .collection(widget.collectionProduct)
-              .doc(widget.docIdPhotoPd1)
-              .update(map)
-              .then((value) {
-            Get.back();
-            iphoneModel = IphoneModel.fromMap(map);
-            setState(() {});
-          });
-        },
-      ),
+      //     Map<String, dynamic> map = iphoneModel!.toMap();
+      //     map['timestamp'] = Timestamp.fromDate(DateTime.now());
+      //     map['associate'] = associate!;
+
+      //     FirebaseFirestore.instance
+      //         .collection(widget.collectionProduct)
+      //         .doc(widget.docIdPhotoPd1)
+      //         .update(map)
+      //         .then((value) {
+      //       Get.back();
+      //       iphoneModel = IphoneModel.fromMap(map);
+      //       setState(() {});
+      //     });
+      //   },
+      // ),
+
       action2Widget: WidgetButtom(
         label: 'Buy',
         pressFunc: () {
           Get.back();
 
-          
+          AppSvervice()
+              .checkBuy(
+                  collection: widget.collectionProduct,
+                  docId: widget.docIdPhotoPd1)
+              .then((value) {
+            IphoneModel iphoneModel = IphoneModel.fromMap(value.toMap());
 
-
-
-
-
-          dialogConfrimBuy(context);
+            if (iphoneModel.buy!) {
+              //มีคนซื้อตัดหน้าไปละ
+              AppDialog(context: context).normalDialog(
+                  title: 'Just SalseOut',
+                  subTitle: 'ขออภัยครับพึ่งมีคนซื่อไปครับ',
+                  action2Widget: WidgetButtom(
+                    label: 'ไม่เป็นไร',
+                    pressFunc: () {
+                      Get.back();
+                      Get.back();
+                    },
+                  ));
+            } else {
+              dialogConfrimBuy(context, map: value.toMap());
+            }
+          });
         },
       ),
     );
   }
 
-  void dialogConfrimBuy(BuildContext context) {
+  void dialogConfrimBuy(BuildContext context,
+      {required Map<String, dynamic> map}) {
+    Map<String, dynamic> myMap = map;
+
+    AppController appController = Get.put(AppController());
+
+    print('myMap ก่อน ---> $myMap');
+
+    myMap['buy'] = true;
+    myMap['associateBuy'] =
+        appController.currentAssociateLogin.last.associateID;
+
+    print('myMap หลัง ---> $myMap');
+
+    AppSvervice().processEditProduct(
+        collection: widget.collectionProduct,
+        docId: widget.docIdPhotoPd1,
+        map: myMap);
+
     AppDialog(context: context).normalDialog(
         title: 'Buy Sure ?',
         subTitle:
@@ -248,6 +287,13 @@ class _DetailProductState extends State<DetailProduct> {
                 collectionProduct: widget.collectionProduct,
               ),
             );
+          },
+        ),
+        oneActionWidget: WidgetButtom(
+          label: 'Cancel123',
+          pressFunc: () {
+            Get.back();
+            Get.back();
           },
         ));
   }

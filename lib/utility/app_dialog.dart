@@ -38,7 +38,7 @@ class AppDialog {
               Column(
                 children: [
                   WidgetButtom(
-                    label: action2Widget == null ? 'OK' : 'Cancel',
+                    label: action2Widget == null ? 'Cancel' : 'Cancel',
                     pressFunc: () => Get.back(),
                   ),
                 ],
