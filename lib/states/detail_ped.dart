@@ -9,6 +9,7 @@ import 'package:sharetraveyard/states/payment_upload_ped.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
+import 'package:sharetraveyard/utility/app_dialog_buy.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_icon_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
@@ -189,10 +190,10 @@ class _DetailPedState extends State<DetailPed> {
   }
 
   void productBuy(BuildContext context) {
-    AppDialog(context: context).normalDialog(
+    AppDialogBuy(context: context).normalDialog(
       title: 'Reserve or Buy',
       subTitle: 'Please Recerve or buy',
-      contenWidget: Row(
+      contenWidgetbuy: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           WidgetIconButtom(
@@ -237,7 +238,7 @@ class _DetailPedState extends State<DetailPed> {
       //     });
       //   },
       // ),
-      actionWidget: WidgetButtom(
+      actionWidgetbuy: WidgetButtom(
         label: 'Reserve',
         pressFunc: () async {
           SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -281,7 +282,7 @@ class _DetailPedState extends State<DetailPed> {
           });
         },
       ),
-      action2Widget: WidgetButtom(
+      action2Widgetbuy: WidgetButtom(
         label: 'Buy',
         pressFunc: () {
           Get.back();
@@ -296,7 +297,7 @@ class _DetailPedState extends State<DetailPed> {
         title: 'Buy Sure ?',
         subTitle:
             'คุณต้องโอนเงินจำนวน\n ${appController.amountPed.value} X ${pedModel!.price} = ${appController.amountPed.value * int.parse(pedModel!.price)} บาท\n ไปที่ ธนาคาร และ upload slip',
-        actionWidget: WidgetButtom(
+        action2Widget: WidgetButtom(
           label: 'upload Slip',
           pressFunc: () {
             Get.back();

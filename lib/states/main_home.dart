@@ -46,23 +46,19 @@ class _MainHomeState extends State<MainHome> {
     // TODO: implement initState
     super.initState();
 
-    
-      if (controller.currentAssociateLogin.last.shopPhone!) {
-        shops.add(const ShopBody());
-      }
-      if (controller.currentAssociateLogin.last.shopPed!) {
-        shops.add(const ShopPedBody());
-      } else {}
+    if (controller.currentAssociateLogin.last.shopPhone!) {
+      shops.add(const ShopBody());
+    }
+    if (controller.currentAssociateLogin.last.shopPed!) {
+      shops.add(const ShopPedBody());
+    } else {}
 
-      pageController = PageController(initialPage: controller.indexShop.value);
+    pageController = PageController(initialPage: controller.indexShop.value);
 
-      mainShop = PageView(
-        controller: pageController,
-        children: shops,
-      );
-    
-
-    
+    mainShop = PageView(
+      controller: pageController,
+      children: shops,
+    );
 
     bodys.add(mainShop!);
     bodys.add(const NotiBoddy());

@@ -95,7 +95,10 @@ class _PaymentUploadState extends State<PaymentUpload> {
                   margin: const EdgeInsets.only(top: 30),
                   child: Column(
                     children: [
-                      WidgetText(text: 'บัญชี : บริษัท มาร์ส เพ็ทแคร์',textStyle: AppConstant().h2Style(),),
+                      WidgetText(
+                        text: 'บัญชี : บริษัท มาร์ส เพ็ทแคร์',
+                        textStyle: AppConstant().h2Style(),
+                      ),
                       const SizedBox(
                         height: 32,
                       ),

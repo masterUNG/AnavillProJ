@@ -1,12 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:sharetraveyard/models/profile_model.dart';
 import 'package:sharetraveyard/states/authen_mobile.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
-import 'package:sharetraveyard/utility/app_dialog.dart';
+import 'package:sharetraveyard/utility/app_dialog1.dart';
+import 'package:sharetraveyard/utility/app_dialog_password.dart';
 import 'package:sharetraveyard/utility/app_svervice.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_form.dart';
@@ -80,34 +79,36 @@ class _QuestionForgotState extends State<QuestionForgot> {
                         pressFunc: () {
                           if ((answer1?.isEmpty ?? true) ||
                               (answer2?.isEmpty ?? true)) {
-                            AppDialog(context: context).normalDialog(
+                            AppDialog1(context: context).normalDialog(
                                 title: 'Have Space',
                                 subTitle: 'Please fill every ');
-                          }
-                          if (answer1 !=
-                              appController.profileModels.last.answer1) {
-                            AppDialog(context: context).normalDialog(
+                          } 
+                          else if (answer1 != appController.profileModels.last.answer1) {
+                            AppDialog1(context: context).normalDialog(
                                 title: 'Answer 1 false',
-                                subTitle: 'please try agin');
-                          }
-                          if (answer2 !=
-                              appController.profileModels.last.answer2) {
-                            AppDialog(context: context).normalDialog(
+                                subTitle: 'Please try again');
+                          } else if (answer2 != appController.profileModels.last.answer2) {
+                            AppDialog1(context: context).normalDialog(
                                 title: 'Answer 2 false',
-                                subTitle: 'please try agin');
-                          } else {
-                            AppDialog(context: context).normalDialog(
-                                title: 'password',
+                                subTitle: 'Please try again');
+                          } else if ((answer1 != appController.profileModels.last.answer1)||
+                              (answer2 !=
+                                  appController.profileModels.last.answer2)) {
+                            AppDialog1(context: context).normalDialog(
+                                title: 'Answer 4 false',
+                                subTitle: 'Please try again');
+                          }
+                           else {
+                            AppDialogPassword(context: context).normalDialog(
+                                title:'password',
                                 subTitle:
                                     appController.profileModels.last.password,
-                                actionWidget: Column(
+                                action2WidgetPassword: Column(
                                   children: [
                                     WidgetButtom(
                                       label: 'Authen',
                                       pressFunc: () {
                                         Get.offAll(const AuthenMobile());
-                                        
-                                       
                                       },
                                     ),
                                   ],
@@ -121,3 +122,5 @@ class _QuestionForgotState extends State<QuestionForgot> {
     );
   }
 }
+
+

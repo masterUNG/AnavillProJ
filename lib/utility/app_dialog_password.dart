@@ -5,24 +5,24 @@ import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
-class AppDialog {
+class AppDialogPassword {
   final BuildContext context;
-  AppDialog({
+  AppDialogPassword({
     required this.context,
   });
 
   void normalDialog({
     required String title,
     required String subTitle,
-    Widget? actionWidget,
-    Widget? oneActionWidget,
-    Widget? action2Widget,
-    Widget? contenWidget,
+    Widget? actionWidgetPassword,
+    Widget? oneActionWidgetPassword,
+    Widget? action2WidgetPassword,
+    Widget? contenWidgetPassword,
   }) {
     Get.dialog(
       AlertDialog(
-        icon: Icon (
-          Icons.check_box,
+        icon: Icon(
+          Icons.person,
           color: AppConstant.active1,
           size: 70,
         ),
@@ -30,15 +30,15 @@ class AppDialog {
           text: title,
           textStyle: AppConstant().h2Style(),
         ),
-        content: contenWidget ?? WidgetText(text: subTitle),
+        content: contenWidgetPassword ?? WidgetText(text: subTitle),
         actions: [
-          actionWidget ?? const SizedBox(),
-          action2Widget ?? const SizedBox(),
-          oneActionWidget ??
+          actionWidgetPassword ?? const SizedBox(),
+          action2WidgetPassword ?? const SizedBox(),
+          oneActionWidgetPassword ??
               Column(
                 children: [
                   WidgetButtom(
-                    label: action2Widget == null ? 'OK' : 'Cancel',
+                    label: action2WidgetPassword == null ? 'OK' : 'Cancel',
                     pressFunc: () => Get.back(),
                   ),
                 ],
@@ -47,6 +47,5 @@ class AppDialog {
       ),
       barrierDismissible: false,
     );
-    
   }
 }

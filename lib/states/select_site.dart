@@ -191,7 +191,7 @@ class _SelectSiteState extends State<SelectSite> {
           ? const WidgetProgress()
           : DropdownButton(
               isExpanded: true,
-              hint: WidgetText(text: 'Palease Choose Site Code'),
+              hint: WidgetText(text: 'Please Choose Site Code'),
               value: appController.chooseSiteCode.isEmpty
                   ? null
                   : appController.chooseSiteCode.last,

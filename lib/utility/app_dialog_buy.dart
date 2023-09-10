@@ -5,24 +5,24 @@ import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
-class AppDialog {
+class AppDialogBuy {
   final BuildContext context;
-  AppDialog({
+  AppDialogBuy({
     required this.context,
   });
 
   void normalDialog({
     required String title,
     required String subTitle,
-    Widget? actionWidget,
-    Widget? oneActionWidget,
-    Widget? action2Widget,
-    Widget? contenWidget,
+    Widget? actionWidgetbuy,
+    Widget? oneActionWidgetbuy,
+    Widget? action2Widgetbuy,
+    Widget? contenWidgetbuy,
   }) {
     Get.dialog(
       AlertDialog(
-        icon: Icon (
-          Icons.check_box,
+        icon: Icon(
+          Icons.shopping_basket,
           color: AppConstant.active1,
           size: 70,
         ),
@@ -30,15 +30,15 @@ class AppDialog {
           text: title,
           textStyle: AppConstant().h2Style(),
         ),
-        content: contenWidget ?? WidgetText(text: subTitle),
+        content: contenWidgetbuy ?? WidgetText(text: subTitle),
         actions: [
-          actionWidget ?? const SizedBox(),
-          action2Widget ?? const SizedBox(),
-          oneActionWidget ??
+          actionWidgetbuy ?? const SizedBox(),
+          action2Widgetbuy ?? const SizedBox(),
+          oneActionWidgetbuy ??
               Column(
                 children: [
                   WidgetButtom(
-                    label: action2Widget == null ? 'OK' : 'Cancel',
+                    label: action2Widgetbuy == null ? 'OK' : 'Cancel',
                     pressFunc: () => Get.back(),
                   ),
                 ],
@@ -47,6 +47,5 @@ class AppDialog {
       ),
       barrierDismissible: false,
     );
-    
   }
 }

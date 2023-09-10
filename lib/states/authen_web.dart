@@ -54,7 +54,7 @@ class _AuthenwebState extends State<Authenweb> {
                         (password?.isEmpty ?? true)) {
                       AppDialog(context: context).normalDialog(
                           title: 'Have space',
-                          subTitle: 'please Fill Every blank');
+                          subTitle: 'Please Fill Every blank');
                     } else {
                       await FirebaseAuth.instance
                           .signInWithEmailAndPassword(

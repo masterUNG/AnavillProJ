@@ -322,7 +322,7 @@ class _CreateAccountState extends State<CreateAccount> {
         //           if (associateId?.isEmpty ?? true) {
         //             AppDialog(context: context).normalDialog(
         //                 title: 'No AssociateId',
-        //                 subTitle: 'Plase Fill AssociateID');
+        //                 subTitle: 'Please Fill AssociateID');
         //           } else {
         //             AppSvervice().readAssociate(
         //                 associateID: associateId!, context: context);
@@ -345,32 +345,32 @@ class _CreateAccountState extends State<CreateAccount> {
           title: 'Site Code ?', subTitle: 'Please choose Site code');
     } else if (associateId?.isEmpty ?? true) {
       AppDialog(context: context).normalDialog(
-          title: 'No Associate', subTitle: 'Plase Fill Associate ID');
+          title: 'No Associate', subTitle: 'Please Fill Associate ID');
     } else if ((uname?.isEmpty ?? true) || (ulastname?.isEmpty ?? true)) {
       AppDialog(context: context).normalDialog(
-          title: 'No Name, Surname', subTitle: 'PleaseTap Cluod Icon');
+          title: 'No Name, Surname', subTitle: 'PleaseTap Cloud Icon');
     } else if ((password?.isEmpty ?? true) || (repassword?.isEmpty ?? true)) {
       AppDialog(context: context).normalDialog(
           title: 'Password, RePassword', subTitle: 'please fill password');
     } else if (password != repassword) {
       AppDialog(context: context).normalDialog(
-          title: 'Password Not Math',
+          title: 'Password Not Match',
           subTitle: 'Password not Equire Repassword');
     } else if (appController.chooseQusetion1s.isEmpty) {
       AppDialog(context: context).normalDialog(
           title: 'Question 1', subTitle: 'please Choose Question 1');
     } else if (answer1?.isEmpty ?? true) {
       AppDialog(context: context)
-          .normalDialog(title: 'Answer1 ?', subTitle: 'Plase Fill amnswer1');
+          .normalDialog(title: 'Answer1 ?', subTitle: 'Please Fill answer1');
     } else if (appController.chooseQuestions2.isEmpty) {
       AppDialog(context: context).normalDialog(
           title: 'Question2 ?', subTitle: 'please Choose Question 2');
     } else if (answer2?.isEmpty ?? true) {
       AppDialog(context: context)
-          .normalDialog(title: 'Answer2 ?', subTitle: 'Plase Fill amnswer2');
+          .normalDialog(title: 'Answer2 ?', subTitle: 'Please Fill answer2');
     } else if ((address?.isEmpty ?? true) || (phone?.isEmpty ?? true)) {
       AppDialog(context: context).normalDialog(
-          title: 'Address, phone', subTitle: 'pleas Fill address phone');
+          title: 'Address, phone', subTitle: 'Please Fill address phone');
     } else {
       ProfileModel profileModel = ProfileModel(
           password: password!,
@@ -448,7 +448,7 @@ class _CreateAccountState extends State<CreateAccount> {
               child: DropdownButton(
                 underline: const SizedBox(),
                 isExpanded: true,
-                hint: const WidgetText(text: 'Palease Choose Site Code'),
+                hint: const WidgetText(text: 'Please Choose Site Code'),
                 value: appController.chooseSiteCode.isEmpty
                     ? null
                     : appController.chooseSiteCode.last,

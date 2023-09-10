@@ -7,6 +7,7 @@ import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/models/profile_model.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
+import 'package:sharetraveyard/utility/app_dialog1.dart';
 
 import '../models/ped_model.dart';
 import '../models/site_code_model.dart';
@@ -146,7 +147,7 @@ class AppSvervice {
           appController.docIdProfiles.add(element.id);
         }
       } else {
-        AppDialog(context: context).normalDialog(
+        AppDialog1(context: context).normalDialog(
             title: 'User false ',
             subTitle:
                 '$associateIDอาจจะผิด หรือ ยังไม่ได้ Create New Register');

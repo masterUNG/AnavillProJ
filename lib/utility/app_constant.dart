@@ -8,6 +8,7 @@ class AppConstant {
   static Color bgColor = Colors.yellow;
   static Color dark = Colors.black;
   static Color active = const Color.fromARGB(255, 255, 60, 46);
+  static Color active1 = Color.fromARGB(255, 3, 125, 30);
   static Color fieldColor = Colors.white;
 
   BoxDecoration borderCurveBox() => BoxDecoration(border: Border.all(),borderRadius: BorderRadius.circular(30));

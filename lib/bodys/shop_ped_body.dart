@@ -52,15 +52,12 @@ class _ShopPedBodyState extends State<ShopPedBody> {
 
                             for (var element
                                 in appController.pedmodels[index].maps!) {
-                              if (element['associateID'] == user) {
-                                
-                              }
+                              if (element['associateID'] == user) {}
                             }
 
                             dialogConfrimBuy(context,
                                 pedModel: appController.pedmodels[index],
                                 amount: appController.amountPed.value,
-                               
                                 docIdPed: appController.docIdPeds[index]);
                           } else {
                             Get.to(DetailPed(
@@ -69,8 +66,8 @@ class _ShopPedBodyState extends State<ShopPedBody> {
                                     collectionPed:
                                         appController.collectionPeds.last))!
                                 .then((value) {
-                                    AppSvervice().findProductPed();
-                                });
+                              AppSvervice().findProductPed();
+                            });
                           }
                         },
                         child: Container(
@@ -105,9 +102,7 @@ class _ShopPedBodyState extends State<ShopPedBody> {
   }
 
   void dialogConfrimBuy(BuildContext context,
-      {required PedModel pedModel,
-      required amount,
-      required String docIdPed}) {
+      {required PedModel pedModel, required amount, required String docIdPed}) {
     AppDialog(context: context).normalDialog(
         title: 'Buy Sure ?',
         subTitle:

@@ -197,7 +197,7 @@ class _AddNewAssociateState extends State<AddNewAssociate> {
               child: DropdownButton(
                 underline: const SizedBox(),
                 isExpanded: true,
-                hint: const WidgetText(text: 'Palease Choose Site Code'),
+                hint: const WidgetText(text: 'Please Choose Site Code'),
                 value: appController.chooseSiteCode.isEmpty
                     ? null
                     : appController.chooseSiteCode.last,

@@ -236,14 +236,10 @@ class _PaymentUploadPedState extends State<PaymentUploadPed> {
                                         Get.offAll(const SelectSite(
                                           assoiate: '',
                                         ));
-
-
-
                                       },
                                     ));
                                 print(
                                     '##18mar controller.displaySiteCode.value ----> ${appController.displaySiteCode.value}');
-                                
                               });
                             });
                           });

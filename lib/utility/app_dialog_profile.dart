@@ -5,24 +5,24 @@ import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
-class AppDialog {
+class AppDialogProfile {
   final BuildContext context;
-  AppDialog({
+  AppDialogProfile({
     required this.context,
   });
 
   void normalDialog({
     required String title,
     required String subTitle,
-    Widget? actionWidget,
-    Widget? oneActionWidget,
-    Widget? action2Widget,
-    Widget? contenWidget,
+    Widget? actionWidgetProfile,
+    Widget? oneActionWidgetProfile,
+    Widget? action2WidgetProfile,
+    Widget? contenWidgetProfile,
   }) {
     Get.dialog(
       AlertDialog(
-        icon: Icon (
-          Icons.check_box,
+        icon: Icon(
+          Icons.account_box,
           color: AppConstant.active1,
           size: 70,
         ),
@@ -30,15 +30,15 @@ class AppDialog {
           text: title,
           textStyle: AppConstant().h2Style(),
         ),
-        content: contenWidget ?? WidgetText(text: subTitle),
+        content: contenWidgetProfile ?? WidgetText(text: subTitle),
         actions: [
-          actionWidget ?? const SizedBox(),
-          action2Widget ?? const SizedBox(),
-          oneActionWidget ??
+          actionWidgetProfile ?? const SizedBox(),
+          action2WidgetProfile ?? const SizedBox(),
+          oneActionWidgetProfile ??
               Column(
                 children: [
                   WidgetButtom(
-                    label: action2Widget == null ? 'OK' : 'Cancel',
+                    label: action2WidgetProfile == null ? 'OK' : 'Cancel',
                     pressFunc: () => Get.back(),
                   ),
                 ],
@@ -47,6 +47,5 @@ class AppDialog {
       ),
       barrierDismissible: false,
     );
-    
   }
 }

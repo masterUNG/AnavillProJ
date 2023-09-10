@@ -10,6 +10,8 @@ import 'package:sharetraveyard/states/qurstion_forgot.dart';
 import 'package:sharetraveyard/states/select_site.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
+import 'package:sharetraveyard/utility/app_dialog1.dart';
+import 'package:sharetraveyard/utility/app_dialog_password.dart';
 import 'package:sharetraveyard/utility/app_svervice.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_form.dart';
@@ -132,8 +134,8 @@ class _AuthenMobileState extends State<AuthenMobile> {
       label: 'Login',
       pressFunc: () async {
         if ((user?.isEmpty ?? true) || (password?.isEmpty ?? true)) {
-          AppDialog(context: context).normalDialog(
-              title: 'Have Space', subTitle: 'plase Fill every blank');
+          AppDialog1(context: context).normalDialog(
+              title: 'Have Space', subTitle: 'Please Fill every blank');
         } else {
           await AppSvervice()
               .processFindProfileModels(associateID: user!, context: context)
@@ -154,9 +156,9 @@ class _AuthenMobileState extends State<AuthenMobile> {
                   });
                 } else {
                   if (i <= timesPasswordFalse) {
-                    AppDialog(context: context).normalDialog(
-                        title: 'password false ครั้งที่ $i',
-                        subTitle: 'plase try again');
+                    AppDialog1(context: context).normalDialog(
+                        title: 'Password False ครั้งที่ $i',
+                        subTitle: 'Please try again');
                   } else {
                     Map<String, dynamic> map =
                         appController.profileModels.last.toMap();
@@ -174,7 +176,7 @@ class _AuthenMobileState extends State<AuthenMobile> {
                         .then((value) {
                       AppDialog(context: context).normalDialog(
                           title: ' Wrong Password more than  5 times',
-                          subTitle: 'Plase Contact admin unlock password ');
+                          subTitle: 'Please Contact admin unlock password ');
                     });
                   }
 
@@ -183,7 +185,7 @@ class _AuthenMobileState extends State<AuthenMobile> {
               } else {
                 AppDialog(context: context).normalDialog(
                     title: ' Wrong Password more than  5 times',
-                    subTitle: 'Plase Contact admin unlock password ');
+                    subTitle: 'Please Contact admin unlock password ');
               }
             }
           });
@@ -205,16 +207,16 @@ class _AuthenMobileState extends State<AuthenMobile> {
     return WidgetTextButtom(
       label: 'Forgot Password',
       pressFunc: () {
-        AppDialog(context: context).normalDialog(
+        AppDialogPassword(context: context).normalDialog(
             title: 'Fill Associate ID',
             subTitle: '',
-            contenWidget: WidgetForm(
+            contenWidgetPassword: WidgetForm(
               changFunc: (p0) {
                 associateId = p0.trim();
               },
-              textInputType: TextInputType.number,
+              textInputType: TextInputType.text,
             ),
-            actionWidget: Column(
+            action2WidgetPassword: Column(
               children: [
                 WidgetButtom(
                   label: 'Forgot',

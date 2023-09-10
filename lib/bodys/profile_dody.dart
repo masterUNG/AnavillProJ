@@ -5,7 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
-import 'package:sharetraveyard/utility/app_dialog.dart';
+
+import 'package:sharetraveyard/utility/app_dialog_profile.dart';
 import 'package:sharetraveyard/utility/app_svervice.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_form.dart';
@@ -77,17 +78,17 @@ class _ProfileBodyState extends State<ProfileBody> {
 
                   bool change = false;
 
-                  AppDialog(context: context).normalDialog(
+                  AppDialogProfile(context: context).normalDialog(
                       title: 'Edit Assosicate ID',
                       subTitle: 'Please Edit  Assosicate ID',
-                      contenWidget: WidgetForm(
+                      contenWidgetProfile: WidgetForm(
                         changFunc: (p0) {
                           change = true;
                         },
                         textEditingController: textEditingController,
                       ),
-                      actionWidget: WidgetButtom(
-                        label: 'Edit',
+                      action2WidgetProfile: WidgetButtom(
+                        label: 'OK',
                         pressFunc: () async {
                           if (change) {
                             Map<String, dynamic> map = asscociateModel.toMap();
@@ -127,17 +128,17 @@ class _ProfileBodyState extends State<ProfileBody> {
 
                   bool change = false;
 
-                  AppDialog(context: context).normalDialog(
+                  AppDialogProfile(context: context).normalDialog(
                       title: 'Edit UserName',
                       subTitle: 'Please Edit  UserName',
-                      contenWidget: WidgetForm(
+                      contenWidgetProfile: WidgetForm(
                         changFunc: (p0) {
                           change = true;
                         },
                         textEditingController: textEditingController,
                       ),
-                      actionWidget: WidgetButtom(
-                        label: 'Edit',
+                      action2WidgetProfile: WidgetButtom(
+                        label: 'OK',
                         pressFunc: () async {
                           if (change) {
                             Map<String, dynamic> map = asscociateModel.toMap();
@@ -177,17 +178,17 @@ class _ProfileBodyState extends State<ProfileBody> {
 
                   bool change = false;
 
-                  AppDialog(context: context).normalDialog(
+                  AppDialogProfile(context: context).normalDialog(
                       title: 'Edit LastName',
                       subTitle: 'Please Edit LastName',
-                      contenWidget: WidgetForm(
+                      contenWidgetProfile: WidgetForm(
                         changFunc: (p0) {
                           change = true;
                         },
                         textEditingController: textEditingController,
                       ),
-                      actionWidget: WidgetButtom(
-                        label: 'Edit',
+                      action2WidgetProfile: WidgetButtom(
+                        label: 'OK',
                         pressFunc: () async {
                           if (change) {
                             Map<String, dynamic> map = asscociateModel.toMap();
