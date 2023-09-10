@@ -219,6 +219,13 @@ class _DetailProductState extends State<DetailProduct> {
         label: 'Buy',
         pressFunc: () {
           Get.back();
+
+          
+
+
+
+
+
           dialogConfrimBuy(context);
         },
       ),
