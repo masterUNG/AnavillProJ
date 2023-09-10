@@ -82,25 +82,19 @@ class _QuestionForgotState extends State<QuestionForgot> {
                             AppDialog1(context: context).normalDialog(
                                 title: 'Have Space',
                                 subTitle: 'Please fill every ');
-                          } 
-                          else if (answer1 != appController.profileModels.last.answer1) {
+                          } else if (answer1 !=
+                              appController.profileModels.last.answer1) {
                             AppDialog1(context: context).normalDialog(
                                 title: 'Answer 1 false',
                                 subTitle: 'Please try again');
-                          } else if (answer2 != appController.profileModels.last.answer2) {
+                          } else if (answer2 !=
+                              appController.profileModels.last.answer2) {
                             AppDialog1(context: context).normalDialog(
                                 title: 'Answer 2 false',
                                 subTitle: 'Please try again');
-                          } else if ((answer1 != appController.profileModels.last.answer1)||
-                              (answer2 !=
-                                  appController.profileModels.last.answer2)) {
-                            AppDialog1(context: context).normalDialog(
-                                title: 'Answer 4 false',
-                                subTitle: 'Please try again');
-                          }
-                           else {
+                          } else {
                             AppDialogPassword(context: context).normalDialog(
-                                title:'password',
+                                title: 'password',
                                 subTitle:
                                     appController.profileModels.last.password,
                                 action2WidgetPassword: Column(
@@ -122,5 +116,3 @@ class _QuestionForgotState extends State<QuestionForgot> {
     );
   }
 }
-
-

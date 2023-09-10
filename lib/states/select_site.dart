@@ -41,7 +41,7 @@ class _SelectSiteState extends State<SelectSite> {
     findUserLogin().then((value) {
       controller.readPeriod(docIdSiteCode: docIdSiteCode!).then((value) {
         print(
-            '##29june periodModel ----->${controller.periodModels.last.toMap()}');
+            '##10sep periodModel ----->${controller.periodModels.last.toMap()}');
       });
     });
   }
@@ -82,7 +82,7 @@ class _SelectSiteState extends State<SelectSite> {
             print('## Sitecode --> ${appController.siteCodeModel.length}');
 
             return SafeArea(
-              child: Center(
+              child: appController.periodModels.isEmpty ? const SizedBox() : Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -97,7 +97,23 @@ class _SelectSiteState extends State<SelectSite> {
                     //dropdown(appController),
                     //period1(),
                     //dropdownperiod(appController),
-                    clickbuttomGoToShop(),
+                    clickbuttomGoToShop(appController: appController),
+
+                    Row(mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        WidgetText(text: 'Status : ', textStyle: AppConstant().h2Style(),),
+                        appController.periodModels.last.status!
+                            ? WidgetText(
+                                text: 'Open',
+                                textStyle:
+                                    AppConstant().h2Style(color: Colors.green),
+                              )
+                            : WidgetText(
+                                text: 'Off',
+                                textStyle: AppConstant().h2Style(color: Colors.red),
+                              ),
+                      ],
+                    ),
 
                     appController.periodModels.isEmpty
                         ? const SizedBox()
@@ -118,11 +134,17 @@ class _SelectSiteState extends State<SelectSite> {
     );
   }
 
-  WidgetButtom clickbuttomGoToShop() {
+  WidgetButtom clickbuttomGoToShop({required AppController appController}) {
     return WidgetButtom(
       label: 'Go to Shop',
       pressFunc: () {
-        Get.to(MainHome());
+        if (appController.periodModels.last.status!) {
+          //Open
+          Get.to(MainHome());
+        } else {
+          //Off
+
+        }
       },
     );
   }
