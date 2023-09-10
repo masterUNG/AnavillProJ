@@ -26,9 +26,10 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   AppController controller = Get.put(AppController());
 
-  String? associateId,
-      password,
-      repassword,
+  TextEditingController associateIdController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  String? repassword,
       answer1,
       answer2,
       phone,
@@ -237,10 +238,8 @@ class _CreateAccountState extends State<CreateAccount> {
   WidgetForm password1form() {
     return WidgetForm(
       obsecu: true,
-      changFunc: (p0) {
-        password = p0.trim();
-        //print("##password = ${password}");
-      },
+      changFunc: (p0) {},
+      textEditingController: passwordController,
     );
   }
 
@@ -330,10 +329,8 @@ class _CreateAccountState extends State<CreateAccount> {
         //         },
         //       )
         //     : const SizedBox(),
-        changFunc: (p0) {
-          associateId = p0.trim();
-          print("##associateId = ${associateId}");
-        },
+        changFunc: (p0) {},
+        textEditingController: associateIdController,
       );
     });
   }
@@ -343,16 +340,16 @@ class _CreateAccountState extends State<CreateAccount> {
     if (appController.chooseSiteCode.isEmpty) {
       AppDialog(context: context).normalDialog(
           title: 'Site Code ?', subTitle: 'Please choose Site code');
-    } else if (associateId?.isEmpty ?? true) {
+    } else if (associateIdController.text.isEmpty) {
       AppDialog(context: context).normalDialog(
           title: 'No Associate', subTitle: 'Please Fill Associate ID');
     } else if ((uname?.isEmpty ?? true) || (ulastname?.isEmpty ?? true)) {
       AppDialog(context: context).normalDialog(
           title: 'No Name, Surname', subTitle: 'PleaseTap Cloud Icon');
-    } else if ((password?.isEmpty ?? true) || (repassword?.isEmpty ?? true)) {
+    } else if ((passwordController.text.isEmpty) || (repassword?.isEmpty ?? true)) {
       AppDialog(context: context).normalDialog(
           title: 'Password, RePassword', subTitle: 'please fill password');
-    } else if (password != repassword) {
+    } else if (passwordController.text != repassword) {
       AppDialog(context: context).normalDialog(
           title: 'Password Not Match',
           subTitle: 'Password not Equire Repassword');
@@ -373,7 +370,7 @@ class _CreateAccountState extends State<CreateAccount> {
           title: 'Address, phone', subTitle: 'Please Fill address phone');
     } else {
       ProfileModel profileModel = ProfileModel(
-          password: password!,
+          password: passwordController.text,
           question1: appController.chooseQusetion1s.last,
           answer1: answer1!,
           question2: appController.chooseQuestions2.last,
@@ -389,7 +386,7 @@ class _CreateAccountState extends State<CreateAccount> {
           mapProfile: profileModel.toMap(),
           timestamp: Timestamp.fromDate(DateTime.now()),
           cheeck: false,
-          associateId: associateId!,
+          associateId: associateIdController.text,
           docIdSiteCode: controller.chooseDocIdSiteCodes.last);
 
       DocumentReference documentReference =

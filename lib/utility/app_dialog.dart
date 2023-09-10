@@ -30,19 +30,29 @@ class AppDialog {
           text: title,
           textStyle: AppConstant().h2Style(),
         ),
-        content: contenWidget ?? WidgetText(text: subTitle),
+        content: Row(mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            contenWidget ?? WidgetText(text: subTitle),
+          ],
+        ),
         actions: [
-          actionWidget ?? const SizedBox(),
-          action2Widget ?? const SizedBox(),
-          oneActionWidget ??
-              Column(
-                children: [
-                  WidgetButtom(
-                    label: action2Widget == null ? 'Cancel' : 'Cancel',
-                    pressFunc: () => Get.back(),
+          Row(mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              actionWidget ?? const SizedBox(),
+              const SizedBox(width: 8,),
+              action2Widget ?? const SizedBox(),
+               const SizedBox(width: 8,),
+              oneActionWidget ??
+                  Column(
+                    children: [
+                      WidgetButtom(
+                        label: action2Widget == null ? 'Cancel' : 'Cancel',
+                        pressFunc: () => Get.back(),
+                      ),
+                    ],
                   ),
-                ],
-              )
+            ],
+          ),
         ],
       ),
       barrierDismissible: false,

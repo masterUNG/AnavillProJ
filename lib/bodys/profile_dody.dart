@@ -24,7 +24,6 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     AppSvervice().findProfileUserLogin();
     findUser();
@@ -67,52 +66,63 @@ class _ProfileBodyState extends State<ProfileBody> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              
               WidgetText(
                   text: 'Assosicate ID : ${asscociateModel.associateID}'),
-              WidgetIconButtom(
-                iconData: Icons.edit,
-                pressFunc: () {
-                  TextEditingController textEditingController =
-                      TextEditingController();
-                  textEditingController.text = asscociateModel.associateID;
 
-                  bool change = false;
 
-                  AppDialogProfile(context: context).normalDialog(
-                      title: 'Edit Assosicate ID',
-                      subTitle: 'Please Edit  Assosicate ID',
-                      contenWidgetProfile: WidgetForm(
-                        changFunc: (p0) {
-                          change = true;
-                        },
-                        textEditingController: textEditingController,
-                      ),
-                      action2WidgetProfile: WidgetButtom(
-                        label: 'OK',
-                        pressFunc: () async {
-                          if (change) {
-                            Map<String, dynamic> map = asscociateModel.toMap();
-                            print('##28june map before -----> $map');
 
-                            map['associateID'] = textEditingController.text;
 
-                            print('##28june map after -----> $map');
+              // WidgetIconButtom(
+              //   iconData: Icons.edit,
+              //   pressFunc: () {
+              //     TextEditingController textEditingController =
+              //         TextEditingController();
+              //     textEditingController.text = asscociateModel.associateID;
 
-                            FirebaseFirestore.instance
-                                .collection('associate')
-                                .doc(docIdAssociate)
-                                .update(map)
-                                .then((value) {
-                              AppSvervice().findProfileUserLogin();
-                              Get.back();
-                            });
-                          } else {
-                            Get.back();
-                          }
-                        },
-                      ));
-                },
-              )
+              //     bool change = false;
+
+              //     AppDialogProfile(context: context).normalDialog(
+              //         title: 'Edit Assosicate ID',
+              //         subTitle: 'Please Edit  Assosicate ID',
+              //         contenWidgetProfile: WidgetForm(
+              //           changFunc: (p0) {
+              //             change = true;
+              //           },
+              //           textEditingController: textEditingController,
+              //         ),
+              //         action2WidgetProfile: WidgetButtom(
+              //           label: 'OK',
+              //           pressFunc: () async {
+              //             if (change) {
+              //               Map<String, dynamic> map = asscociateModel.toMap();
+              //               print('##28june map before -----> $map');
+
+              //               map['associateID'] = textEditingController.text;
+
+              //               print('##28june map after -----> $map');
+
+              //               FirebaseFirestore.instance
+              //                   .collection('associate')
+              //                   .doc(docIdAssociate)
+              //                   .update(map)
+              //                   .then((value) {
+              //                 AppSvervice().findProfileUserLogin();
+              //                 Get.back();
+              //               });
+              //             } else {
+              //               Get.back();
+              //             }
+              //           },
+              //         ));
+              //   },
+              // ),
+
+
+
+
+
+
             ],
           ),
           Row(
