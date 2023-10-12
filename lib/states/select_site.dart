@@ -101,23 +101,27 @@ class _SelectSiteState extends State<SelectSite> {
                               itemCount: appController.allPeriodModels.length,
                               shrinkWrap: true,
                               physics: const ScrollPhysics(),
-                              itemBuilder: (context, index) => Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  clickbuttomGoToShop(
-                                      period1model:
-                                          appController.allPeriodModels[index], appController: appController),
-                                  statusWidget(
-                                      period1model:
-                                          appController.allPeriodModels[index]),
-                                  periodWidget(
-                                      period1model:
-                                          appController.allPeriodModels[index]),
-                                  salseDatWidget(
-                                      period1model:
-                                          appController.allPeriodModels[index]),
-                                ],
-                              ),
+                              itemBuilder: (context, index) =>
+                                  appController.allPeriodModels[index].status!
+                                      ? Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            clickbuttomGoToShop(
+                                                period1model: appController
+                                                    .allPeriodModels[index],
+                                                appController: appController),
+                                            statusWidget(
+                                                period1model: appController
+                                                    .allPeriodModels[index]),
+                                            periodWidget(
+                                                period1model: appController
+                                                    .allPeriodModels[index]),
+                                            salseDatWidget(
+                                                period1model: appController
+                                                    .allPeriodModels[index]),
+                                          ],
+                                        )
+                                      : const SizedBox(),
                             ),
                           ],
                         ),
@@ -164,7 +168,7 @@ class _SelectSiteState extends State<SelectSite> {
     required AppController appController,
   }) {
     return WidgetButtom(
-      label: 'Go to Shop',
+      label: 'Go to ${period1model.salesperiod}',
       pressFunc: () {
         if (period1model.status!) {
           //Open
@@ -172,7 +176,15 @@ class _SelectSiteState extends State<SelectSite> {
           appController.periodModels.add(period1model);
 
           if (!period1model.repair!) {
+
+            if (period1model.salesperiod == 'IphoneProduct') {
+              appController.indexShop.value = 0;
+            } else {
+              appController.indexShop.value = 1;
+            }
+
             Get.to(MainHome());
+            
           } else {
             Get.snackbar('Reapair', 'Please Try Again after Repair Finish');
           }

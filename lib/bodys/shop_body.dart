@@ -227,9 +227,9 @@ class _ShopBodyState extends State<ShopBody> {
                                         : Container(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 16),
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                                 color: Colors.yellow),
-                                            child: WidgetText(text: 'Reserve'),
+                                            child: const WidgetText(text: 'Reserve'),
                                           ),
                                 searchIphoneModels[index].salseFinish!
                                     ? WidgetText(
@@ -238,8 +238,8 @@ class _ShopBodyState extends State<ShopBody> {
                                             .h3Style(color: Colors.red),
                                       )
                                     : const SizedBox(),
-                                searchIphoneModels[index].buy!
-                                    ? WidgetText(text: 'Choosed')
+                                searchIphoneModels[index].salseFinish! ? const SizedBox() : searchIphoneModels[index].buy!
+                                    ? const WidgetText(text: 'Choosed')
                                     : const SizedBox(),
                               ],
                             ),
