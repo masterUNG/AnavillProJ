@@ -22,7 +22,11 @@ class AppController extends GetxController {
   RxList<String> chooseQusetion1s = <String>[].obs;
   RxList<Question2Model> question2Models = <Question2Model>[].obs;
   RxList<String> chooseQuestions2 = <String>[].obs;
+
   RxList<Period1Model> periodModels = <Period1Model>[].obs;
+
+  RxList<Period1Model> allPeriodModels = <Period1Model>[].obs;
+
   RxList<String> choosePeriod = <String>[].obs;
   RxList<PictureModel> pictureModels = <PictureModel>[].obs;
   RxList<String> choosePicture = <String>[].obs;
@@ -93,6 +97,7 @@ class AppController extends GetxController {
         print('##29june element ---> ${element.data()}');
         Period1Model model = Period1Model.fromMap(element.data());
         periodModels.add(model);
+        allPeriodModels.add(model);
       }
     });
   }

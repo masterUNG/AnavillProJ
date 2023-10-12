@@ -43,7 +43,7 @@ class _MainHomeState extends State<MainHome> {
 
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
 
     if (controller.currentAssociateLogin.last.shopPhone!) {

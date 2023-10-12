@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sharetraveyard/models/associate_model.dart';
+import 'package:sharetraveyard/models/period1_model.dart';
 import 'package:sharetraveyard/models/site_code_model.dart';
 import 'package:sharetraveyard/states/main_home.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
@@ -85,57 +86,41 @@ class _SelectSiteState extends State<SelectSite> {
               child: appController.periodModels.isEmpty
                   ? const SizedBox()
                   : Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          sitecode(),
-                          appController.displaySiteCode.isEmpty
-                              ? const SizedBox()
-                              : WidgetText(
-                                  text: appController.displaySiteCode.value,
-                                  textStyle: AppConstant().h2Style(),
-                                ),
-
-                          //dropdown(appController),
-                          //period1(),
-                          //dropdownperiod(appController),
-                          clickbuttomGoToShop(appController: appController),
-
-                          appController.periodModels.last.repair!
-                              ? WidgetText(text: 'Repair')
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    WidgetText(
-                                      text: 'Status : ',
-                                      textStyle: AppConstant().h2Style(),
-                                    ),
-                                    appController.periodModels.last.status!
-                                        ? WidgetText(
-                                            text: 'Open',
-                                            textStyle: AppConstant()
-                                                .h2Style(color: Colors.green),
-                                          )
-                                        : WidgetText(
-                                            text: 'Off',
-                                            textStyle: AppConstant()
-                                                .h2Style(color: Colors.red),
-                                          ),
-                                  ],
-                                ),
-
-                          appController.periodModels.isEmpty
-                              ? const SizedBox()
-                              : WidgetText(
-                                  text:
-                                      'Period : ${appController.periodModels.last.periodsale}'),
-
-                          appController.periodModels.isEmpty
-                              ? const SizedBox()
-                              : WidgetText(
-                                  text:
-                                      'Salse Day : ${appController.periodModels.last.saleday}'),
-                        ],
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            sitecode(),
+                            appController.displaySiteCode.isEmpty
+                                ? const SizedBox()
+                                : WidgetText(
+                                    text: appController.displaySiteCode.value,
+                                    textStyle: AppConstant().h2Style(),
+                                  ),
+                            ListView.builder(
+                              itemCount: appController.allPeriodModels.length,
+                              shrinkWrap: true,
+                              physics: const ScrollPhysics(),
+                              itemBuilder: (context, index) => Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  clickbuttomGoToShop(
+                                      period1model:
+                                          appController.allPeriodModels[index], appController: appController),
+                                  statusWidget(
+                                      period1model:
+                                          appController.allPeriodModels[index]),
+                                  periodWidget(
+                                      period1model:
+                                          appController.allPeriodModels[index]),
+                                  salseDatWidget(
+                                      period1model:
+                                          appController.allPeriodModels[index]),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
             );
@@ -143,13 +128,50 @@ class _SelectSiteState extends State<SelectSite> {
     );
   }
 
-  WidgetButtom clickbuttomGoToShop({required AppController appController}) {
+  Widget salseDatWidget({required Period1Model period1model}) {
+    return WidgetText(text: 'Salse Day : ${period1model.saleday}');
+  }
+
+  Widget periodWidget({required Period1Model period1model}) {
+    return WidgetText(text: 'Period : ${period1model.periodsale}');
+  }
+
+  Widget statusWidget({required Period1Model period1model}) {
+    return period1model.repair!
+        ? const WidgetText(text: 'Repair')
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              WidgetText(
+                text: 'Status : ',
+                textStyle: AppConstant().h2Style(),
+              ),
+              period1model.status!
+                  ? WidgetText(
+                      text: 'Open',
+                      textStyle: AppConstant().h2Style(color: Colors.green),
+                    )
+                  : WidgetText(
+                      text: 'Off',
+                      textStyle: AppConstant().h2Style(color: Colors.red),
+                    ),
+            ],
+          );
+  }
+
+  WidgetButtom clickbuttomGoToShop({
+    required Period1Model period1model,
+    required AppController appController,
+  }) {
     return WidgetButtom(
       label: 'Go to Shop',
       pressFunc: () {
-        if (appController.periodModels.last.status!) {
+        if (period1model.status!) {
           //Open
-          if (!appController.periodModels.last.repair!) {
+
+          appController.periodModels.add(period1model);
+
+          if (!period1model.repair!) {
             Get.to(MainHome());
           } else {
             Get.snackbar('Reapair', 'Please Try Again after Repair Finish');
