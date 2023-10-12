@@ -25,7 +25,7 @@ class WidgetButtom extends StatelessWidget {
           onPressed: pressFunc,
           child: WidgetText(
             text: label,
-            textStyle: AppConstant().h2Style(color: AppConstant.fieldColor),
+            textStyle: AppConstant().h3Style(color: AppConstant.fieldColor, size: 10),
           )),
     );
   }

@@ -275,7 +275,7 @@ class _DetailProductState extends State<DetailProduct> {
     AppDialog(context: context).normalDialog(
         title: 'Buy Sure ?',
         subTitle:
-            'คุณต้องโอนเงินจำนวน ${widget.iphoneModel.price} บาท ไปที่ ธนาคาร และ upload slip',
+            'คุณต้องโอนเงินจำนวน ${widget.iphoneModel.price} บาท\nไปที่ ธนาคาร และ upload slip',
         actionWidget: WidgetButtom(
           label: 'upload Slip',
           pressFunc: () {
@@ -290,7 +290,7 @@ class _DetailProductState extends State<DetailProduct> {
           },
         ),
         oneActionWidget: WidgetButtom(
-          label: 'Cancel123',
+          label: 'Cancel',
           pressFunc: () {
             Get.back();
             Get.back();

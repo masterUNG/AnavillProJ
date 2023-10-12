@@ -36,23 +36,19 @@ class AppDialog {
           ],
         ),
         actions: [
-          Row(mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              actionWidget ?? const SizedBox(),
-              const SizedBox(width: 8,),
-              action2Widget ?? const SizedBox(),
-               const SizedBox(width: 8,),
-              oneActionWidget ??
-                  Column(
-                    children: [
-                      WidgetButtom(
-                        label: action2Widget == null ? 'Cancel' : 'Cancel',
-                        pressFunc: () => Get.back(),
-                      ),
-                    ],
+          actionWidget ?? const SizedBox(),
+          const SizedBox(width: 8,),
+          action2Widget ?? const SizedBox(),
+           const SizedBox(width: 8,),
+          oneActionWidget ??
+              Column(
+                children: [
+                  WidgetButtom(
+                    label: action2Widget == null ? 'Cancel' : 'Cancel',
+                    pressFunc: () => Get.back(),
                   ),
-            ],
-          ),
+                ],
+              ),
         ],
       ),
       barrierDismissible: false,
