@@ -82,53 +82,62 @@ class _SelectSiteState extends State<SelectSite> {
             print('## Sitecode --> ${appController.siteCodeModel.length}');
 
             return SafeArea(
-              child: appController.periodModels.isEmpty ? const SizedBox() : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    sitecode(),
-                    appController.displaySiteCode.isEmpty
-                        ? const SizedBox()
-                        : WidgetText(
-                            text: appController.displaySiteCode.value,
-                            textStyle: AppConstant().h2Style(),
-                          ),
+              child: appController.periodModels.isEmpty
+                  ? const SizedBox()
+                  : Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          sitecode(),
+                          appController.displaySiteCode.isEmpty
+                              ? const SizedBox()
+                              : WidgetText(
+                                  text: appController.displaySiteCode.value,
+                                  textStyle: AppConstant().h2Style(),
+                                ),
 
-                    //dropdown(appController),
-                    //period1(),
-                    //dropdownperiod(appController),
-                    clickbuttomGoToShop(appController: appController),
+                          //dropdown(appController),
+                          //period1(),
+                          //dropdownperiod(appController),
+                          clickbuttomGoToShop(appController: appController),
 
-                    Row(mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        WidgetText(text: 'Status : ', textStyle: AppConstant().h2Style(),),
-                        appController.periodModels.last.status!
-                            ? WidgetText(
-                                text: 'Open',
-                                textStyle:
-                                    AppConstant().h2Style(color: Colors.green),
-                              )
-                            : WidgetText(
-                                text: 'Off',
-                                textStyle: AppConstant().h2Style(color: Colors.red),
-                              ),
-                      ],
+                          appController.periodModels.last.repair!
+                              ? WidgetText(text: 'Repair')
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    WidgetText(
+                                      text: 'Status : ',
+                                      textStyle: AppConstant().h2Style(),
+                                    ),
+                                    appController.periodModels.last.status!
+                                        ? WidgetText(
+                                            text: 'Open',
+                                            textStyle: AppConstant()
+                                                .h2Style(color: Colors.green),
+                                          )
+                                        : WidgetText(
+                                            text: 'Off',
+                                            textStyle: AppConstant()
+                                                .h2Style(color: Colors.red),
+                                          ),
+                                  ],
+                                ),
+
+                          appController.periodModels.isEmpty
+                              ? const SizedBox()
+                              : WidgetText(
+                                  text:
+                                      'Period : ${appController.periodModels.last.periodsale}'),
+
+                          appController.periodModels.isEmpty
+                              ? const SizedBox()
+                              : WidgetText(
+                                  text:
+                                      'Salse Day : ${appController.periodModels.last.saleday}'),
+                        ],
+                      ),
                     ),
-
-                    appController.periodModels.isEmpty
-                        ? const SizedBox()
-                        : WidgetText(
-                            text:
-                                'Period : ${appController.periodModels.last.periodsale}'),
-
-                    appController.periodModels.isEmpty
-                        ? const SizedBox()
-                        : WidgetText(
-                            text:
-                                'Salse Day : ${appController.periodModels.last.saleday}'),
-                  ],
-                ),
-              ),
             );
           }),
     );
@@ -140,10 +149,14 @@ class _SelectSiteState extends State<SelectSite> {
       pressFunc: () {
         if (appController.periodModels.last.status!) {
           //Open
-          Get.to(MainHome());
+          if (!appController.periodModels.last.repair!) {
+            Get.to(MainHome());
+          } else {
+            Get.snackbar('Reapair', 'Please Try Again after Repair Finish');
+          }
         } else {
           //Off
-
+          Get.snackbar('Status Off', 'Status Open can go to Shop');
         }
       },
     );

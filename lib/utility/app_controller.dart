@@ -79,7 +79,7 @@ class AppController extends GetxController {
   }
 
   Future<void> readPeriod({required String docIdSiteCode}) async {
-    if (periodModels.isEmpty) {
+    if (periodModels.isNotEmpty) {
       periodModels.clear();
     }
     print('##29june docIdSiteCode ------>$docIdSiteCode');
