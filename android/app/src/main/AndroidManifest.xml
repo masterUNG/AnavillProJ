@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.arraybit.sharetraveyard">
+    package="com.arraybit.sharetraveyardreserve">
    <application
         android:label="sharetraveyard"
         android:name="${applicationName}"
