@@ -11,6 +11,7 @@ import 'package:sharetraveyard/models/order_model.dart';
 import 'package:sharetraveyard/states/select_site.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
+import 'package:sharetraveyard/utility/app_dialog.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_storage_service.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
@@ -220,11 +221,26 @@ class _PaymentUploadState extends State<PaymentUpload> {
                                   .doc(widget.docIdPhotoPd1)
                                   .update(iphoneModel.toMap())
                                   .then((_) {
-                                print(
-                                    '##18mar controller.displaySiteCode.value ----> ${appController.displaySiteCode.value}');
-                                Get.offAll(const SelectSite(
-                                  assoiate: '',
-                                ));
+
+                                    
+                                print('##22oct upload slip success');
+
+                                AppDialog(context: context).normalDialog(
+                                    title: 'Upload Finish',
+                                    subTitle: 'ThangYou',
+                                    oneActionWidget: WidgetButtom(
+                                      label: 'OK',
+                                      pressFunc: () {
+                                        Get.offAll(const SelectSite(
+                                          assoiate: '',
+                                        ));
+                                      },
+                                    ));
+
+
+
+
+
                               });
                             });
                           });
