@@ -49,7 +49,7 @@ Future<void> main() async {
     await Firebase.initializeApp().then((value) async {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       var user = preferences.getString('user');
-      print('##8feb urer ---> $user');
+      print('##22oct urer ---> $user');
 
       // preferences.clear();
 

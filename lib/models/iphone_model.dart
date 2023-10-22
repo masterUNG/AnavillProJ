@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class IphoneModel {
   // ignore: non_constant_identifier_names
@@ -19,6 +18,7 @@ class IphoneModel {
   final String? associate;
   final bool? buy;
   final String? associateBuy;
+  final String? owner;
 
   IphoneModel({
     // ignore: non_constant_identifier_names
@@ -35,6 +35,7 @@ class IphoneModel {
     this.associate,
     this.buy,
     this.associateBuy,
+     this.owner,
   });
 
   Map<String, dynamic> toMap() {
@@ -52,6 +53,7 @@ class IphoneModel {
       'associate': associate,
       'buy': buy,
       'associateBuy': associateBuy,
+      'owner': owner,
     };
   }
 
@@ -70,6 +72,7 @@ class IphoneModel {
       associate: map['associate'] ?? '',
       buy: (map['buy'] ?? false) as bool,
       associateBuy: (map['associateBuy'] ?? '') as String,
+      owner: (map['owner'] ?? '') as String,
     );
   }
 

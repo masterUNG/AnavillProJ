@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +12,6 @@ import 'package:sharetraveyard/utility/app_dialog.dart';
 import 'package:sharetraveyard/utility/app_svervice.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
-import 'package:sharetraveyard/widgets/widget_text_buttom.dart';
 import 'package:sharetraveyard/widgets/wigget_image_network.dart';
 
 class DetailProduct extends StatefulWidget {

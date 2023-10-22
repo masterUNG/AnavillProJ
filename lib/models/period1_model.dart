@@ -10,6 +10,7 @@ class Period1Model {
   final String roundID;
   final bool? status;
   final bool? repair;
+  final bool? statusRound;
   Period1Model({
     required this.docIdSiteCode,
     required this.nameperiod,
@@ -18,7 +19,8 @@ class Period1Model {
     required this.salesperiod,
     required this.roundID,
     this.status,
-   this.repair,
+    this.repair,
+    this.statusRound,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,6 +33,7 @@ class Period1Model {
       'roundID': roundID,
       'status': status,
       'repair': repair,
+      'statusRound': statusRound,
     };
   }
 
@@ -43,7 +46,8 @@ class Period1Model {
       salesperiod: (map['salesperiod'] ?? '') as String,
       roundID: (map['roundID'] ?? '') as String,
       status: map['status'] ?? false,
-      repair: (map['repair'] ?? false) as bool,
+      repair: map['repair'] ?? false,
+      statusRound: map['statusRound'] != false,
     );
   }
 
