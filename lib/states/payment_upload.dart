@@ -183,6 +183,10 @@ class _PaymentUploadState extends State<PaymentUpload> {
                               branch: appController.displaySiteCode.value,
                               periodsale:
                                   appController.periodModels.last.periodsale,
+                              statusRound:
+                                  appController.periodModels.last.statusRound!
+                                      ? 'Owner'
+                                      : 'General',
                             );
 
                             print('##8feb OderModel ---> ${oderModel.toMap()}');

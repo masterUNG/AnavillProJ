@@ -116,6 +116,9 @@ class AppSvervice {
             appController.iphoneModels.add(model);
             appController.docIdPhotopd1s.add(element.id);
           }
+
+          // appController.iphoneModels.add(model);
+          // appController.docIdPhotopd1s.add(element.id);
         }
       }
     });

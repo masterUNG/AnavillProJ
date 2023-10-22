@@ -190,6 +190,7 @@ class _PaymentUploadPedState extends State<PaymentUploadPed> {
                               docIdPed: widget.docIdPed,
                               mapPed: widget.pedModel.toMap(),
                               amountPed: appController.amountPed.value,
+                              statusRound: appController.periodModels.last.statusRound! ? 'Owner' : 'General',
                             );
 
                             print('##8feb OderModel ---> ${oderModel.toMap()}');

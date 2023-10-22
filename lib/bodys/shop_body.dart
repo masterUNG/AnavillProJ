@@ -140,9 +140,10 @@ class _ShopBodyState extends State<ShopBody> {
                                 ),
                         itemBuilder: (context, index) => InkWell(
                           onTap: () async {
-
-                            if ((!appController.periodModels.last.statusRound!) || (associateLogin == searchIphoneModels[index].owner)) {
-
+                            if ((!appController
+                                    .periodModels.last.statusRound!) ||
+                                (associateLogin ==
+                                    searchIphoneModels[index].owner)) {
                               await FirebaseFirestore.instance
                                   .collection(nameCollection)
                                   .where('serialID',
@@ -254,7 +255,7 @@ class _ShopBodyState extends State<ShopBody> {
                                           ),
                                 searchIphoneModels[index].salseFinish!
                                     ? WidgetText(
-                                        text: 'SaleOut !!',
+                                        text: searchIphoneModels[index].finish! ? 'Finish' : 'SaleOut !!',
                                         textStyle: AppConstant()
                                             .h3Style(color: Colors.red),
                                       )

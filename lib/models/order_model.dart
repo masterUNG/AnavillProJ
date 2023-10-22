@@ -20,6 +20,7 @@ class OderModel {
   final String? docIdPed;
   final Map<String, dynamic>? mapPed;
   final int? amountPed;
+  final String statusRound;
 
   OderModel({
     required this.docIdAssociate,
@@ -38,6 +39,7 @@ class OderModel {
     this.docIdPed,
     this.mapPed,
     this.amountPed,
+    required this.statusRound,
   });
 
   Map<String, dynamic> toMap() {
@@ -58,6 +60,7 @@ class OderModel {
       'docIdPed': docIdPed,
       'mapPed': mapPed,
       'amountPed': amountPed,
+      'statusRound': statusRound,
     };
   }
 
@@ -79,6 +82,7 @@ class OderModel {
       docIdPed: (map['docIdPed'] ?? '') as String,
       mapPed: Map<String, dynamic>.from(map['mapPed'] ?? {}),
       amountPed: map['amountPed'] ?? 1,
+      statusRound: (map['statusRound'] ?? '') as String,
     );
   }
 

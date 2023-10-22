@@ -19,6 +19,7 @@ class IphoneModel {
   final bool? buy;
   final String? associateBuy;
   final String? owner;
+  final bool? finish;
 
   IphoneModel({
     // ignore: non_constant_identifier_names
@@ -35,7 +36,8 @@ class IphoneModel {
     this.associate,
     this.buy,
     this.associateBuy,
-     this.owner,
+    this.owner,
+     this.finish,
   });
 
   Map<String, dynamic> toMap() {
@@ -54,12 +56,13 @@ class IphoneModel {
       'buy': buy,
       'associateBuy': associateBuy,
       'owner': owner,
+      'finish': finish,
     };
   }
 
   factory IphoneModel.fromMap(Map<String, dynamic> map) {
     return IphoneModel(
-      model: (map['model'] ?? '') as String,
+     model: (map['model'] ?? '') as String,
       cover: (map['cover'] ?? '') as String,
       price: (map['price'] ?? 0) as int,
       stock: (map['stock'] ?? 0) as int,
@@ -73,6 +76,7 @@ class IphoneModel {
       buy: (map['buy'] ?? false) as bool,
       associateBuy: (map['associateBuy'] ?? '') as String,
       owner: (map['owner'] ?? '') as String,
+      finish: (map['finish'] ?? false) as bool,
     );
   }
 
