@@ -33,7 +33,7 @@ class _SelectRoundState extends State<SelectRound> {
                 WidgetTextButtom(
                   label: '1. IT ELO Device/BKK-JUN01',
                   pressFunc: () {
-                    Get.to(MainHome());
+                    Get.to(MainHome(statusRoude: false,));
                   },
                 )
               ],

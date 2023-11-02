@@ -20,6 +20,7 @@ class IphoneModel {
   final String? associateBuy;
   final String? owner;
   final bool? finish;
+  final Timestamp? timeBuy;
 
   IphoneModel({
     // ignore: non_constant_identifier_names
@@ -37,7 +38,8 @@ class IphoneModel {
     this.buy,
     this.associateBuy,
     this.owner,
-     this.finish,
+    this.finish,
+    this.timeBuy,
   });
 
   Map<String, dynamic> toMap() {
@@ -57,6 +59,7 @@ class IphoneModel {
       'associateBuy': associateBuy,
       'owner': owner,
       'finish': finish,
+      'timeBuy': timeBuy,
     };
   }
 
@@ -77,6 +80,7 @@ class IphoneModel {
       associateBuy: (map['associateBuy'] ?? '') as String,
       owner: (map['owner'] ?? '') as String,
       finish: (map['finish'] ?? false) as bool,
+      timeBuy: map['timeBuy'] ?? Timestamp(0, 0),
     );
   }
 

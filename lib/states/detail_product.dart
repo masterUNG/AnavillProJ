@@ -195,29 +195,6 @@ class _DetailProductState extends State<DetailProduct> {
     AppDialog(context: context).normalDialog(
       title: 'Reserve or Buy',
       subTitle: 'Please Recerve or buy',
-
-      // actionWidget: WidgetButtom(
-      //   label: 'Reserve',
-      //   pressFunc: () async {
-      //     SharedPreferences preferences = await SharedPreferences.getInstance();
-      //     String? associate = preferences.getString('user');
-
-      //     Map<String, dynamic> map = iphoneModel!.toMap();
-      //     map['timestamp'] = Timestamp.fromDate(DateTime.now());
-      //     map['associate'] = associate!;
-
-      //     FirebaseFirestore.instance
-      //         .collection(widget.collectionProduct)
-      //         .doc(widget.docIdPhotoPd1)
-      //         .update(map)
-      //         .then((value) {
-      //       Get.back();
-      //       iphoneModel = IphoneModel.fromMap(map);
-      //       setState(() {});
-      //     });
-      //   },
-      // ),
-
       action2Widget: WidgetButtom(
         label: 'Buy',
         pressFunc: () {
@@ -262,6 +239,8 @@ class _DetailProductState extends State<DetailProduct> {
     myMap['buy'] = true;
     myMap['associateBuy'] =
         appController.currentAssociateLogin.last.associateID;
+
+    map['timeBuy'] = Timestamp.fromDate(DateTime.now());
 
     print('myMap หลัง ---> $myMap');
 

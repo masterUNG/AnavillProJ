@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:sharetraveyard/bodys/noti_body.dart';
 import 'package:sharetraveyard/bodys/profile_dody.dart';
 import 'package:sharetraveyard/bodys/shop_body.dart';
@@ -14,6 +16,12 @@ import 'package:sharetraveyard/widgets/widget_text.dart';
 class MainHome extends StatefulWidget {
   @override
   State<MainHome> createState() => _MainHomeState();
+
+  final bool statusRoude;
+  const MainHome({
+    Key? key,
+    required this.statusRoude,
+  }) : super(key: key);
 }
 
 class _MainHomeState extends State<MainHome> {
@@ -43,11 +51,10 @@ class _MainHomeState extends State<MainHome> {
 
   @override
   void initState() {
-   
     super.initState();
 
     if (controller.currentAssociateLogin.last.shopPhone!) {
-      shops.add(const ShopBody());
+      shops.add(ShopBody(statusRoude: widget.statusRoude,));
     }
     if (controller.currentAssociateLogin.last.shopPed!) {
       shops.add(const ShopPedBody());

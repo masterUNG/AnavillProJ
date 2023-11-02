@@ -106,19 +106,23 @@ class _SelectSiteState extends State<SelectSite> {
                                       ? Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
+                                             appController.allPeriodModels[index].statusRound??false ? WidgetText(text: 'ขายให้เจ้าของเท่านั้น') : WidgetText(text: 'ขายให้ทั้วไป'),
                                             clickbuttomGoToShop(
                                                 period1model: appController
                                                     .allPeriodModels[index],
                                                 appController: appController),
+                                                
                                             statusWidget(
                                                 period1model: appController
                                                     .allPeriodModels[index]),
+                                                    
                                             periodWidget(
                                                 period1model: appController
                                                     .allPeriodModels[index]),
                                             salseDatWidget(
                                                 period1model: appController
                                                     .allPeriodModels[index]),
+                                                   
                                           ],
                                         )
                                       : const SizedBox(),
@@ -183,7 +187,7 @@ class _SelectSiteState extends State<SelectSite> {
               appController.indexShop.value = 1;
             }
 
-            Get.to(MainHome());
+            Get.to(MainHome(statusRoude: period1model.statusRound??false,));
             
           } else {
             Get.snackbar('Reapair', 'Please Try Again after Repair Finish');
@@ -221,7 +225,7 @@ class _SelectSiteState extends State<SelectSite> {
                     .toList(),
                 onChanged: (value) {
                   appController.choosePeriod.add(value!);
-                  Get.to(MainHome());
+                  Get.to(const MainHome(statusRoude: false,));
                 },
               ),
             ),

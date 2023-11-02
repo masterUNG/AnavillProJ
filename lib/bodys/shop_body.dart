@@ -1,9 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/states/detail_product.dart';
 import 'package:sharetraveyard/states/payment_upload.dart';
@@ -17,10 +19,15 @@ import 'package:sharetraveyard/widgets/widget_text.dart';
 import 'package:sharetraveyard/widgets/wigget_image_network.dart';
 
 class ShopBody extends StatefulWidget {
-  const ShopBody({super.key});
+  const ShopBody({
+    Key? key,
+    required this.statusRoude,
+  }) : super(key: key);
 
   @override
   State<ShopBody> createState() => _ShopBodyState();
+
+  final bool statusRoude;
 }
 
 class _ShopBodyState extends State<ShopBody> {
@@ -68,16 +75,59 @@ class _ShopBodyState extends State<ShopBody> {
         break;
       default:
     }
-    print('##mar8 nameCollection---->${nameCollection}');
+    print('##2nov nameCollection---->${nameCollection}');
 
     if (searchIphoneModels.isNotEmpty) {
       searchIphoneModels.clear();
     }
 
     AppSvervice().readPhotoPD1(nameCollection: nameCollection).then((value) {
+      int i = 0;
+
       for (var element in controller.iphoneModels) {
-        searchIphoneModels.add(element);
-      }
+        //เช็คเวลา timeBuy ว่ามีใคร หมดเวลาบ้าง
+        if (element.timeBuy != Timestamp(0, 0)) {
+          print('##2nov model ที่สั่งซื้อ ----> ${element.toMap()}');
+
+          var diffTime = DateTime.now().difference(element.timeBuy.toDate());
+
+          print('##2nov diffTime in minus ---> ${diffTime.inMinutes}');
+
+          print('##2nov docId ---> ${controller.docIdPhotopd1s[i]}');
+
+          if (diffTime.inMinutes >= 1) {
+            //เกินชัวโมงแล้ว
+            Map<String, dynamic> map = element.toMap();
+            map['buy'] = false;
+            map['timeBuy'] = Timestamp(0, 0);
+
+            FirebaseFirestore.instance
+                .collection(nameCollection)
+                .doc(controller.docIdPhotopd1s[i])
+                .update(map)
+                .then((value) {
+                  print('##2nov success update');
+
+                });
+          }
+        }
+
+        if (widget.statusRoude) {
+          //สำหรับเจ้าของ
+
+          print(
+              '##2nov login ---> ${controller.currentAssociateLogin.last.associateID}');
+          print('##2nov shop ----> ${element.owner}');
+
+          if (controller.currentAssociateLogin.last.associateID ==
+              element.owner) {
+            searchIphoneModels.add(element);
+          }
+        } else {
+          searchIphoneModels.add(element);
+        }
+        i++;
+      } //for
     });
   }
 
@@ -250,8 +300,9 @@ class _ShopBodyState extends State<ShopBody> {
                                 appController.periodModels.last.statusRound!
                                     ? associateLogin ==
                                             searchIphoneModels[index].owner
-                                        ?  WidgetText(
-                                            text:  'forUser -> ${searchIphoneModels[index].owner}')
+                                        ? WidgetText(
+                                            text:
+                                                'forUser -> ${searchIphoneModels[index].owner}')
                                         : const SizedBox()
                                     : const SizedBox(),
                               ],
