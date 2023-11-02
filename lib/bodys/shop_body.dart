@@ -201,9 +201,8 @@ class _ShopBodyState extends State<ShopBody> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 WidgetText(
-                                    text: searchIphoneModels[index]
-                                        .reserve
-                                        .toString()),
+                                    text: appController.currentAssociateLogin
+                                        .last.associateID),
                                 WidgetImageNetwork(
                                     urlImage: searchIphoneModels[index].cover),
                                 WidgetText(
@@ -227,34 +226,34 @@ class _ShopBodyState extends State<ShopBody> {
                                             child: const WidgetText(
                                                 text: 'Reserve'),
                                           ),
-
-
                                 searchIphoneModels[index].salseFinish!
                                     ? WidgetText(
                                         text: searchIphoneModels[index].finish!
                                             ? 'Finish'
-                                            : 'SaleOut !!',
-                                        textStyle: AppConstant()
-                                            .h3Style(color: Colors.red),
+                                            : 'PedinPick !!',
+                                        textStyle: AppConstant().h3Style(
+                                            color: (appController
+                                                        .currentAssociateLogin
+                                                        .last
+                                                        .associateID ==
+                                                    searchIphoneModels[index]
+                                                        .associateBuy)
+                                                ? Colors.green
+                                                : Colors.red),
                                       )
                                     : const SizedBox(),
-
-
                                 searchIphoneModels[index].salseFinish!
                                     ? const SizedBox()
                                     : searchIphoneModels[index].buy!
-                                        ? const WidgetText(text: 'Choosed')
+                                        ? const WidgetText(text: 'PedingPay')
                                         : const SizedBox(),
-
-
                                 appController.periodModels.last.statusRound!
                                     ? associateLogin ==
                                             searchIphoneModels[index].owner
-                                        ? const WidgetText(text: 'สำหรับเจ้าของ')
+                                        ?  WidgetText(
+                                            text:  'forUser -> ${searchIphoneModels[index].owner}')
                                         : const SizedBox()
                                     : const SizedBox(),
-
-                                    
                               ],
                             ),
                           ),
