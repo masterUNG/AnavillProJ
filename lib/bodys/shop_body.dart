@@ -93,143 +93,117 @@ class _ShopBodyState extends State<ShopBody> {
                 ? const SizedBox()
                 : ListView(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 350,
-                            child: WidgetForm(
-                              changFunc: (p0) {
-                                debouncer.run(() {
-                                  if (searchIphoneModels.isNotEmpty) {
-                                    searchIphoneModels.clear();
-                                    for (var element
-                                        in appController.iphoneModels) {
-                                      searchIphoneModels.add(element);
-                                    }
-                                  } else {
-                                    for (var element
-                                        in appController.iphoneModels) {
-                                      searchIphoneModels.add(element);
-                                    }
-                                  }
-
-                                  searchIphoneModels = searchIphoneModels
-                                      .where((element) => element.serialID
-                                          .toLowerCase()
-                                          .contains(p0.toLowerCase()))
-                                      .toList();
-
-                                  setState(() {});
-                                });
-                              },
-                              sufixWidget: const Icon(Icons.search),
-                            ),
-                          ),
-                        ],
-                      ),
+                      searchForm(appController),
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const ScrollPhysics(),
                         itemCount: searchIphoneModels.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3, childAspectRatio: 2 / 3
-                                //mainAxisExtent: 4,
-                                //crossAxisSpacing: 4,
-                                ),
+                          crossAxisCount: 3,
+                          childAspectRatio: 2 / 3,
+                        ),
                         itemBuilder: (context, index) => InkWell(
                           onTap: () async {
-                            if ((!appController
-                                    .periodModels.last.statusRound!) ||
-                                (associateLogin ==
-                                    searchIphoneModels[index].owner)) {
-                              await FirebaseFirestore.instance
-                                  .collection(nameCollection)
-                                  .where('serialID',
-                                      isEqualTo:
-                                          searchIphoneModels[index].serialID)
-                                  .get()
-                                  .then((value) {
-                                for (var element in value.docs) {
-                                  String docIdPhotopd1 = element.id;
+                            if (!(searchIphoneModels[index].reserve ?? false)) {
+                              if ((!appController
+                                      .periodModels.last.statusRound!) ||
+                                  (associateLogin ==
+                                      searchIphoneModels[index].owner)) {
+                                await FirebaseFirestore.instance
+                                    .collection(nameCollection)
+                                    .where('serialID',
+                                        isEqualTo:
+                                            searchIphoneModels[index].serialID)
+                                    .get()
+                                    .then((value) {
+                                  for (var element in value.docs) {
+                                    String docIdPhotopd1 = element.id;
 
-                                  if (!(searchIphoneModels[index]
-                                      .salseFinish!)) {
-                                    if (!(searchIphoneModels[index].buy!)) {
-                                      Get.to(DetailProduct(
-                                        iphoneModel: searchIphoneModels[index],
-                                        docIdPhotoPd1: docIdPhotopd1,
-                                        collectionProduct: nameCollection,
-                                      ))!
-                                          .then((value) {
-                                        searchIphoneModels.clear();
-                                        refreshData();
-                                      });
-                                    } else if (appController
-                                            .currentAssociateLogin
-                                            .last
-                                            .associateID ==
-                                        searchIphoneModels[index]
-                                            .associateBuy) {
-                                      //เจ้าของ buy
+                                    if (!(searchIphoneModels[index]
+                                        .salseFinish!)) {
+                                      if (!(searchIphoneModels[index].buy!)) {
+                                        Get.to(DetailProduct(
+                                          iphoneModel:
+                                              searchIphoneModels[index],
+                                          docIdPhotoPd1: docIdPhotopd1,
+                                          collectionProduct: nameCollection,
+                                        ))!
+                                            .then((value) {
+                                          searchIphoneModels.clear();
+                                          refreshData();
+                                        });
+                                      } else if (appController
+                                              .currentAssociateLogin
+                                              .last
+                                              .associateID ==
+                                          searchIphoneModels[index]
+                                              .associateBuy) {
+                                        //เจ้าของ buy
 
-                                      AppDialog(context: context).normalDialog(
-                                        title: 'Please Choose',
-                                        subTitle: 'Upload Slip or ยกเลิก Buy',
-                                        actionWidget: WidgetButtom(
-                                          label: 'Upload Slip',
-                                          pressFunc: () {
-                                            Get.back();
-                                            Get.to(
-                                              PaymentUpload(
-                                                iphoneModel:
-                                                    searchIphoneModels[index],
-                                                docIdPhotoPd1: docIdPhotopd1,
-                                                collectionProduct:
-                                                    nameCollection,
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                        action2Widget: WidgetButtom(
-                                          label: 'ยกเลิก Buy',
-                                          pressFunc: () async {
-                                            Map<String, dynamic> map =
-                                                searchIphoneModels[index]
-                                                    .toMap();
-
-                                            print('map ก่อน ---> $map');
-
-                                            map['buy'] = false;
-                                            map['associateBun'] = '';
-
-                                            print('map หลัง ---> $map');
-
-                                            await AppSvervice()
-                                                .processEditProduct(
-                                                    collection: nameCollection,
-                                                    docId: docIdPhotopd1,
-                                                    map: map)
-                                                .then((value) {
+                                        AppDialog(context: context)
+                                            .normalDialog(
+                                          title: 'Please Choose',
+                                          subTitle: 'Upload Slip or ยกเลิก Buy',
+                                          actionWidget: WidgetButtom(
+                                            label: 'Upload Slip',
+                                            pressFunc: () {
                                               Get.back();
-                                              refreshData();
-                                            });
-                                          },
-                                        ),
-                                      );
-                                    } else {
-                                      //Guest
+                                              Get.to(
+                                                PaymentUpload(
+                                                  iphoneModel:
+                                                      searchIphoneModels[index],
+                                                  docIdPhotoPd1: docIdPhotopd1,
+                                                  collectionProduct:
+                                                      nameCollection,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                          action2Widget: WidgetButtom(
+                                            label: 'ยกเลิก Buy',
+                                            pressFunc: () async {
+                                              Map<String, dynamic> map =
+                                                  searchIphoneModels[index]
+                                                      .toMap();
+
+                                              print('map ก่อน ---> $map');
+
+                                              map['buy'] = false;
+                                              map['associateBun'] = '';
+
+                                              print('map หลัง ---> $map');
+
+                                              await AppSvervice()
+                                                  .processEditProduct(
+                                                      collection:
+                                                          nameCollection,
+                                                      docId: docIdPhotopd1,
+                                                      map: map)
+                                                  .then((value) {
+                                                Get.back();
+                                                refreshData();
+                                              });
+                                            },
+                                          ),
+                                        );
+                                      } else {
+                                        //Guest
+                                      }
                                     }
                                   }
-                                }
-                              });
+                                });
+                              }
                             }
                           },
                           child: Card(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                WidgetText(
+                                    text: searchIphoneModels[index]
+                                        .reserve
+                                        .toString()),
                                 WidgetImageNetwork(
                                     urlImage: searchIphoneModels[index].cover),
                                 WidgetText(
@@ -253,24 +227,34 @@ class _ShopBodyState extends State<ShopBody> {
                                             child: const WidgetText(
                                                 text: 'Reserve'),
                                           ),
+
+
                                 searchIphoneModels[index].salseFinish!
                                     ? WidgetText(
-                                        text: searchIphoneModels[index].finish! ? 'Finish' : 'SaleOut !!',
+                                        text: searchIphoneModels[index].finish!
+                                            ? 'Finish'
+                                            : 'SaleOut !!',
                                         textStyle: AppConstant()
                                             .h3Style(color: Colors.red),
                                       )
                                     : const SizedBox(),
+
+
                                 searchIphoneModels[index].salseFinish!
                                     ? const SizedBox()
                                     : searchIphoneModels[index].buy!
                                         ? const WidgetText(text: 'Choosed')
                                         : const SizedBox(),
+
+
                                 appController.periodModels.last.statusRound!
                                     ? associateLogin ==
                                             searchIphoneModels[index].owner
-                                        ? WidgetText(text: 'สำหรับเจ้าของ')
+                                        ? const WidgetText(text: 'สำหรับเจ้าของ')
                                         : const SizedBox()
                                     : const SizedBox(),
+
+                                    
                               ],
                             ),
                           ),
@@ -279,6 +263,42 @@ class _ShopBodyState extends State<ShopBody> {
                     ],
                   );
           }),
+    );
+  }
+
+  Row searchForm(AppController appController) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 350,
+          child: WidgetForm(
+            changFunc: (p0) {
+              debouncer.run(() {
+                if (searchIphoneModels.isNotEmpty) {
+                  searchIphoneModels.clear();
+                  for (var element in appController.iphoneModels) {
+                    searchIphoneModels.add(element);
+                  }
+                } else {
+                  for (var element in appController.iphoneModels) {
+                    searchIphoneModels.add(element);
+                  }
+                }
+
+                searchIphoneModels = searchIphoneModels
+                    .where((element) => element.serialID
+                        .toLowerCase()
+                        .contains(p0.toLowerCase()))
+                    .toList();
+
+                setState(() {});
+              });
+            },
+            sufixWidget: const Icon(Icons.search),
+          ),
+        ),
+      ],
     );
   }
 }

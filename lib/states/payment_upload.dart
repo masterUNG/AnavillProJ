@@ -221,8 +221,6 @@ class _PaymentUploadState extends State<PaymentUpload> {
                                   .doc(widget.docIdPhotoPd1)
                                   .update(iphoneModel.toMap())
                                   .then((_) {
-
-                                    
                                 print('##22oct upload slip success');
 
                                 AppDialog(context: context).normalDialog(
@@ -236,11 +234,6 @@ class _PaymentUploadState extends State<PaymentUpload> {
                                         ));
                                       },
                                     ));
-
-
-
-
-
                               });
                             });
                           });

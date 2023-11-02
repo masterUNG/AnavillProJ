@@ -112,13 +112,15 @@ class AppSvervice {
         for (var element in value.docs) {
           IphoneModel model = IphoneModel.fromMap(element.data());
 
-          if (!(model.reserve!)) {
-            appController.iphoneModels.add(model);
-            appController.docIdPhotopd1s.add(element.id);
-          }
+          //ไม่แสดง model ที่ reserve เป็น true
+          // if (!(model.reserve!)) {
+          //   appController.iphoneModels.add(model);
+          //   appController.docIdPhotopd1s.add(element.id);
+          // }
 
-          // appController.iphoneModels.add(model);
-          // appController.docIdPhotopd1s.add(element.id);
+          //แสดงหมดทุกตััว
+          appController.iphoneModels.add(model);
+          appController.docIdPhotopd1s.add(element.id);
         }
       }
     });
