@@ -63,7 +63,8 @@ class AppSvervice {
 
   Future<IphoneModel> findphotodp1ModelWhareDocId(
       {required String docIdPhoto1, required String collectionProduct}) async {
-    print('##2mar docIdPhoto1 $docIdPhoto1');
+
+    print('##2nov ################## docIdPhoto1 $docIdPhoto1');
     var result = await FirebaseFirestore.instance
         .collection(collectionProduct)
         .doc(docIdPhoto1)
@@ -71,7 +72,7 @@ class AppSvervice {
 
     IphoneModel iphoneModel = IphoneModel.fromMap(result.data()!);
 
-    print('##2mar iphone ----> ${iphoneModel.toMap()}');
+    print('##2nov iphone ----> ${iphoneModel.toMap()}');
 
     return iphoneModel;
   }

@@ -79,6 +79,8 @@ class _NotiBoddyState extends State<NotiBoddy> {
                     docIdPhoto1: model.docPhotopd1,
                     collectionProduct: nameCollection!);
 
+            print('##2nov iphoneModel ----> ${iphoneModel.toMap()}');
+
             controller.nameModel.add('${iphoneModel.model}[mobile]');
             controller.nameSerialID.add(iphoneModel.serialID);
             controller.docIOrder.add(element.id);
@@ -97,7 +99,8 @@ class _NotiBoddyState extends State<NotiBoddy> {
     return GetX(
         init: AppController(),
         builder: (AppController appController) {
-          print('##notiIphone ----->${appController.notiIphoneModels.length}');
+          print('##2nov orderModel ----->${appController.orderModels.length}');
+
           return ((appController.nameModel.isEmpty) ||
                   (appController.nameSerialID.isEmpty))
               ? const SizedBox()

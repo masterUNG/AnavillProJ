@@ -95,7 +95,7 @@ class _ShopBodyState extends State<ShopBody> {
 
           print('##2nov docId ---> ${controller.docIdPhotopd1s[i]}');
 
-          if (diffTime.inMinutes >= 1) {
+          if (diffTime.inMinutes >= 90) {
             //เกินชัวโมงแล้ว
             Map<String, dynamic> map = element.toMap();
             map['buy'] = false;
