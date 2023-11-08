@@ -85,32 +85,35 @@ class _ShopBodyState extends State<ShopBody> {
       int i = 0;
 
       for (var element in controller.iphoneModels) {
+        bool reserve = element.reserve;
+        
+
         //เช็คเวลา timeBuy ว่ามีใคร หมดเวลาบ้าง
-        if (element.timeBuy != Timestamp(0, 0)) {
-          print('##2nov model ที่สั่งซื้อ ----> ${element.toMap()}');
+       if (  (element.timeBuy != Timestamp(0, 0)) && !reserve   ) {
+        
+            print('##2nov model ที่สั่งซื้อ ----> ${element.toMap()}');
 
-          var diffTime = DateTime.now().difference(element.timeBuy.toDate());
+            var diffTime = DateTime.now().difference(element.timeBuy.toDate());
 
-          print('##2nov diffTime in minus ---> ${diffTime.inMinutes}');
+            print('##2nov diffTime in minus ---> ${diffTime.inMinutes}');
 
-          print('##2nov docId ---> ${controller.docIdPhotopd1s[i]}');
+            print('##2nov docId ---> ${controller.docIdPhotopd1s[i]}');
 
-          if (diffTime.inMinutes >= 90) {
-            //เกินชัวโมงแล้ว
-            Map<String, dynamic> map = element.toMap();
-            map['buy'] = false;
-            map['timeBuy'] = Timestamp(0, 0);
+            if (diffTime.inMinutes >= 2) {
+              //เกินชัวโมงแล้ว
+              Map<String, dynamic> map = element.toMap();
+              map['buy'] = false;
+              map['timeBuy'] = Timestamp(0, 0);
 
-            FirebaseFirestore.instance
-                .collection(nameCollection)
-                .doc(controller.docIdPhotopd1s[i])
-                .update(map)
-                .then((value) {
-                  print('##2nov success update');
-
-                });
+              FirebaseFirestore.instance
+                  .collection(nameCollection)
+                  .doc(controller.docIdPhotopd1s[i])
+                  .update(map)
+                  .then((value) {
+                print('##2nov success update');
+              });
+            }
           }
-        }
 
         if (widget.statusRoude) {
           //สำหรับเจ้าของ
@@ -151,7 +154,7 @@ class _ShopBodyState extends State<ShopBody> {
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
-                          childAspectRatio: 2 / 3,
+                          childAspectRatio: 2 / 5,
                         ),
                         itemBuilder: (context, index) => InkWell(
                           onTap: () async {
@@ -251,8 +254,9 @@ class _ShopBodyState extends State<ShopBody> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 WidgetText(
-                                    text: appController.currentAssociateLogin
-                                        .last.associateID),
+                                    text: 'reserve -> ${searchIphoneModels[index].reserve}'),
+                                WidgetText(
+                                    text: 'buy -> ${searchIphoneModels[index].buy}'),
                                 WidgetImageNetwork(
                                     urlImage: searchIphoneModels[index].cover),
                                 WidgetText(
