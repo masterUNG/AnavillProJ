@@ -17,9 +17,9 @@ import 'package:sharetraveyard/widgets/widget_text.dart';
 
 class SelectSite extends StatefulWidget {
   const SelectSite({
-    Key? key,
+    super.key,
     this.assoiate,
-  }) : super(key: key);
+  });
 
   final String? assoiate;
 
