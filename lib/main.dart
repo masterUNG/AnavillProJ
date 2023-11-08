@@ -4,7 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharetraveyard/state_web/authen_mobile_web.dart';
+import 'package:sharetraveyard/state_web/select_site_web.dart';
 import 'package:sharetraveyard/states/authen_mobile.dart';
 import 'package:sharetraveyard/states/authen_web.dart';
 import 'package:sharetraveyard/states/select_site.dart';
@@ -23,7 +26,8 @@ var getPage = <GetPage<dynamic>>[
   ),
   GetPage(
     name: '/web',
-    page: () => const Authenweb(),
+    // page: () => const Authenweb(),
+    page: () => const AuthenMobileWeb(),
   ),
 ];
 String firstState = '/authen';
@@ -40,9 +44,11 @@ Future<void> main() async {
                 appId: '1:1091008560141:web:a39077037f94249a07e944',
                 messagingSenderId: '1091008560141',
                 projectId: 'ditproject-52990'))
-        .then((value) {
-      firstState = '/web';
-      runApp(const MyApp());
+        .then((value) async {
+      await GetStorage.init().then((value) {
+        firstState = '/web';
+        runApp(const MyApp());
+      });
     });
   } else {
     //modile status

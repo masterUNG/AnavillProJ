@@ -63,7 +63,6 @@ class AppSvervice {
 
   Future<IphoneModel> findphotodp1ModelWhareDocId(
       {required String docIdPhoto1, required String collectionProduct}) async {
-
     print('##2nov ################## docIdPhoto1 $docIdPhoto1');
     var result = await FirebaseFirestore.instance
         .collection(collectionProduct)
@@ -77,10 +76,10 @@ class AppSvervice {
     return iphoneModel;
   }
 
-  Future<void> findProfileUserLogin() async {
-    AppController appController = Get.put(AppController());
-
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+  Future<void> findProfileUserLogin({String? docIdAssociate}) async {
+   
+    if (docIdAssociate == null) {
+       SharedPreferences preferences = await SharedPreferences.getInstance();
     String? docId = preferences.getString('user');
 
     await FirebaseFirestore.instance
@@ -91,6 +90,18 @@ class AppSvervice {
       AsscociateModel model = AsscociateModel.fromMap(value.data()!);
       appController.profileAssocicateModels.add(model);
     });
+    } else {
+      await FirebaseFirestore.instance
+        .collection('associate')
+        .doc(docIdAssociate)
+        .get()
+        .then((value) {
+      AsscociateModel model = AsscociateModel.fromMap(value.data()!);
+      appController.profileAssocicateModels.add(model);
+    });
+    }
+   
+
   }
 
   Future<void> readPhotoPD1({required String nameCollection}) async {
@@ -255,15 +266,28 @@ class AppSvervice {
     });
   }
 
-  Future<void> findCurrenAssociateLogin() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var result = preferences.getString('user');
-    if (result != null) {
-      print('##29july ---> $result');
+  Future<void> findCurrenAssociateLogin({String? docIdAssociate}) async {
+    if (docIdAssociate == null) {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      var result = preferences.getString('user');
 
+      if (result != null) {
+        print('##29july ---> $result');
+
+        FirebaseFirestore.instance
+            .collection('associate')
+            .doc(result)
+            .get()
+            .then((value) {
+          AsscociateModel asscociateModel =
+              AsscociateModel.fromMap(value.data()!);
+          appController.currentAssociateLogin.add(asscociateModel);
+        });
+      }
+    } else {
       FirebaseFirestore.instance
           .collection('associate')
-          .doc(result)
+          .doc(docIdAssociate)
           .get()
           .then((value) {
         AsscociateModel asscociateModel =

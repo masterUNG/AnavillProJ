@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sharetraveyard/states/main_home_web.dart';
+
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_dialog.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
@@ -60,7 +60,7 @@ class _AuthenwebState extends State<Authenweb> {
                           .signInWithEmailAndPassword(
                               email: email!, password: password!)
                           .then((value) {
-                        Get.offAll(const MainHomeWeb());
+                       
                       }).catchError((onError) {
                         AppDialog(context: context).normalDialog(
                             title: onError.code, subTitle: onError.code);
