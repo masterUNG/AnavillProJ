@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.arraybit.sharetraveyardreserve">
    <application
-        android:label="sharetraveyard"
+        android:label="Good Phone"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
