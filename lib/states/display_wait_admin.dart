@@ -26,6 +26,7 @@ class _DisplayWaitAdminState extends State<DisplayWaitAdmin> {
   }
 
   void findData() async {
+    
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? docId = preferences.getString('docIdCheckAssociate');
 

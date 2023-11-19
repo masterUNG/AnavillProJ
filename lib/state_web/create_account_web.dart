@@ -368,48 +368,53 @@ class _CreateAccountWebState extends State<CreateAccountWeb> {
       AppDialog(context: context).normalDialog(
           title: 'Address, phone', subTitle: 'Please Fill address phone');
     } else {
-      ProfileModel profileModel = ProfileModel(
-          password: passwordController.text,
-          question1: appController.chooseQusetion1s.last,
-          answer1: answer1!,
-          question2: appController.chooseQuestions2.last,
-          answer2: answer2!,
-          phone: phone!,
-          address: address!,
-          sitecode: appController.chooseSiteCode.last,
-          uname: uname!,
-          ulastname: ulastname!);
 
-      print('##29july profileModel --> ${profileModel.toMap()}');
-      CheckAssociateModel checkAssociateModel = CheckAssociateModel(
-          mapProfile: profileModel.toMap(),
-          timestamp: Timestamp.fromDate(DateTime.now()),
-          cheeck: false,
-          associateId: associateIdController.text,
-          docIdSiteCode: controller.chooseDocIdSiteCodes.last);
 
-      DocumentReference documentReference =
-          FirebaseFirestore.instance.collection('checkassociate').doc();
-
-      await documentReference
-          .set(checkAssociateModel.toMap())
+      await FirebaseFirestore.instance
+          .collection('checkassociate')
+          .where('associateId', isEqualTo: associateIdController.text)
+          .get()
           .then((value) async {
-        String docIdCheckAssociate = documentReference.id;
-        print('##docId-----> $docIdCheckAssociate');
+        if (value.docs.isEmpty) {
+          //OK
+          ProfileModel profileModel = ProfileModel(
+              password: passwordController.text,
+              question1: appController.chooseQusetion1s.last,
+              answer1: answer1!,
+              question2: appController.chooseQuestions2.last,
+              answer2: answer2!,
+              phone: phone!,
+              address: address!,
+              sitecode: appController.chooseSiteCode.last,
+              uname: uname!,
+              ulastname: ulastname!);
 
-        await GetStorage()
-            .write('docIdCheckAssociate', docIdCheckAssociate)
-            .then((value) {
-              Get.offAll(const DisplayWaitAdminWeb());
-            });
+          print('##29july profileModel --> ${profileModel.toMap()}');
+          CheckAssociateModel checkAssociateModel = CheckAssociateModel(
+              mapProfile: profileModel.toMap(),
+              timestamp: Timestamp.fromDate(DateTime.now()),
+              cheeck: false,
+              associateId: associateIdController.text,
+              docIdSiteCode: controller.chooseDocIdSiteCodes.last);
 
-        // SharedPreferences preferences = await SharedPreferences.getInstance();
-        // preferences
-        //     .setString('docIdCheckAssociate', docIdCheckAssociate)
-        //     .then((value) {
-        //   Get.offAll(const DisplayWaitAdmin());
-        // });
+          DocumentReference documentReference =
+              FirebaseFirestore.instance.collection('checkassociate').doc();
+
+          await documentReference
+              .set(checkAssociateModel.toMap())
+              .then((value) async {
+            Get.offAll(const DisplayWaitAdminWeb());
+          });
+        } else {
+          Get.snackbar('เคยสมัครแล้ว', 'กรุณารอ Admin ตรวจสอบก่อน',
+              snackPosition: SnackPosition.BOTTOM);
+          Get.offAll(const DisplayWaitAdminWeb());
+        }
       });
+
+
+
+      
     }
   }
 
