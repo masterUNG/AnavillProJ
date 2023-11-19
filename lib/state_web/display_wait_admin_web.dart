@@ -1,8 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:sharetraveyard/models/check_associate_model.dart';
 import 'package:sharetraveyard/states/authen_mobile.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
@@ -11,7 +13,12 @@ import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 
 class DisplayWaitAdminWeb extends StatefulWidget {
-  const DisplayWaitAdminWeb({super.key});
+  const DisplayWaitAdminWeb({
+    Key? key,
+    required this.docIdAssociate,
+  }) : super(key: key);
+
+  final String docIdAssociate;
 
   @override
   State<DisplayWaitAdminWeb> createState() => _DisplayWaitAdminWebState();

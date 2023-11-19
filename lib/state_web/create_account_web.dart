@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/models/check_associate_model.dart';
 import 'package:sharetraveyard/models/profile_model.dart';
 import 'package:sharetraveyard/state_web/display_wait_admin_web.dart';
+import 'package:sharetraveyard/states/display_check_associate.dart';
 import 'package:sharetraveyard/states/display_wait_admin.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
@@ -368,8 +369,6 @@ class _CreateAccountWebState extends State<CreateAccountWeb> {
       AppDialog(context: context).normalDialog(
           title: 'Address, phone', subTitle: 'Please Fill address phone');
     } else {
-
-
       await FirebaseFirestore.instance
           .collection('checkassociate')
           .where('associateId', isEqualTo: associateIdController.text)
@@ -403,18 +402,31 @@ class _CreateAccountWebState extends State<CreateAccountWeb> {
           await documentReference
               .set(checkAssociateModel.toMap())
               .then((value) async {
-            Get.offAll(const DisplayWaitAdminWeb());
+            Get.offAll(DisplayWaitAdminWeb(
+              docIdAssociate: documentReference.id,
+            ));
           });
         } else {
-          Get.snackbar('เคยสมัครแล้ว', 'กรุณารอ Admin ตรวจสอบก่อน',
-              snackPosition: SnackPosition.BOTTOM);
-          Get.offAll(const DisplayWaitAdminWeb());
+          for (var element in value.docs) {
+            for (var element in value.docs) {
+              CheckAssociateModel checkAssociateModel =
+                  CheckAssociateModel.fromMap(element.data());
+
+              if ((checkAssociateModel.cheeck) &&
+                  (checkAssociateModel.resultAdmin!)) {
+                Get.offAll(DisplayCheckAssociate(
+                    checkAssociateModel: checkAssociateModel, fromWeb: true,));
+              } else {
+                Get.snackbar('เคยสมัครแล้ว', 'กรุณารอ Admin ตรวจสอบก่อน',
+                    snackPosition: SnackPosition.BOTTOM);
+                Get.offAll(DisplayWaitAdminWeb(
+                  docIdAssociate: element.id,
+                ));
+              }
+            }
+          }
         }
       });
-
-
-
-      
     }
   }
 

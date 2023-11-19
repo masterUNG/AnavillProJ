@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/models/check_associate_model.dart';
 import 'package:sharetraveyard/state_web/create_account_web.dart';
+import 'package:sharetraveyard/state_web/display_wait_admin_web.dart';
 import 'package:sharetraveyard/state_web/select_site_web.dart';
 import 'package:sharetraveyard/states/create_account.dart';
 import 'package:sharetraveyard/states/display_check_associate.dart';
@@ -113,7 +114,86 @@ class _AuthenMobileWebState extends State<AuthenMobileWeb> {
                                           //ButtonGoogle(),
                                           buttomCreateRegister(),
                                           buttonCreateForgetpassword(
-                                              appController: appController)
+                                              appController: appController),
+                                          WidgetTextButtom(
+                                            label: 'ติดตามผลการสมัคร',
+                                            pressFunc: () {
+                                              String? docIdAssocate;
+
+                                              AppDialog(context: context)
+                                                  .normalDialog(
+                                                      title:
+                                                          'ติดตามผล โปรดกรอก docIdAssocate ที่เคยสมัครไว้',
+                                                      subTitle:
+                                                          'โปรดกรอก docIdAssocate ที่เคยสมัครไว้',
+                                                      contenWidget: Container(
+                                                        width: 250,
+                                                        child: WidgetForm(
+                                                          changFunc: (p0) {
+                                                            docIdAssocate = p0;
+                                                          },
+                                                        ),
+                                                      ),
+                                                      action2Widget:
+                                                          WidgetButtom(
+                                                        label: 'เช็คผล',
+                                                        pressFunc: () async {
+                                                          if (docIdAssocate
+                                                                  ?.isEmpty ??
+                                                              true) {
+                                                            Get.back();
+                                                            Get.snackbar(
+                                                                'ยังไม่ได้กรอก',
+                                                                'docIdAssocate');
+                                                          } else {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'checkassociate')
+                                                                .where('associateId',isEqualTo:docIdAssocate)
+                                                                .get()
+                                                                .then((value) {
+                                                              if (value.docs
+                                                                  .isEmpty) {
+                                                                Get.back();
+                                                                Get.snackbar(
+                                                                    'docIdAssociate ผิด',
+                                                                    'กรุณากรอกใหม่');
+                                                              } else {
+                                                                for (var element
+                                                                    in value
+                                                                        .docs) {
+                                                                  CheckAssociateModel
+                                                                      checkAssociateModel =
+                                                                      CheckAssociateModel.fromMap(
+                                                                          element
+                                                                              .data());
+
+                                                                  if ((checkAssociateModel
+                                                                          .cheeck) &&
+                                                                      (checkAssociateModel
+                                                                          .resultAdmin!)) {
+                                                                    Get.back();
+                                                                    Get.to(DisplayCheckAssociate(
+                                                                        checkAssociateModel:
+                                                                            checkAssociateModel, fromWeb: true,));
+                                                                  } else {
+                                                                    Get.back();
+                                                                    Get.to(
+                                                                        DisplayWaitAdminWeb(
+                                                                      docIdAssociate:
+                                                                          element
+                                                                              .id,
+                                                                    ));
+                                                                  }
+                                                                }
+                                                              }
+                                                            });
+                                                          }
+                                                        },
+                                                      ));
+                                            },
+                                          ),
                                         ],
                                       ),
                                     ],
@@ -269,8 +349,8 @@ class _AuthenMobileWebState extends State<AuthenMobileWeb> {
       pressFunc: () async {
         Get.to(const CreateAccountWeb());
 
-        // SharedPreferences preferences = await SharedPreferences.getInstance();
-        // String? docId = preferences.getString('docIdCheckAssociate');
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        String? docId = preferences.getString('docIdCheckAssociate');
 
         // if (docId == null) {
         //   Get.to(const CreateAccount());

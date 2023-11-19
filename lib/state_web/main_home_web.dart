@@ -1,14 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:sharetraveyard/bodys/noti_body.dart';
-import 'package:sharetraveyard/bodys/profile_dody.dart';
 import 'package:sharetraveyard/bodys/shop_body.dart';
 import 'package:sharetraveyard/bodys/shop_ped_body.dart';
+import 'package:sharetraveyard/state_web/authen_mobile_web.dart';
 import 'package:sharetraveyard/state_web/noti_body_web.dart';
 import 'package:sharetraveyard/state_web/profile_dody_web.dart';
+import 'package:sharetraveyard/states/authen_web.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/widgets/widget_icon_buttom.dart';
@@ -19,6 +19,7 @@ class MainHomeWeb extends StatefulWidget {
   State<MainHomeWeb> createState() => _MainHomeWebState();
 
   final bool statusRoude;
+
   const MainHomeWeb({
     super.key,
     required this.statusRoude,
@@ -30,7 +31,7 @@ class _MainHomeWebState extends State<MainHomeWeb> {
 
   // var shops = <Widget>[const ShopBody(), const ShopPedBody()];
   var shops = <Widget>[];
- 
+
   PageController? pageController;
 
   AppController controller = Get.put(AppController());
@@ -122,11 +123,7 @@ class _MainHomeWebState extends State<MainHomeWeb> {
                 WidgetIconButtom(
                   iconData: Icons.exit_to_app,
                   pressFunc: () async {
-                    SharedPreferences preferences =
-                        await SharedPreferences.getInstance();
-                    preferences.clear().then((value) {
-                      Get.offAllNamed('/authen');
-                    });
+                    Get.offAll(const AuthenMobileWeb());
                   },
                 )
               ],

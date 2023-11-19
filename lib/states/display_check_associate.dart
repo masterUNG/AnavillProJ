@@ -3,21 +3,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sharetraveyard/models/associate_model.dart';
 
+import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/models/check_associate_model.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
-import 'package:sharetraveyard/widgets/widget_text_buttom.dart';
 
 class DisplayCheckAssociate extends StatelessWidget {
   const DisplayCheckAssociate({
     Key? key,
     required this.checkAssociateModel,
+    this.fromWeb,
   }) : super(key: key);
 
   final CheckAssociateModel checkAssociateModel;
+  final bool? fromWeb;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,6 @@ class DisplayCheckAssociate extends StatelessWidget {
                 WidgetText(text: 'AssociateID : '),
                 const Padding(padding: EdgeInsets.only(bottom: 30)),
                 WidgetText(text: checkAssociateModel.associateId),
-                
               ],
             ),
             Row(
@@ -57,19 +57,18 @@ class DisplayCheckAssociate extends StatelessWidget {
                 WidgetText(text: checkAssociateModel.mapProfile['ulastname']),
               ],
             ),
-          
             WidgetButtom(
               label: 'confirm Data',
               pressFunc: () async {
                 AsscociateModel asscociateModel = AsscociateModel(
-                    name : checkAssociateModel.mapProfile['uname'],
-                    lastname : checkAssociateModel.mapProfile['ulastname'],
-                    docIdSiteCode : checkAssociateModel.docIdSiteCode,
+                    name: checkAssociateModel.mapProfile['uname'],
+                    lastname: checkAssociateModel.mapProfile['ulastname'],
+                    docIdSiteCode: checkAssociateModel.docIdSiteCode,
                     associateID: checkAssociateModel.associateId,
                     admin: 'user',
                     shopPed: false,
                     shopPhone: true);
-      
+
                 FirebaseFirestore.instance
                     .collection('associate')
                     .doc(checkAssociateModel.associateId)
@@ -82,13 +81,16 @@ class DisplayCheckAssociate extends StatelessWidget {
                       .doc()
                       .set(checkAssociateModel.mapProfile)
                       .then((value) async {
-                    SharedPreferences preferences =
-                        await SharedPreferences.getInstance();
-                    preferences.clear().then((value) {
-                       Get.back();
-                    });
-      
-                   
+                    if (fromWeb ?? false) {
+                      //for Website
+                      Get.back();
+                    } else {
+                      SharedPreferences preferences =
+                          await SharedPreferences.getInstance();
+                      preferences.clear().then((value) {
+                        Get.back();
+                      });
+                    }
                   });
                 });
               },
