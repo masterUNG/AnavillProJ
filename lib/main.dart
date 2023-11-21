@@ -43,6 +43,7 @@ Future<void> main() async {
                 apiKey: 'AIzaSyAA4R_ZAM6GG5znhfkVQOS2t9r5BeftQ5w',
                 appId: '1:1091008560141:web:a39077037f94249a07e944',
                 messagingSenderId: '1091008560141',
+                storageBucket: 'ditproject-52990.appspot.com',
                 projectId: 'ditproject-52990'))
         .then((value) async {
       await GetStorage.init().then((value) {
