@@ -159,105 +159,92 @@ class _PaymentUploadWebState extends State<PaymentUploadWeb> {
                             UploadTask uploadTask = reference.putData(result!,
                                 SettableMetadata(contentType: 'image/jpeg'));
                             await uploadTask.whenComplete(() async {
-                              await reference.getDownloadURL().then((value) {
+                              await reference
+                                  .getDownloadURL()
+                                  .then((value) async {
                                 String urlImage = value;
                                 print('##21nov urlImage ----> $urlImage');
+
+                                String? docIdAssociate = controller
+                                    .currentAssociateLogin.last.associateID;
+
+                                OderModel oderModel = OderModel(
+                                  docIdAssociate: docIdAssociate!,
+                                  docPhotopd1: widget.docIdPhotoPd1,
+                                  urlSlip: urlImage,
+                                  salseFinish: false,
+                                  collectionProduct: widget.collectionProduct,
+                                  timestamp: Timestamp.fromDate(DateTime.now()),
+                                  price: widget.iphoneModel.price.toString(),
+                                  nameAssociate: asscociateModel!.name,
+                                  itemName: widget.iphoneModel.model,
+                                  roundID:
+                                      appController.periodModels.last.roundID,
+                                  roundStatus:
+                                      appController.periodModels.last.saleday,
+                                  branch: appController.displaySiteCode.value,
+                                  periodsale: appController
+                                      .periodModels.last.periodsale,
+                                  statusRound: appController
+                                          .periodModels.last.statusRound!
+                                      ? 'Owner'
+                                      : 'General',
+                                );
+
+                                print(
+                                    '##8feb OderModel ---> ${oderModel.toMap()}');
+
+                                var reference = FirebaseFirestore.instance
+                                    .collection('order')
+                                    .doc();
+
+                                await reference
+                                    .set(oderModel.toMap())
+                                    .then((_) async {
+                                  String docIdOrder = reference.id;
+                                  print(
+                                      '##8feb success docIdOrder --> $docIdOrder');
+
+                                  urlGetOR =
+                                      'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=$docIdOrder';
+
+                                  IphoneModel iphoneModel = widget.iphoneModel;
+                                  print(
+                                      '##18mar before saleFinish -----> ${iphoneModel.salseFinish}');
+
+                                  var map = iphoneModel.toMap();
+                                  map['reserve'] = true;
+                                  iphoneModel = IphoneModel.fromMap(map);
+
+                                  print(
+                                      '##18mar after saleFinish -----> ${iphoneModel.salseFinish}');
+                                  await FirebaseFirestore.instance
+                                      .collection(widget.collectionProduct)
+                                      .doc(widget.docIdPhotoPd1)
+                                      .update(iphoneModel.toMap())
+                                      .then((_) {
+                                    print('##22oct upload slip success');
+
+                                    AppDialog(context: context).normalDialog(
+                                        title: 'Upload Finish',
+                                        subTitle: 'ThangYou',
+                                        oneActionWidget: WidgetButtom(
+                                          label: 'OK',
+                                          pressFunc: () {
+                                            Get.offAll(const SelectSite(
+                                              assoiate: '',
+                                            ));
+                                          },
+                                        ));
+                                  });
+                                });
                               });
                             });
                           } on Exception catch (e) {
                             Get.snackbar('Cannot Upload', 'Please Try Again');
                           }
 
-                          // File file = File(result!.path);
-
-                          // final path = result.path;
-                          // final fileName = basename(file.path);
-
-                          //final path = results.files.single.path!;
-                          //final fileName = results.files.single.name;
-
-                          // print(path);
-                          // print(fileName);
-
-                          // await storage
-                          //     .uploadFile(
-                          //   path,
-                          //   fileName,
-                          // )
-                          //     .then((_) async {
-                          //   String? docIdAssociate = controller
-                          //       .currentAssociateLogin.last.associateID;
-
-                          //   OderModel oderModel = OderModel(
-                          //     docIdAssociate: docIdAssociate!,
-                          //     docPhotopd1: widget.docIdPhotoPd1,
-                          //     urlSlip: appController.urlImage.last,
-                          //     salseFinish: false,
-                          //     collectionProduct: widget.collectionProduct,
-                          //     timestamp: Timestamp.fromDate(DateTime.now()),
-                          //     price: widget.iphoneModel.price.toString(),
-                          //     nameAssociate: asscociateModel!.name,
-                          //     itemName: widget.iphoneModel.model,
-                          //     roundID: appController.periodModels.last.roundID,
-                          //     roundStatus:
-                          //         appController.periodModels.last.saleday,
-                          //     branch: appController.displaySiteCode.value,
-                          //     periodsale:
-                          //         appController.periodModels.last.periodsale,
-                          //     statusRound:
-                          //         appController.periodModels.last.statusRound!
-                          //             ? 'Owner'
-                          //             : 'General',
-                          //   );
-
-                          //   print('##8feb OderModel ---> ${oderModel.toMap()}');
-
-                          //   var reference = FirebaseFirestore.instance
-                          //       .collection('order')
-                          //       .doc();
-
-                          //   await reference
-                          //       .set(oderModel.toMap())
-                          //       .then((_) async {
-                          //     String docIdOrder = reference.id;
-                          //     print(
-                          //         '##8feb success docIdOrder --> $docIdOrder');
-
-                          //     urlGetOR =
-                          //         'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=$docIdOrder';
-
-                          //     IphoneModel iphoneModel = widget.iphoneModel;
-                          //     print(
-                          //         '##18mar before saleFinish -----> ${iphoneModel.salseFinish}');
-
-                          //     var map = iphoneModel.toMap();
-                          //     map['reserve'] = true;
-                          //     iphoneModel = IphoneModel.fromMap(map);
-
-                          //     print(
-                          //         '##18mar after saleFinish -----> ${iphoneModel.salseFinish}');
-                          //     await FirebaseFirestore.instance
-                          //         .collection(widget.collectionProduct)
-                          //         .doc(widget.docIdPhotoPd1)
-                          //         .update(iphoneModel.toMap())
-                          //         .then((_) {
-                          //       print('##22oct upload slip success');
-
-                          //       AppDialog(context: context).normalDialog(
-                          //           title: 'Upload Finish',
-                          //           subTitle: 'ThangYou',
-                          //           oneActionWidget: WidgetButtom(
-                          //             label: 'OK',
-                          //             pressFunc: () {
-                          //               Get.offAll(const SelectSite(
-                          //                 assoiate: '',
-                          //               ));
-                          //             },
-                          //           ));
-                          //     });
-                          //   });
-                          // });
-                          // //end
+                          //end
 
                           setState(() {
                             image =
