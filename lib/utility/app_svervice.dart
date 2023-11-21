@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
 import 'package:sharetraveyard/models/profile_model.dart';
@@ -11,6 +12,8 @@ import 'package:sharetraveyard/utility/app_dialog1.dart';
 
 import '../models/ped_model.dart';
 import '../models/site_code_model.dart';
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AppSvervice {
   AppController appController = Get.put(AppController());
@@ -77,31 +80,34 @@ class AppSvervice {
   }
 
   Future<void> findProfileUserLogin({String? docIdAssociate}) async {
-   
     if (docIdAssociate == null) {
-       SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? docId = preferences.getString('user');
+      String? docId;
 
-    await FirebaseFirestore.instance
-        .collection('associate')
-        .doc(docId)
-        .get()
-        .then((value) {
-      AsscociateModel model = AsscociateModel.fromMap(value.data()!);
-      appController.profileAssocicateModels.add(model);
-    });
+      if (kIsWeb) {
+        docId = appController.currentAssociateLogin.last.associateID;
+      } else {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        docId = preferences.getString('user');
+      }
+
+      await FirebaseFirestore.instance
+          .collection('associate')
+          .doc(docId)
+          .get()
+          .then((value) {
+        AsscociateModel model = AsscociateModel.fromMap(value.data()!);
+        appController.profileAssocicateModels.add(model);
+      });
     } else {
       await FirebaseFirestore.instance
-        .collection('associate')
-        .doc(docIdAssociate)
-        .get()
-        .then((value) {
-      AsscociateModel model = AsscociateModel.fromMap(value.data()!);
-      appController.profileAssocicateModels.add(model);
-    });
+          .collection('associate')
+          .doc(docIdAssociate)
+          .get()
+          .then((value) {
+        AsscociateModel model = AsscociateModel.fromMap(value.data()!);
+        appController.profileAssocicateModels.add(model);
+      });
     }
-   
-
   }
 
   Future<void> readPhotoPD1({required String nameCollection}) async {
@@ -268,8 +274,14 @@ class AppSvervice {
 
   Future<void> findCurrenAssociateLogin({String? docIdAssociate}) async {
     if (docIdAssociate == null) {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      var result = preferences.getString('user');
+      String? result;
+
+      if (kIsWeb) {
+        result = appController.currentAssociateLogin.last.associateID;
+      } else {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        result = preferences.getString('user');
+      }
 
       if (result != null) {
         print('##29july ---> $result');

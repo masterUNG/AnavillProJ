@@ -1,14 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:sharetraveyard/bodys/shop_body.dart';
 import 'package:sharetraveyard/bodys/shop_ped_body.dart';
 import 'package:sharetraveyard/state_web/authen_mobile_web.dart';
 import 'package:sharetraveyard/state_web/noti_body_web.dart';
 import 'package:sharetraveyard/state_web/profile_dody_web.dart';
-import 'package:sharetraveyard/states/authen_web.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
 import 'package:sharetraveyard/utility/app_controller.dart';
 import 'package:sharetraveyard/widgets/widget_icon_buttom.dart';

@@ -14,6 +14,8 @@ import 'package:sharetraveyard/widgets/widget_buttom.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 import 'package:sharetraveyard/widgets/wigget_image_network.dart';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 class DetailProduct extends StatefulWidget {
   const DetailProduct({
     Key? key,
@@ -32,6 +34,8 @@ class DetailProduct extends StatefulWidget {
 
 class _DetailProductState extends State<DetailProduct> {
   IphoneModel? iphoneModel;
+
+  AppController appController = Get.put(AppController());
 
   @override
   void initState() {
@@ -151,9 +155,18 @@ class _DetailProductState extends State<DetailProduct> {
                   ? BuyButtom(context)
                   : InkWell(
                       onTap: () async {
-                        SharedPreferences preferences =
-                            await SharedPreferences.getInstance();
-                        String? associate = preferences.getString('user');
+                        String? associate;
+
+                        if (kIsWeb) {
+                          //web
+                          associate = appController
+                              .currentAssociateLogin.last.associateID;
+                        } else {
+                          SharedPreferences preferences =
+                              await SharedPreferences.getInstance();
+                          associate = preferences.getString('user');
+                        }
+
                         //เมื่อมีการกดจะเปลี่น associte ใหม่ทักครั้ง
 
                         if (associate == iphoneModel!.associate) {

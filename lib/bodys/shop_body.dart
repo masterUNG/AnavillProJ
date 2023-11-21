@@ -18,6 +18,8 @@ import 'package:sharetraveyard/widgets/widget_form.dart';
 import 'package:sharetraveyard/widgets/widget_text.dart';
 import 'package:sharetraveyard/widgets/wigget_image_network.dart';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 class ShopBody extends StatefulWidget {
   const ShopBody({
     Key? key,
@@ -49,8 +51,14 @@ class _ShopBodyState extends State<ShopBody> {
   }
 
   Future<void> findAssociateLogin() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    associateLogin = preferences.getString('user');
+    if (kIsWeb) {
+      //web
+      associateLogin = controller.currentAssociateLogin.last.associateID;
+      print('##21nov associateLogin at web status ---> $associateLogin');
+    } else {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      associateLogin = preferences.getString('user');
+    }
   }
 
   void refreshData() {
@@ -86,34 +94,32 @@ class _ShopBodyState extends State<ShopBody> {
 
       for (var element in controller.iphoneModels) {
         bool reserve = element.reserve;
-        
 
         //เช็คเวลา timeBuy ว่ามีใคร หมดเวลาบ้าง
-       if (  (element.timeBuy != Timestamp(0, 0)) && !reserve   ) {
-        
-            print('##2nov model ที่สั่งซื้อ ----> ${element.toMap()}');
+        if ((element.timeBuy != Timestamp(0, 0)) && !reserve) {
+          print('##2nov model ที่สั่งซื้อ ----> ${element.toMap()}');
 
-            var diffTime = DateTime.now().difference(element.timeBuy.toDate());
+          var diffTime = DateTime.now().difference(element.timeBuy.toDate());
 
-            print('##2nov diffTime in minus ---> ${diffTime.inMinutes}');
+          print('##2nov diffTime in minus ---> ${diffTime.inMinutes}');
 
-            print('##2nov docId ---> ${controller.docIdPhotopd1s[i]}');
+          print('##2nov docId ---> ${controller.docIdPhotopd1s[i]}');
 
-            if (diffTime.inMinutes >= 2) {
-              //เกินชัวโมงแล้ว
-              Map<String, dynamic> map = element.toMap();
-              map['buy'] = false;
-              map['timeBuy'] = Timestamp(0, 0);
+          if (diffTime.inMinutes >= 2) {
+            //เกินชัวโมงแล้ว
+            Map<String, dynamic> map = element.toMap();
+            map['buy'] = false;
+            map['timeBuy'] = Timestamp(0, 0);
 
-              FirebaseFirestore.instance
-                  .collection(nameCollection)
-                  .doc(controller.docIdPhotopd1s[i])
-                  .update(map)
-                  .then((value) {
-                print('##2nov success update');
-              });
-            }
+            FirebaseFirestore.instance
+                .collection(nameCollection)
+                .doc(controller.docIdPhotopd1s[i])
+                .update(map)
+                .then((value) {
+              print('##2nov success update');
+            });
           }
+        }
 
         if (widget.statusRoude) {
           //สำหรับเจ้าของ
@@ -254,9 +260,11 @@ class _ShopBodyState extends State<ShopBody> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 WidgetText(
-                                    text: 'reserve -> ${searchIphoneModels[index].reserve}'),
+                                    text:
+                                        'reserve -> ${searchIphoneModels[index].reserve}'),
                                 WidgetText(
-                                    text: 'buy -> ${searchIphoneModels[index].buy}'),
+                                    text:
+                                        'buy -> ${searchIphoneModels[index].buy}'),
                                 WidgetImageNetwork(
                                     urlImage: searchIphoneModels[index].cover),
                                 WidgetText(
