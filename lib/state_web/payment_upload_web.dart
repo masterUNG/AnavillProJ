@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
@@ -75,7 +78,6 @@ class _PaymentUploadWebState extends State<PaymentUploadWeb> {
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       backgroundColor: AppConstant.bgColor,
       body: GetX(
@@ -142,21 +144,40 @@ class _PaymentUploadWebState extends State<PaymentUploadWeb> {
                       WidgetButtom(
                         label: 'Upload Payment',
                         pressFunc: () async {
-                          var result = await ImagePicker().pickImage(
-                              source: ImageSource.gallery,
-                              maxWidth: 800,
-                              maxHeight: 800);
+                          try {
+                            var result = await ImagePickerWeb.getImageAsBytes();
 
-                          File file = File(result!.path);
+                            String path =
+                                'payment_upload/payment${Random().nextInt(1000000)}.jpg';
 
-                          final path = result.path;
-                          final fileName = basename(file.path);
+                            FirebaseStorage firebaseStorage =
+                                FirebaseStorage.instance;
+
+                            Reference reference =
+                                firebaseStorage.ref().child(path);
+
+                            UploadTask uploadTask = reference.putData(result!,
+                                SettableMetadata(contentType: 'image/jpeg'));
+                            await uploadTask.whenComplete(() async {
+                              await reference.getDownloadURL().then((value) {
+                                String urlImage = value;
+                                print('##21nov urlImage ----> $urlImage');
+                              });
+                            });
+                          } on Exception catch (e) {
+                            Get.snackbar('Cannot Upload', 'Please Try Again');
+                          }
+
+                          // File file = File(result!.path);
+
+                          // final path = result.path;
+                          // final fileName = basename(file.path);
 
                           //final path = results.files.single.path!;
                           //final fileName = results.files.single.name;
 
-                          print(path);
-                          print(fileName);
+                          // print(path);
+                          // print(fileName);
 
                           // await storage
                           //     .uploadFile(
@@ -237,15 +258,6 @@ class _PaymentUploadWebState extends State<PaymentUploadWeb> {
                           //   });
                           // });
                           // //end
-
-
-
-
-
-
-
-
-
 
                           setState(() {
                             image =
