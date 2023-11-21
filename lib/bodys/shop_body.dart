@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sharetraveyard/models/iphone_model.dart';
+import 'package:sharetraveyard/state_web/payment_upload_web.dart';
 import 'package:sharetraveyard/states/detail_product.dart';
 import 'package:sharetraveyard/states/payment_upload.dart';
 import 'package:sharetraveyard/utility/app_constant.dart';
@@ -208,15 +209,29 @@ class _ShopBodyState extends State<ShopBody> {
                                             label: 'Upload Slip',
                                             pressFunc: () {
                                               Get.back();
-                                              Get.to(
-                                                PaymentUpload(
-                                                  iphoneModel:
-                                                      searchIphoneModels[index],
-                                                  docIdPhotoPd1: docIdPhotopd1,
-                                                  collectionProduct:
-                                                      nameCollection,
-                                                ),
-                                              );
+
+                                              if (kIsWeb) {
+                                                Get.to( PaymentUploadWeb(
+                                                    iphoneModel:searchIphoneModels[
+                                                            index],
+                                                    docIdPhotoPd1:
+                                                        docIdPhotopd1,
+                                                    collectionProduct:
+                                                        nameCollection,
+                                                  ),
+                                                );
+                                              } else {
+                                                Get.to(PaymentUpload(
+                                                    iphoneModel:
+                                                        searchIphoneModels[
+                                                            index],
+                                                    docIdPhotoPd1:
+                                                        docIdPhotopd1,
+                                                    collectionProduct:
+                                                        nameCollection,
+                                                  ),
+                                                );
+                                              }
                                             },
                                           ),
                                           action2Widget: WidgetButtom(
