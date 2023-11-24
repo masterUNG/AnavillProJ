@@ -50,7 +50,7 @@ class _SelectSiteState extends State<SelectSite> {
   Future<void> findUserLogin() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     user = preferences.getString('user');
-    print('findUserLogin --> $user');
+    print('##24nov findUserLogin --> $user');
 
     await FirebaseFirestore.instance
         .collection('associate')

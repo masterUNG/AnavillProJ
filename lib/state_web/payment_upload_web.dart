@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+// import 'package:image_picker_web/image_picker_web.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharetraveyard/models/associate_model.dart';
 import 'package:sharetraveyard/models/iphone_model.dart';
@@ -145,7 +145,12 @@ class _PaymentUploadWebState extends State<PaymentUploadWeb> {
                         label: 'Upload Payment',
                         pressFunc: () async {
                           try {
-                            var result = await ImagePickerWeb.getImageAsBytes();
+                            // var result = await ImagePicker.getImageAsBytes();
+
+                            var result = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+
+                            var imageByte = await result!.readAsBytes();
 
                             String path =
                                 'payment_upload/payment${Random().nextInt(1000000)}.jpg';
@@ -156,7 +161,7 @@ class _PaymentUploadWebState extends State<PaymentUploadWeb> {
                             Reference reference =
                                 firebaseStorage.ref().child(path);
 
-                            UploadTask uploadTask = reference.putData(result!,
+                            UploadTask uploadTask = reference.putData(imageByte!,
                                 SettableMetadata(contentType: 'image/jpeg'));
                             await uploadTask.whenComplete(() async {
                               await reference
